@@ -43,6 +43,16 @@ defmodule BackendWeb.RouterTest do
       body = response(conn, 200)
       assert body =~ "swagger-ui"
     end
+
+    test "GET /api/v1/openapi and /api/v1/docs are available" do
+      spec_conn = get(build_conn(), "/api/v1/openapi")
+      assert spec_conn.status == 200
+      assert json_response(spec_conn, 200)["openapi"]
+
+      docs_conn = get(build_conn(), "/api/v1/docs")
+      assert docs_conn.status == 200
+      assert response(docs_conn, 200) =~ "swagger-ui"
+    end
   end
 
   describe "auth routes" do
@@ -53,6 +63,24 @@ defmodule BackendWeb.RouterTest do
       assert conn.status == 302
       location = get_resp_header(conn, "location") |> hd()
       assert location =~ "accounts.google.com" or location =~ "oauth"
+    end
+
+    test "auth callback and logout routes are mounted" do
+      cb_get = get(build_conn(), "/auth/google/callback")
+      assert cb_get.status in [302, 400, 401, 500]
+
+      assert_raise Phoenix.ActionClauseError, fn ->
+        build_conn()
+        |> put_req_header("content-type", "application/x-www-form-urlencoded")
+        |> post("/auth/google/callback", %{})
+      end
+
+      logout_get = get(build_conn(), "/auth/logout")
+      assert logout_get.status in [nil, 302, 200]
+
+      assert_raise ArgumentError, fn ->
+        delete(build_conn(), "/auth/logout")
+      end
     end
 
     # Note: /auth/logout is tested in auth_controller_test.exs
@@ -108,6 +136,51 @@ defmodule BackendWeb.RouterTest do
 
       assert conn.status == 401
     end
+
+    test "GET /api/v1/me returns 401 without session" do
+      conn =
+        build_conn()
+        |> init_test_session(%{})
+        |> get("/api/v1/me")
+
+      assert conn.status == 401
+    end
+
+    test "GET /api/dashboard and /api/v1/dashboard return 401 without session" do
+      conn1 =
+        build_conn()
+        |> init_test_session(%{})
+        |> get("/api/dashboard")
+
+      conn2 =
+        build_conn()
+        |> init_test_session(%{})
+        |> get("/api/v1/dashboard")
+
+      assert conn1.status == 401
+      assert conn2.status == 401
+    end
+
+    test "v1 project/task routes return 401 without session" do
+      conn = build_conn() |> init_test_session(%{})
+
+      assert get(conn, "/api/v1/projects").status == 401
+      assert post(conn, "/api/v1/projects", %{"name" => "x"}).status == 401
+      assert get(conn, "/api/v1/tasks").status == 401
+      assert post(conn, "/api/v1/tasks", %{"title" => "x"}).status == 401
+    end
+
+    test "v1 upload routes return 401 without session" do
+      key = URI.encode_www_form("users/user/uploads/file.txt")
+      conn = build_conn() |> init_test_session(%{})
+
+      assert get(conn, "/api/v1/uploads").status == 401
+      assert post(conn, "/api/v1/uploads/presign", %{"filename" => "x.txt"}).status == 401
+      assert get(conn, "/api/v1/uploads/types").status == 401
+      assert get(conn, "/api/v1/uploads/#{key}").status == 401
+      assert get(conn, "/api/v1/uploads/#{key}/download").status == 401
+      assert delete(conn, "/api/v1/uploads/#{key}").status == 401
+    end
   end
 
   describe "protected API routes with auth" do
@@ -156,6 +229,23 @@ defmodule BackendWeb.RouterTest do
       assert response["data"]["id"] == "google_uid_123"
     end
 
+    test "GET /api/dashboard and /api/v1/dashboard return dashboard payload", %{user: user} do
+      conn1 =
+        build_conn()
+        |> init_test_session(%{current_user: user})
+        |> get("/api/dashboard")
+
+      conn2 =
+        build_conn()
+        |> init_test_session(%{current_user: user})
+        |> get("/api/v1/dashboard")
+
+      assert conn1.status == 200
+      assert conn2.status == 200
+      assert is_map(json_response(conn1, 200)["data"]["summary"])
+      assert is_map(json_response(conn2, 200)["data"]["summary"])
+    end
+
     test "GET /api/notes returns notes list", %{user: user} do
       conn =
         build_conn()
@@ -178,6 +268,23 @@ defmodule BackendWeb.RouterTest do
       assert conn.status == 201
       response = json_response(conn, 201)
       assert response["data"]["title"] == "Test Note"
+    end
+
+    test "GET /api/v1/notes and /api/v1/uploads/types are reachable when authenticated", %{user: user} do
+      notes_conn =
+        build_conn()
+        |> init_test_session(%{current_user: user})
+        |> get("/api/v1/notes")
+
+      assert notes_conn.status == 200
+
+      types_conn =
+        build_conn()
+        |> init_test_session(%{current_user: user})
+        |> get("/api/v1/uploads/types")
+
+      assert types_conn.status == 200
+      assert is_list(json_response(types_conn, 200)["content_types"])
     end
 
     test "POST /api/notes returns 422 with invalid data", %{user: user} do

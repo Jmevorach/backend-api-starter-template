@@ -76,7 +76,12 @@ defmodule Backend.RdsIamAuth do
     {:ok, token}
   rescue
     e ->
-      Logger.error("Failed to generate RDS IAM token: #{inspect(e)}")
+      if Mix.env() == :test do
+        Logger.debug("Failed to generate RDS IAM token in test: #{inspect(e)}")
+      else
+        Logger.error("Failed to generate RDS IAM token: #{inspect(e)}")
+      end
+
       {:error, e}
   end
 

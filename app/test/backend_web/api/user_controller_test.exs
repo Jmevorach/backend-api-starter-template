@@ -2,6 +2,7 @@ defmodule BackendWeb.API.UserControllerTest do
   use ExUnit.Case, async: true
 
   import Phoenix.ConnTest
+  alias BackendWeb.API.UserController
 
   @endpoint BackendWeb.Endpoint
 
@@ -51,6 +52,18 @@ defmodule BackendWeb.API.UserControllerTest do
 
       assert conn.status == 401
       assert json_response(conn, 401)["error"] == "Authentication required"
+    end
+  end
+
+  describe "UserController.me/2 direct invocation" do
+    test "handles nil session user branch directly" do
+      conn =
+        build_conn()
+        |> init_test_session(%{})
+
+      conn = UserController.me(conn, %{})
+      assert conn.status == 401
+      assert Jason.decode!(conn.resp_body)["code"] == "authentication_required"
     end
   end
 end

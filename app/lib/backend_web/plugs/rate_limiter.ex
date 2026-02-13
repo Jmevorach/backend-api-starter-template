@@ -29,7 +29,7 @@ defmodule BackendWeb.Plugs.RateLimiter do
     bucket = current_bucket(window_seconds)
     key = {identity, bucket}
 
-    count = :ets.update_counter(@table, key, {2, 1}, {key, 0})
+    count = increment_counter(key)
     expires_at = System.system_time(:second) + window_seconds
     true = :ets.insert(@table, {{:expires, key}, expires_at})
 
@@ -125,6 +125,16 @@ defmodule BackendWeb.Plugs.RateLimiter do
     (current_bucket(window_seconds) + 1) * window_seconds
   end
 
+  defp increment_counter(key) do
+    :ets.update_counter(@table, key, {2, 1}, {key, 0})
+  rescue
+    ArgumentError ->
+      # Another test/process can delete the named ETS table between ensure_table!/0
+      # and update_counter/4. Recreate and retry once.
+      ensure_table!()
+      :ets.update_counter(@table, key, {2, 1}, {key, 0})
+  end
+
   defp prune_expired do
     now = System.system_time(:second)
 
@@ -133,5 +143,9 @@ defmodule BackendWeb.Plugs.RateLimiter do
       :ets.delete(@table, {:expires, key})
       :ets.delete(@table, key)
     end
+  rescue
+    ArgumentError ->
+      # Table may be removed by concurrent tests/processes; skip pruning this round.
+      :ok
   end
 end

@@ -116,4 +116,33 @@ defmodule Backend.HTTPClientTest do
                HTTPClient.delete("https://example.com", headers: [{"x-api-key", "secret"}])
     end
   end
+
+  describe "head/2" do
+    test "delegates to configured implementation" do
+      expect(Backend.HTTPClientMock, :head, fn url, opts ->
+        assert url == "https://example.com/health"
+        assert opts == [headers: [{"x-test", "1"}]]
+        {:ok, %{status: 200, body: nil}}
+      end)
+
+      assert {:ok, %{status: 200}} =
+               HTTPClient.head("https://example.com/health", headers: [{"x-test", "1"}])
+    end
+  end
+
+  describe "Backend.HTTPClient.Impl" do
+    test "supports all HTTP verbs via Req plug adapter" do
+      plug = fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(200, ~s({"ok":true}))
+      end
+
+      assert {:ok, %{status: 200}} = Backend.HTTPClient.Impl.get("http://example.test/get", plug: plug)
+      assert {:ok, %{status: 200}} = Backend.HTTPClient.Impl.post("http://example.test/post", plug: plug)
+      assert {:ok, %{status: 200}} = Backend.HTTPClient.Impl.put("http://example.test/put", plug: plug)
+      assert {:ok, %{status: 200}} = Backend.HTTPClient.Impl.delete("http://example.test/delete", plug: plug)
+      assert {:ok, %{status: 200}} = Backend.HTTPClient.Impl.head("http://example.test/head", plug: plug)
+    end
+  end
 end

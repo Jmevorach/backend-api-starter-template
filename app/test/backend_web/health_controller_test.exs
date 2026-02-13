@@ -1,5 +1,5 @@
 defmodule BackendWeb.HealthControllerTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
 
   import Phoenix.ConnTest
 
@@ -106,6 +106,33 @@ defmodule BackendWeb.HealthControllerTest do
 
       assert is_binary(valkey_check["message"])
       # Message could be "connected", "not configured", or an error message
+    end
+
+    test "valkey check reports connection failure when backend process is unhealthy" do
+      pid =
+        spawn(fn ->
+          receive do
+            _ -> :ok
+          end
+        end)
+
+      Process.register(pid, Backend.Valkey)
+
+      on_exit(fn ->
+        if Process.alive?(pid), do: Process.exit(pid, :kill)
+
+        if Process.whereis(Backend.Valkey) == pid do
+          Process.unregister(Backend.Valkey)
+        end
+      end)
+
+      conn = get(build_conn(), "/healthz", detailed: "true")
+      response = json_response(conn, conn.status)
+
+      assert conn.status == 503
+      assert response["status"] == "degraded"
+      assert response["checks"]["valkey"]["status"] == "error"
+      assert response["checks"]["valkey"]["message"] == "connection failed"
     end
   end
 end
