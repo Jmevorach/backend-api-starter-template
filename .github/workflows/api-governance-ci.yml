@@ -48,3 +48,6 @@ jobs:
       - name: Check for breaking changes
         if: github.event_name == 'pull_request'
         run: ./scripts/check-openapi-breaking.sh
+
+      - name: Validate breakcheck fixtures
+        run: ./scripts/test-openapi-breakcheck.sh

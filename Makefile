@@ -1,6 +1,6 @@
 .PHONY: help dev-up dev-down dev-reset app-format app-credo app-test \
 	app-test-unit app-test-all app-test-cover \
-	python-lint shellcheck contract-validate contract-typecheck openapi-export openapi-lint openapi-breakcheck verify terraform-validate terraform-security \
+	python-lint shellcheck contract-validate contract-typecheck openapi-export openapi-lint openapi-breakcheck openapi-breakcheck-test verify terraform-validate terraform-security \
 	deploy deploy-plan health-report destroy
 
 help:
@@ -25,6 +25,7 @@ help:
 		"  openapi-export     Export current OpenAPI spec to contracts/openapi.json" \
 		"  openapi-lint       Lint OpenAPI spec with Spectral" \
 		"  openapi-breakcheck Check for breaking changes vs origin/main" \
+		"  openapi-breakcheck-test Run fixture tests for breakcheck logic" \
 		"  verify             Run the default full local verification gate" \
 		"  terraform-validate Validate infra and state-backend" \
 		"  terraform-security Run security scans (checkov, kics)" \
@@ -113,7 +114,10 @@ openapi-lint: openapi-export
 openapi-breakcheck: openapi-export
 	bash scripts/check-openapi-breaking.sh
 
-verify: app-format app-credo app-test contract-validate contract-typecheck openapi-lint
+openapi-breakcheck-test:
+	bash scripts/test-openapi-breakcheck.sh
+
+verify: app-format app-credo app-test contract-validate contract-typecheck openapi-lint openapi-breakcheck-test
 
 terraform-validate:
 	cd infra && terraform fmt -check -recursive

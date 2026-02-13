@@ -442,6 +442,7 @@ Run locally before PR:
 ```bash
 make openapi-lint
 make openapi-breakcheck
+make openapi-breakcheck-test
 ```
 
 `API Governance CI` enforces the same policy and flags potentially breaking contract changes.
