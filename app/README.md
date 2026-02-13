@@ -1,7 +1,7 @@
 ## Phoenix API Backend
 
 This directory contains a **production-ready Phoenix API service** designed as a
-starting point for mobile app backends. It intentionally avoids app-specific
+starting point for patient app backends. It intentionally avoids app-specific
 business logic so you can plug in your own domain features.
 
 ### Table of Contents

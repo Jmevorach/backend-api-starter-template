@@ -1,6 +1,6 @@
 .PHONY: help dev-up dev-down dev-reset app-format app-credo app-test \
 	app-test-unit app-test-all app-test-cover \
-	python-lint shellcheck terraform-validate terraform-security \
+	python-lint shellcheck contract-validate contract-typecheck terraform-validate terraform-security \
 	deploy deploy-plan health-report destroy
 
 help:
@@ -20,6 +20,8 @@ help:
 		"  app-test-cover     Run tests with coverage report" \
 		"  python-lint        Run ruff, mypy, bandit on lambdas" \
 		"  shellcheck         Run ShellCheck on scripts" \
+		"  contract-validate  Validate docs/API_CONTRACT.md against routes/types" \
+		"  contract-typecheck Type-check frontend contract interfaces" \
 		"  terraform-validate Validate infra and state-backend" \
 		"  terraform-security Run security scans (checkov, kics)" \
 		"" \
@@ -91,6 +93,12 @@ python-lint:
 
 shellcheck:
 	shellcheck -x -o all -S warning scripts/*.sh
+
+contract-validate:
+	bash scripts/validate-api-contract.sh
+
+contract-typecheck:
+	npm exec --yes --package typescript@latest tsc -- --noEmit -p contracts/tsconfig.json
 
 terraform-validate:
 	cd infra && terraform fmt -check -recursive

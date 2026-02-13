@@ -10,6 +10,7 @@ and how to modify the AWS infrastructure.
 - [Modifying AWS Infrastructure](#modifying-aws-infrastructure)
 - [Security Considerations](#security-considerations)
 - [Testing](#testing)
+- [API Contract Drift Policy](#api-contract-drift-policy)
 - [Pull Request Guidelines](#pull-request-guidelines)
 
 ## Philosophy
@@ -401,6 +402,36 @@ end
 
 See `test/README.md` for comprehensive testing documentation.
 
+## API Contract Drift Policy
+
+When a PR changes any API behavior used by frontend clients, keep the contract
+artifacts in sync in the same PR.
+
+Update these files together:
+
+1. `docs/API_CONTRACT.md` (request/response examples and status codes)
+2. `contracts/frontend-api.ts` (TypeScript interfaces consumed by frontend)
+3. `docs/FRONTEND_INTEGRATION.md` (flow or usage guidance when needed)
+
+### What counts as a contract change
+
+- New endpoint, removed endpoint, or route rename
+- Request body/query/path parameter changes
+- Response shape changes (new/removed/renamed fields)
+- Status code or error payload changes
+
+### Required local checks
+
+Run these before opening a PR:
+
+```bash
+make contract-validate
+make contract-typecheck
+```
+
+CI enforces the same checks through `Frontend Contract CI`. If these fail, treat
+it as contract drift and update docs/types before merging.
+
 ## Pull Request Guidelines
 
 1. **One feature per PR** - Keep changes focused
@@ -409,6 +440,7 @@ See `test/README.md` for comprehensive testing documentation.
 4. **Run CI checks locally** first:
    ```bash
    make app-format app-credo app-test
+   make contract-validate contract-typecheck
    make terraform-security
    ```
 5. **Write clear commit messages** - Explain what and why
@@ -418,6 +450,7 @@ See `test/README.md` for comprehensive testing documentation.
 
 - [ ] Tests pass locally
 - [ ] Documentation updated
+- [ ] API contract updated (`docs/API_CONTRACT.md` + `contracts/frontend-api.ts`) if endpoint behavior changed
 - [ ] ENVIRONMENT.md updated (if new env vars)
 - [ ] Security considerations addressed
 - [ ] Terraform validates (`terraform validate`)

@@ -1,7 +1,7 @@
 # Authentication and Security Guide
 
 This guide covers database and cache authentication, TLS configuration, and security
-best practices for the backend accelerator.
+best practices for the patient backend baseline.
 
 ## Table of Contents
 

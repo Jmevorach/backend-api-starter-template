@@ -33,11 +33,12 @@ The default `config/dev.exs` uses:
 - DB name: `backend_dev`
 - DB host: `localhost`
 
-If you want Valkey-backed sessions locally, set:
+Valkey local settings are already configured in `app/config/dev.exs`:
 
-```bash
-export VALKEY_URL="redis://localhost:6379/0"
-```
+- host: `localhost`
+- port: `6379`
+- password: `devpassword`
+- TLS: disabled for local dev
 
 ### Run the App
 
@@ -66,4 +67,5 @@ bash scripts/dev-reset.sh
 ### Troubleshooting
 
 - **DB connection errors**: make sure Postgres is running and port 5432 is free.
-- **Valkey connection errors**: confirm `VALKEY_URL` is set and port 6379 is free.
+- **Valkey connection errors**: confirm local Valkey is running on port `6379` and
+  `app/config/dev.exs` matches your local password/host.

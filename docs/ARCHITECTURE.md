@@ -80,7 +80,8 @@ This allows:
 - Fast session lookups
 - Reduced cookie size and exposure
 
-If `VALKEY_URL` is not set, sessions fall back to in-memory behavior.
+If `VALKEY_HOST` is not configured, the app still runs, but shared
+multi-instance session persistence is not available.
 
 ### Database Layer
 

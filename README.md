@@ -1,9 +1,10 @@
-## Backend Baseline – Production AWS + Phoenix
+## Patient Backend Baseline – Production AWS + Phoenix
 
 [![Elixir CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/elixir-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/elixir-ci.yml)
 [![Terraform CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/terraform-ci.yml)
 [![Python CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/python-lambda-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/python-lambda-ci.yml)
 [![ShellCheck](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/shellcheck.yml)
+[![Frontend Contract CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/frontend-contract-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/frontend-contract-ci.yml)
 [![Version Check](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/version-check.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/version-check.yml)
 
 [![Elixir](https://img.shields.io/badge/Elixir-1.19.5+-4B275F?logo=elixir)](https://elixir-lang.org/)
@@ -25,6 +26,7 @@ foundations.
 - [Architecture (High Level)](#architecture-high-level)
 - [Repository Layout](#repository-layout)
 - [Quick Start](#quick-start)
+- [Frontend Quickstart (React)](#frontend-quickstart-react)
 - [Documentation](#documentation)
 - [Local Tooling](#local-tooling)
 - [Customize It](#customize-it)
@@ -128,6 +130,17 @@ ECS Fargate (Phoenix API)
 
 See [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) for detailed deployment instructions.
 
+### Frontend Quickstart (React)
+
+If your team is starting with the frontend first, use this path:
+
+1. Run backend locally with `docs/LOCAL_DEV.md`
+2. Review auth/session and API bootstrap flow in `docs/FRONTEND_INTEGRATION.md`
+3. Start frontend bootstrap calls with:
+   - `GET /api/me`
+   - `GET /api/patient/profile`
+   - `GET /api/patient/dashboard`
+
 ### Documentation
 
 - [`ENVIRONMENT.md`](ENVIRONMENT.md) – **Single source** for all variables and secrets
@@ -141,8 +154,12 @@ See [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) for detailed deployment instr
 - [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) – Common issues and fixes
 - [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) – Deploy from a laptop without GitHub Actions
 - [`docs/LOCAL_DEV.md`](docs/LOCAL_DEV.md) – Local dev workflow with Postgres + Valkey
+- [`docs/FRONTEND_INTEGRATION.md`](docs/FRONTEND_INTEGRATION.md) – React/frontend integration patterns
+- [`docs/API_CONTRACT.md`](docs/API_CONTRACT.md) – Request/response examples for frontend endpoints
+- [`contracts/frontend-api.ts`](contracts/frontend-api.ts) – TypeScript interfaces matching the API contract
 - [`docs/PATIENT_BACKEND_BLUEPRINT.md`](docs/PATIENT_BACKEND_BLUEPRINT.md) – Suggested patient-domain extensions
 - [`docs/SECURITY_CHECKLIST.md`](docs/SECURITY_CHECKLIST.md) – Pre-deployment security checklist
+- [`docs/README.md`](docs/README.md) – Documentation index and navigation
 
 ### Local Tooling
 
@@ -158,6 +175,8 @@ This repo provides scripts and tools for local development and deployment:
 - `make app-credo` – Run Credo linter
 - `make app-test` – Run tests
 - `make terraform-security` – Run security scans (Checkov, KICS)
+- `make contract-validate` – Validate API contract docs against routes/type exports
+- `make contract-typecheck` – Type-check frontend contract interfaces
 
 **Deployment:**
 - `make deploy` – Full deployment (build + push + terraform)
@@ -191,12 +210,9 @@ Hooks run automatically on commit: Terraform fmt, Python linting, shellcheck, et
 4. Deploy to production
 
 **Using Existing Authenticated Endpoints:**
-```elixir
-# Patient profile for app bootstrap
-GET /api/patient/profile
-
-# Patient dashboard summary for home screen
-GET /api/patient/dashboard
+```bash
+curl -i http://localhost:4000/api/patient/profile
+curl -i http://localhost:4000/api/patient/dashboard
 ```
 
 **Extending the Project:**

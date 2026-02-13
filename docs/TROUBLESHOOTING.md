@@ -46,11 +46,11 @@ Common issues and how to resolve them.
 ### Valkey Session Errors
 
 **Possible causes:**
-- Incorrect `VALKEY_URL`
+- Incorrect Valkey host/port/user/password settings
 - Auth token mismatch after rotation
 
 **Checks:**
-- Validate `VALKEY_URL` and `VALKEY_PASSWORD`
+- Validate `VALKEY_HOST`, `VALKEY_PORT`, `VALKEY_USER`, and `VALKEY_PASSWORD`
 - Confirm rotation Lambda ran and ECS updated
 
 ### OAuth Not Working
