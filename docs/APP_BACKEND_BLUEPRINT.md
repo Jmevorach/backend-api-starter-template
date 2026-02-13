@@ -16,17 +16,10 @@ Already included:
 - S3 uploads with presigned URLs
 - Production AWS deployment stack (ECS, ALB, Aurora, Valkey, IAM auth)
 
-## Recommended Next Domain Modules
+## Suggested Extension Approach
 
-Prioritize these APIs:
-
-1. User settings (`/api/settings`)
-2. Tasks/workflows (`/api/tasks`)
-3. Projects or collections (`/api/projects`)
-4. Notifications (`/api/notifications`)
-5. Messaging (`/api/messages`, `/api/conversations`)
-
-Keep each as a dedicated context + schema + controller test set.
+Add only the domain modules your product actually needs.
+Keep each module in its own context + schema + controller tests.
 
 ## Security Direction
 
