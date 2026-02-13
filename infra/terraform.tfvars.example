@@ -14,7 +14,7 @@
 
 # GitHub OIDC configuration (for CI/CD)
 github_owner = "your-github-username"
-github_repo  = "backend-api-accelerator"
+github_repo  = "backend-api-starter-template"
 
 # Container image URI (set by deploy script, or specify manually)
 # container_image = "123456789012.dkr.ecr.us-east-1.amazonaws.com/backend-service:latest"

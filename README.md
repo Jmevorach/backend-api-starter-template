@@ -1,13 +1,13 @@
 ## Mobile Backend Baseline – Production AWS + Phoenix
 
-[![Elixir CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/elixir-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/elixir-ci.yml)
-[![Terraform CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/terraform-ci.yml)
-[![Python CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/python-lambda-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/python-lambda-ci.yml)
-[![ShellCheck](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/shellcheck.yml)
-[![Frontend Contract CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/frontend-contract-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/frontend-contract-ci.yml)
-[![API Governance CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/api-governance-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/api-governance-ci.yml)
-[![Security Scans](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/security-scans.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/security-scans.yml)
-[![Version Check](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/version-check.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/version-check.yml)
+[![Elixir CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/elixir-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/elixir-ci.yml)
+[![Terraform CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/terraform-ci.yml)
+[![Python CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/python-lambda-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/python-lambda-ci.yml)
+[![ShellCheck](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/shellcheck.yml)
+[![Frontend Contract CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/frontend-contract-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/frontend-contract-ci.yml)
+[![API Governance CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/api-governance-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/api-governance-ci.yml)
+[![Security Scans](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/security-scans.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/security-scans.yml)
+[![Version Check](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/version-check.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/version-check.yml)
 
 [![Elixir](https://img.shields.io/badge/Elixir-1.19.5+-4B275F?logo=elixir)](https://elixir-lang.org/)
 [![Phoenix](https://img.shields.io/badge/Phoenix-1.7+-FD4F00?logo=phoenix-framework)](https://www.phoenixframework.org/)
@@ -102,7 +102,7 @@ ECS Fargate (Phoenix API)
    ```bash
    aws configure  # or set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
    export TF_VAR_github_owner="your-github-username"
-   export TF_VAR_github_repo="backend-api-accelerator"
+   export TF_VAR_github_repo="backend-api-starter-template"
 
    # Option A: Auto-create HTTPS certificate (recommended)
    export TF_VAR_domain_name="api.example.com"

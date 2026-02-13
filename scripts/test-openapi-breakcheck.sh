@@ -7,12 +7,13 @@ FIXTURE_DIR="$ROOT_DIR/scripts/testdata/openapi"
 
 run_case() {
   local name="$1"
-  local candidate="$2"
-  local expected="$3"
+  local base="$2"
+  local candidate="$3"
+  local expected="$4"
 
   echo "Running fixture: $name"
   set +e
-  python3 "$COMPARE_SCRIPT" "$FIXTURE_DIR/base.json" "$FIXTURE_DIR/$candidate" >/tmp/openapi-breakcheck.out 2>&1
+  python3 "$COMPARE_SCRIPT" "$FIXTURE_DIR/$base" "$FIXTURE_DIR/$candidate" >/tmp/openapi-breakcheck.out 2>&1
   local code=$?
   set -e
 
@@ -31,9 +32,11 @@ run_case() {
   cat /tmp/openapi-breakcheck.out
 }
 
-run_case "non-breaking additions" "non_breaking.json" "pass"
-run_case "removed path" "breaking_removed_path.json" "fail"
-run_case "required parameter added" "breaking_required_param.json" "fail"
-run_case "enum narrowing" "breaking_enum_narrow.json" "fail"
+run_case "non-breaking additions" "base.json" "non_breaking.json" "pass"
+run_case "removed path" "base.json" "breaking_removed_path.json" "fail"
+run_case "required parameter added" "base.json" "breaking_required_param.json" "fail"
+run_case "enum narrowing" "base.json" "breaking_enum_narrow.json" "fail"
+run_case "request body became required" "base_with_request_body.json" "breaking_request_body_required.json" "fail"
+run_case "response media type removed" "base_with_media_types.json" "breaking_removed_media_type.json" "fail"
 
 echo "OpenAPI breakcheck fixtures passed."

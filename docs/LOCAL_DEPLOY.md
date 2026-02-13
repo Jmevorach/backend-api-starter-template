@@ -30,7 +30,7 @@ image, pushing to ECR, and applying Terraform.
 ```bash
 # 1. Set required environment variables
 export TF_VAR_github_owner="your-github-username"
-export TF_VAR_github_repo="backend-api-accelerator"
+export TF_VAR_github_repo="backend-api-starter-template"
 
 # 2. Configure HTTPS certificate (choose one option)
 # Option A: Auto-create certificate with Route 53 (recommended)
