@@ -8,6 +8,7 @@ defmodule Backend.HTTPClientTest do
   import Mox
 
   alias Backend.HTTPClient
+  alias Backend.HTTPClient.Impl
 
   setup :verify_on_exit!
 
@@ -139,19 +140,19 @@ defmodule Backend.HTTPClientTest do
       end
 
       assert {:ok, %{status: 200}} =
-               Backend.HTTPClient.Impl.get("http://example.test/get", plug: plug)
+               Impl.get("http://example.test/get", plug: plug)
 
       assert {:ok, %{status: 200}} =
-               Backend.HTTPClient.Impl.post("http://example.test/post", plug: plug)
+               Impl.post("http://example.test/post", plug: plug)
 
       assert {:ok, %{status: 200}} =
-               Backend.HTTPClient.Impl.put("http://example.test/put", plug: plug)
+               Impl.put("http://example.test/put", plug: plug)
 
       assert {:ok, %{status: 200}} =
-               Backend.HTTPClient.Impl.delete("http://example.test/delete", plug: plug)
+               Impl.delete("http://example.test/delete", plug: plug)
 
       assert {:ok, %{status: 200}} =
-               Backend.HTTPClient.Impl.head("http://example.test/head", plug: plug)
+               Impl.head("http://example.test/head", plug: plug)
     end
   end
 end
