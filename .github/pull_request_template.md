@@ -1,3 +1,13 @@
+# Pull Request Template
+
+## Table of Contents
+
+- [What Changed](#what-changed)
+- [Why](#why)
+- [API Impact](#api-impact)
+- [Validation](#validation)
+- [Security and Ops](#security-and-ops)
+
 ## What Changed
 
 - 
@@ -19,7 +29,7 @@
 - [ ] `make contract-typecheck`
 - [ ] `cd app && mix test`
 
-## Security & Ops
+## Security and Ops
 
 - [ ] No secrets committed
 - [ ] Logging/tracing reviewed for sensitive fields

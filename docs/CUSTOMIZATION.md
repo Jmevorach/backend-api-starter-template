@@ -1,9 +1,9 @@
-## Customization Guide
+# Customization Guide
 
 This repo is intentionally generic. Use this document to tailor it to your
 product while keeping the production baseline intact.
 
-### Table of Contents
+## Table of Contents
 
 - [Rename the Service](#rename-the-service)
 - [Add Your API Routes](#add-your-api-routes)
@@ -16,13 +16,13 @@ product while keeping the production baseline intact.
 - [Mobile-Specific Extensions](#mobile-specific-extensions)
 - [Keep It Maintainable](#keep-it-maintainable)
 
-### Rename the Service
+## Rename the Service
 
 - Update the `project_name` variable for resource naming.
 - Update the root endpoint output in `HomeController`.
 - Adjust ECR repository name and GitHub variables.
 
-### Add Your API Routes
+## Add Your API Routes
 
 - Create controllers in `app/lib/backend_web/controllers`.
 - Wire routes in `app/lib/backend_web/router.ex`.
@@ -37,24 +37,24 @@ scope "/api", BackendWeb.API, as: :api do
 end
 ```
 
-### Data Models and Migrations
+## Data Models and Migrations
 
 - Add schemas in `app/lib/backend`.
 - Create migrations under `app/priv/repo/migrations`.
 - Run `mix ecto.migrate` locally or via CI.
 
-### Authentication Providers
+## Authentication Providers
 
 - OAuth providers are optional.
 - Provide credentials via Secrets Manager and set the ARN variables in Terraform.
 - Update redirect URLs via `AUTH_*` env vars.
 
-### Sessions
+## Sessions
 
 - Sessions are stored in Valkey when `VALKEY_HOST` is set.
 - If you prefer stateless auth, replace session usage with JWTs.
 
-### Third-Party API Integrations
+## Third-Party API Integrations
 
 This baseline intentionally avoids shipping vendor-specific modules.
 Add only the integrations your product needs.
@@ -69,7 +69,7 @@ Recommended approach:
 See [API Integrations Guide](./API_INTEGRATIONS.md) and
 [CONTRIBUTING.md](../CONTRIBUTING.md#adding-api-client-modules).
 
-### TLS/SSL Configuration
+## TLS/SSL Configuration
 
 The application automatically configures TLS based on the environment:
 
@@ -110,7 +110,7 @@ config :backend, Backend.Repo,
   ]
 ```
 
-### Infrastructure Adjustments
+## Infrastructure Adjustments
 
 The infrastructure is defined in Terraform under `infra/`. Here's how to make
 common modifications.
@@ -185,7 +185,7 @@ For example, to add SQS:
 
 For detailed infrastructure modification guidance, see [CONTRIBUTING.md](../CONTRIBUTING.md#modifying-aws-infrastructure).
 
-### Mobile-Specific Extensions
+## Mobile-Specific Extensions
 
 Typical additions:
 
@@ -195,7 +195,7 @@ Typical additions:
 - Rate limiting and abuse protection (WAF)
 - Real-time features (Phoenix Channels, WebSockets)
 
-### Keep It Maintainable
+## Keep It Maintainable
 
 - Avoid hardcoding product-specific data in shared modules.
 - Keep infra changes well documented in `docs/`.

@@ -1,7 +1,15 @@
 # App Backend Blueprint
 
 This document outlines practical next steps for evolving this repository into a
-production-grade backend for an open-source React mobile application.
+production-grade backend for an open-source mobile application.
+
+## Table of Contents
+
+- [Current Baseline](#current-baseline)
+- [Suggested Extension Approach](#suggested-extension-approach)
+- [Security Direction](#security-direction)
+- [Integration Suggestions](#integration-suggestions)
+- [Frontend Integration Tips](#frontend-integration-tips)
 
 ## Current Baseline
 
@@ -28,7 +36,7 @@ Keep each module in its own context + schema + controller tests.
 - Add audit event tables for critical reads/writes.
 - Encrypt sensitive columns where needed.
 - Apply role-based authorization (user, manager, admin).
-- Add retention/deletion workflows for user data exports and account deletion.
+- Add retention and deletion workflows for user data exports and account deletion.
 
 ## Integration Suggestions
 

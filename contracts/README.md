@@ -1,6 +1,10 @@
 # Frontend Contract Types
 
-This folder contains TypeScript interfaces for frontend consumption.
+This folder contains TypeScript interfaces for frontend use.
+
+## Table of Contents
+
+- [Contract Maintenance](#contract-maintenance)
 
 - `frontend-api.ts` mirrors documented payloads in `docs/API_CONTRACT.md`
 - `tsconfig.json` enables strict type-checking for this contract artifact

@@ -3,6 +3,17 @@
 This document provides request/response examples for the core frontend-facing
 endpoints.
 
+## Table of Contents
+
+- [Conventions](#conventions)
+- [Versioning](#versioning)
+- [Standard Error Envelope](#standard-error-envelope)
+- [Auth Bootstrap](#auth-bootstrap)
+- [Profile and Dashboard APIs](#profile-and-dashboard-apis)
+- [Notes APIs](#notes-apis)
+- [Upload APIs](#upload-apis)
+- [Projects and Tasks (Golden Path Module)](#projects-and-tasks-golden-path-module)
+
 ## Conventions
 
 - Base URL (local): `http://localhost:4000`
@@ -68,9 +79,9 @@ Use this first to determine whether the user is authenticated.
 
 ## Profile and Dashboard APIs
 
-### `GET /api/profile`
+### `GET /api/v1/profile`
 
-Also available as `GET /api/v1/profile`.
+Also available as `GET /api/profile`.
 
 #### `200 OK`
 
@@ -88,9 +99,9 @@ Also available as `GET /api/v1/profile`.
 }
 ```
 
-### `GET /api/dashboard?recent_limit=5`
+### `GET /api/v1/dashboard?recent_limit=5`
 
-Also available as `GET /api/v1/dashboard?recent_limit=5`.
+Also available as `GET /api/dashboard?recent_limit=5`.
 
 `recent_limit` is optional (`default: 5`, `max: 20`).
 

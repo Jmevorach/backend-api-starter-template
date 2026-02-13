@@ -2,6 +2,14 @@
 
 Use this index to find the right guide quickly.
 
+## Table of Contents
+
+- [Start Here](#start-here)
+- [Deployment and Operations](#deployment-and-operations)
+- [Architecture and Security](#architecture-and-security)
+- [Extensibility](#extensibility)
+- [Documentation Quality](#documentation-quality)
+
 ## Start Here
 
 - `LOCAL_DEV.md` - Run the API locally for day-to-day development
@@ -32,7 +40,7 @@ Use this index to find the right guide quickly.
 
 ## Documentation Quality
 
-Before merging docs-affecting changes, run:
+Before merging documentation changes, run:
 
 - `make contract-validate`
 - `make contract-typecheck`

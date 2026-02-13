@@ -1,4 +1,4 @@
-## Mobile Backend Baseline – Production AWS + Phoenix
+# Mobile Backend Baseline – Production AWS + Phoenix
 
 [![Elixir CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/elixir-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/elixir-ci.yml)
 [![Terraform CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/terraform-ci.yml)
@@ -16,12 +16,12 @@
 [![AWS](https://img.shields.io/badge/AWS-ECS%20%7C%20Aurora%20%7C%20ElastiCache-FF9900?logo=amazon-aws)](https://aws.amazon.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-This repository is an **open-source production baseline** for building mobile
-app backends. It pairs a **Phoenix JSON API** with **battle-tested AWS
-infrastructure** so teams can ship faster without rebuilding the same platform
+This repository is an **open-source production baseline** for mobile app
+backends. It pairs a **Phoenix JSON API** with **battle-tested AWS
+infrastructure** so teams can ship faster without rebuilding core platform
 foundations.
 
-### Table of Contents
+## Table of Contents
 
 - [Why This Exists](#why-this-exists)
 - [What You Get](#what-you-get)
@@ -33,7 +33,7 @@ foundations.
 - [Local Tooling](#local-tooling)
 - [Customize It](#customize-it)
 
-### Why This Exists
+## Why This Exists
 
 Most teams repeatedly implement the same building blocks:
 
@@ -45,7 +45,7 @@ Most teams repeatedly implement the same building blocks:
 This repo bundles those pieces into a cohesive, production-ready starting point
 while staying generic enough to fit almost any backend product.
 
-### What You Get
+## What You Get
 
 - **Phoenix API service** with Ecto, health checks, and optional OAuth
 - **Valkey/Redis-backed sessions** for multi-container deployments
@@ -64,7 +64,7 @@ while staying generic enough to fit almost any backend product.
 - **Versioned API namespace** (`/api/v1/*`) with compatibility routes at `/api/*`
 - **Golden path domain module** with `projects` and `tasks` APIs
 
-### Architecture (High Level)
+## Architecture (High Level)
 
 ```
 Clients
@@ -83,7 +83,7 @@ ECS Fargate (Phoenix API)
   +--> RDS Proxy --> Aurora Serverless v2 (PostgreSQL)
 ```
 
-### Repository Layout
+## Repository Layout
 
 - `app/` – Phoenix API service (JSON-only)
 - `infra/` – Terraform infrastructure for AWS
@@ -96,7 +96,7 @@ ECS Fargate (Phoenix API)
 - `ENVIRONMENT.md` – Centralized environment variable reference
 - `docs/` – Deep-dive documentation for architecture, operations, security
 
-### Quick Start
+## Quick Start
 
 1. **Configure AWS credentials and environment**
    ```bash
@@ -135,7 +135,7 @@ ECS Fargate (Phoenix API)
 
 See [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) for detailed deployment instructions.
 
-### Frontend Quickstart (React)
+## Frontend Quickstart (React)
 
 If your team is starting with the frontend first, use this path:
 
@@ -148,7 +148,7 @@ If your team is starting with the frontend first, use this path:
 
 The `/api/*` equivalents remain available for compatibility.
 
-### Documentation
+## Documentation
 
 - [`ENVIRONMENT.md`](ENVIRONMENT.md) – **Single source** for all variables and secrets
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) – How to add API modules and modify infrastructure
@@ -172,9 +172,9 @@ The `/api/*` equivalents remain available for compatibility.
 - [`docs/README.md`](docs/README.md) – Documentation index and navigation
 - [`CHANGELOG.md`](CHANGELOG.md) – Release notes and breaking-change history
 
-### Local Tooling
+## Local Tooling
 
-This repo provides scripts and tools for local development and deployment:
+This repo provides scripts and commands for local development and deployment:
 
 **Development:**
 - `make dev-up` – Start local Postgres + Valkey
@@ -214,9 +214,9 @@ pip install pre-commit
 pre-commit install
 ```
 
-Hooks run automatically on commit: Terraform fmt, Python linting, shellcheck, etc.
+Hooks run automatically on commit (Terraform fmt, Python linting, shellcheck, etc.).
 
-### Customize It
+## Customize It
 
 **Getting Started:**
 1. Add your API routes in `app/lib/backend_web/controllers`

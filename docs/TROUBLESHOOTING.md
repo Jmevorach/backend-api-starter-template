@@ -1,8 +1,8 @@
-## Troubleshooting
+# Troubleshooting
 
 Common issues and how to resolve them.
 
-### Table of Contents
+## Table of Contents
 
 - [ALB Returns 503](#alb-returns-503)
 - [ECS Tasks Crash Loop](#ecs-tasks-crash-loop)
@@ -11,7 +11,7 @@ Common issues and how to resolve them.
 - [OAuth Not Working](#oauth-not-working)
 - [Terraform Apply Fails](#terraform-apply-fails)
 
-### ALB Returns 503
+## ALB Returns 503
 
 **Possible causes:**
 - ECS task not healthy
@@ -23,7 +23,7 @@ Common issues and how to resolve them.
 - Check ECS task logs in CloudWatch
 - Confirm the target group health check path is `/healthz`
 
-### ECS Tasks Crash Loop
+## ECS Tasks Crash Loop
 
 **Possible causes:**
 - Missing env variables (`SECRET_KEY_BASE`, DB creds)
@@ -33,7 +33,7 @@ Common issues and how to resolve them.
 - Inspect task definition environment and secrets
 - Check Secrets Manager values
 
-### Database Connection Failures
+## Database Connection Failures
 
 **Possible causes:**
 - RDS Proxy endpoint wrong
@@ -43,7 +43,7 @@ Common issues and how to resolve them.
 - Verify `DB_HOST` is the proxy endpoint
 - Force ECS new deployment to refresh secrets
 
-### Valkey Session Errors
+## Valkey Session Errors
 
 **Possible causes:**
 - Incorrect Valkey host/port/user/password settings
@@ -53,7 +53,7 @@ Common issues and how to resolve them.
 - Validate `VALKEY_HOST`, `VALKEY_PORT`, `VALKEY_USER`, and `VALKEY_PASSWORD`
 - Confirm rotation Lambda ran and ECS updated
 
-### OAuth Not Working
+## OAuth Not Working
 
 **Possible causes:**
 - Missing OAuth credentials
@@ -63,7 +63,7 @@ Common issues and how to resolve them.
 - Ensure OAuth secrets are present in Secrets Manager
 - Verify callback URLs match your providers settings
 
-### Terraform Apply Fails
+## Terraform Apply Fails
 
 **Possible causes:**
 - Missing required variables

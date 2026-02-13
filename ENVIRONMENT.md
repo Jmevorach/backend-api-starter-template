@@ -1,9 +1,9 @@
-## Environment Variables and Configuration
+# Environment Variables and Configuration
 
 This file is the **single place** to see every environment variable, Terraform
 input, and GitHub Actions setting used by the project.
 
-### Table of Contents
+## Table of Contents
 
 - [Application Runtime (ECS Task)](#application-runtime-ecs-task)
 - [Test/CI Runtime (Phoenix)](#testci-runtime-phoenix)
@@ -12,7 +12,7 @@ input, and GitHub Actions setting used by the project.
 - [Local Deployment (Laptop)](#local-deployment-laptop)
 - [Python Version Note](#python-version-note)
 
-### Application Runtime (ECS Task)
+## Application Runtime (ECS Task)
 
 These are environment variables the Phoenix app expects at runtime.
 
@@ -59,7 +59,7 @@ These are environment variables the Phoenix app expects at runtime.
 | `UPLOADS_PRESIGNED_URL_EXPIRY` | No | Presigned URL expiration in seconds (default `3600`). |
 | `MAX_REQUEST_BODY_BYTES` | No | Global max request body size in bytes (default `2000000`). |
 
-### Test/CI Runtime (Phoenix)
+## Test/CI Runtime (Phoenix)
 
 | Name | Required | Purpose |
 |------|----------|---------|
@@ -68,7 +68,7 @@ These are environment variables the Phoenix app expects at runtime.
 | `TEST_DB_PASSWORD` | No | Test database password (default `postgres`). |
 | `TEST_DB_NAME` | No | Test database name (default `backend_test`). |
 
-### Terraform Inputs (infra)
+## Terraform Inputs (infra)
 
 Use `terraform.tfvars` or `TF_VAR_*` environment variables.
 
@@ -114,7 +114,7 @@ Use `terraform.tfvars` or `TF_VAR_*` environment variables.
 | `uploads_max_file_size_mb` | No | Maximum file size for uploads in MB (default `50`). |
 | `uploads_presigned_url_expiry_seconds` | No | Presigned URL expiration in seconds (default `3600`). |
 
-### Terraform Inputs (state-backend)
+## Terraform Inputs (state-backend)
 
 | Variable | Required | Purpose |
 |----------|----------|---------|
@@ -122,7 +122,7 @@ Use `terraform.tfvars` or `TF_VAR_*` environment variables.
 | `environment` | No | Environment name. |
 | `aws_region` | No | AWS region for state backend. |
 
-### Local Deployment (Laptop)
+## Local Deployment (Laptop)
 
 These are used by `scripts/deploy.sh` and `scripts/deploy-local.sh`.
 
@@ -138,7 +138,7 @@ These are used by `scripts/deploy.sh` and `scripts/deploy-local.sh`.
 | `TF_VAR_github_repo` | Yes | GitHub repo name (required Terraform input). |
 | `TF_VAR_alb_acm_certificate_arn` | Yes | ACM certificate ARN for ALB HTTPS. |
 
-### Python Version Note
+## Python Version Note
 
 GitHub Actions uses Python **3.14** for Lambda checks. AWS Lambda supports
 **python3.14** for these rotation functions; keep `lambda_python_runtime`

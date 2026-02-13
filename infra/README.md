@@ -1,9 +1,9 @@
-## Infra – AWS Terraform Stack
+# Infra – AWS Terraform Stack
 
 This directory contains Terraform code for the production-grade AWS
 infrastructure that powers the Phoenix API service.
 
-### Table of Contents
+## Table of Contents
 
 - [Architecture Highlights](#architecture-highlights)
 - [Structure](#structure)
@@ -13,7 +13,7 @@ infrastructure that powers the Phoenix API service.
 - [Secrets and Rotation](#secrets-and-rotation)
 - [Notes for Production](#notes-for-production)
 
-### Architecture Highlights
+## Architecture Highlights
 
 - Global Accelerator → ALB → ECS Fargate service
 - Aurora Serverless v2 (PostgreSQL) with RDS Proxy in private subnets
@@ -23,7 +23,7 @@ infrastructure that powers the Phoenix API service.
 - Secrets Manager + KMS encryption
 - Automatic secret rotation via Lambdas in `infra/lambdas/`
 
-### Structure
+## Structure
 
 - `main.tf` – Root wiring and shared locals
 - `variables.tf` – Input variables
@@ -40,12 +40,12 @@ infrastructure that powers the Phoenix API service.
 - `kms.tf` – KMS keys
 - `ecr.tf` – ECR repository
 
-### Providers & State
+## Providers & State
 
 Use a remote backend (S3 + DynamoDB) for real environments. The bootstrap
 configuration lives in `state-backend/`.
 
-### Key Variables
+## Key Variables
 
 - `aws_region`
 - `environment`
@@ -56,7 +56,7 @@ configuration lives in `state-backend/`.
 
 See `ENVIRONMENT.md` for the full list of variables and GitHub secrets/vars.
 
-### Typical Workflow
+## Typical Workflow
 
 1. **Bootstrap state backend**
    - Run `terraform apply` in `state-backend/` once per account/region.
@@ -67,14 +67,14 @@ See `ENVIRONMENT.md` for the full list of variables and GitHub secrets/vars.
 4. **Apply**
    - `terraform apply -auto-approve -var="container_image=..."`
 
-### Secrets and Rotation
+## Secrets and Rotation
 
 Secrets are generated in Terraform and stored in AWS Secrets Manager. Rotation
 Lambdas update secrets and trigger ECS deployments so tasks pick up new values.
 
 Lambdas live in `infra/lambdas/` and are packaged automatically by Terraform.
 
-### Notes for Production
+## Notes for Production
 
 - Attach an ACM certificate for ALB HTTPS.
 - Configure GitHub OIDC and CI/CD with the least-privilege role.

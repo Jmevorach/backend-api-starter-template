@@ -2,6 +2,14 @@
 
 This backend ships with practical observability defaults for API operations.
 
+## Table of Contents
+
+- [Request Tracing and Correlation](#request-tracing-and-correlation)
+- [Rate and Edge Signals](#rate-and-edge-signals)
+- [Health Monitoring](#health-monitoring)
+- [OpenAPI and Contract Governance](#openapi-and-contract-governance)
+- [Recommended Runtime Integrations](#recommended-runtime-integrations)
+
 ## Request Tracing and Correlation
 
 - Every request gets an `x-request-id` via `Plug.RequestId`.

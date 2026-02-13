@@ -1,8 +1,8 @@
-## Local Development
+# Local Development
 
 This guide helps you run the Phoenix API locally with Postgres and Valkey.
 
-### Table of Contents
+## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Start Dependencies](#start-dependencies)
@@ -11,12 +11,12 @@ This guide helps you run the Phoenix API locally with Postgres and Valkey.
 - [Reset Local Data](#reset-local-data)
 - [Troubleshooting](#troubleshooting)
 
-### Prerequisites
+## Prerequisites
 
 - Docker (with Compose)
 - Elixir + Erlang (for local app runs)
 
-### Start Dependencies
+## Start Dependencies
 
 The repo includes a `compose.yaml` for Postgres and Valkey.
 
@@ -24,7 +24,7 @@ The repo includes a `compose.yaml` for Postgres and Valkey.
 bash scripts/dev-up.sh
 ```
 
-### Configure Environment
+## Configure Environment
 
 The default `config/dev.exs` uses:
 
@@ -40,7 +40,7 @@ Valkey local settings are already configured in `app/config/dev.exs`:
 - password: `devpassword`
 - TLS: disabled for local dev
 
-### Run the App
+## Run the App
 
 ```bash
 cd app
@@ -56,7 +56,7 @@ Verify:
 curl http://localhost:4000/healthz
 ```
 
-### Reset Local Data
+## Reset Local Data
 
 To wipe the Postgres volume and start fresh:
 
@@ -64,7 +64,7 @@ To wipe the Postgres volume and start fresh:
 bash scripts/dev-reset.sh
 ```
 
-### Troubleshooting
+## Troubleshooting
 
 - **DB connection errors**: make sure Postgres is running and port 5432 is free.
 - **Valkey connection errors**: confirm local Valkey is running on port `6379` and

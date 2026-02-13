@@ -1,5 +1,10 @@
 # Support Matrix
 
+## Table of Contents
+
+- [API Version Support](#api-version-support)
+- [CI Baselines](#ci-baselines)
+
 | Component | Supported | Notes |
 |---|---|---|
 | Elixir | 1.19.x | CI pinned to 1.19.5 |

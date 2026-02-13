@@ -1,8 +1,8 @@
-## Operations Guide
+# Operations Guide
 
 This document covers deployment, scaling, upgrades, and day-2 operations.
 
-### Table of Contents
+## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [One-Time Bootstrap](#one-time-bootstrap)
@@ -15,7 +15,7 @@ This document covers deployment, scaling, upgrades, and day-2 operations.
 - [Disaster Recovery](#disaster-recovery)
 - [Operational Checklists](#operational-checklists)
 
-### Prerequisites
+## Prerequisites
 
 - AWS account with permissions to create VPC, ECS, RDS, IAM, etc.
 - AWS CLI configured with appropriate credentials
@@ -23,7 +23,7 @@ This document covers deployment, scaling, upgrades, and day-2 operations.
 - Docker installed for building images
 - (Optional) ACM certificate for HTTPS
 
-### One-Time Bootstrap
+## One-Time Bootstrap
 
 1. **Create the remote Terraform backend**
    ```bash
@@ -35,7 +35,7 @@ This document covers deployment, scaling, upgrades, and day-2 operations.
 2. **Note the outputs**
    - The S3 bucket name and DynamoDB table name will be used by the main infra.
 
-### Deploy the Stack
+## Deploy the Stack
 
 Use `scripts/deploy-local.sh` for a streamlined deployment:
 
@@ -71,7 +71,7 @@ export ENVIRONMENT=prod
 
 See `docs/LOCAL_DEPLOY.md` for detailed prerequisites and environment variables.
 
-### Updates and Rollbacks
+## Updates and Rollbacks
 
 - **App updates**: Build a new image, push to ECR, and re-apply Terraform.
 - **Infra changes**: Update Terraform files and run `terraform apply`.
@@ -83,7 +83,7 @@ cd infra
 terraform apply -var="container_image=your-ecr-repo:previous-tag"
 ```
 
-### Scaling
+## Scaling
 
 ECS auto scaling uses CPU target utilization. Adjust these variables in `infra/variables.tf`:
 
@@ -96,7 +96,7 @@ Aurora Serverless v2 scales automatically by ACUs. Adjust min/max ACUs in `varia
 - `aurora_min_capacity` - Minimum ACUs
 - `aurora_max_capacity` - Maximum ACUs
 
-### Secrets Rotation
+## Secrets Rotation
 
 Secrets rotate via AWS Secrets Manager and custom Lambdas:
 
@@ -111,7 +111,7 @@ To manually trigger rotation:
 aws secretsmanager rotate-secret --secret-id your-secret-arn
 ```
 
-### Backups
+## Backups
 
 - AWS Backup stores snapshots of the Aurora cluster.
 - Retention is configurable in `infra/backup.tf`.
@@ -122,7 +122,7 @@ To restore from backup, use the AWS Console or CLI:
 aws backup start-restore-job --recovery-point-arn <arn> --metadata <metadata>
 ```
 
-### Logs and Monitoring
+## Logs and Monitoring
 
 - **CloudWatch Logs**: ECS task logs, Lambda logs
 - **CloudWatch Dashboard**: Pre-built dashboard in `infra/monitoring.tf`
@@ -140,7 +140,7 @@ aws logs tail /ecs/your-cluster --follow
 aws logs tail /aws/lambda/db-password-rotation --follow
 ```
 
-### Disaster Recovery
+## Disaster Recovery
 
 1. **Data loss recovery**
    - Use AWS Backup to restore Aurora from a recovery point.
@@ -154,7 +154,7 @@ aws logs tail /aws/lambda/db-password-rotation --follow
    - Global Accelerator provides health-based routing.
    - Deploy to secondary region using the same Terraform with different backend.
 
-### Operational Checklists
+## Operational Checklists
 
 **Pre-deploy**
 - [ ] Terraform plan is clean (no unexpected changes)

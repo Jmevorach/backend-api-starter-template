@@ -1,7 +1,7 @@
 # Contributing Guide
 
-This guide explains how to extend the mobile-backend baseline with new API integrations
-and how to modify the AWS infrastructure.
+This guide explains how to extend the mobile backend baseline with new API
+integrations and how to modify the AWS infrastructure.
 
 ## Table of Contents
 

@@ -1,10 +1,10 @@
-## Phoenix API Backend
+# Phoenix API Backend
 
 This directory contains a **production-ready Phoenix API service** designed as a
 starting point for mobile app backends. It intentionally avoids app-specific
 business logic so you can plug in your own domain features.
 
-### Table of Contents
+## Table of Contents
 
 - [Core Endpoints](#core-endpoints)
 - [Features](#features)
@@ -14,13 +14,13 @@ business logic so you can plug in your own domain features.
 - [Sessions and Authentication](#sessions-and-authentication)
 - [Testing](#testing)
 
-### Core Endpoints
+## Core Endpoints
 
 - `GET /` – Service metadata (name, version, key endpoints)
 - `GET /healthz` – Health check for ALB/ECS/GA
-- `GET /api/v1/me` – Canonical authenticated bootstrap endpoint (`/api/me` compatibility route also available)
-- `GET /api/v1/profile` – Canonical authenticated user identity profile (`/api/profile` compatibility route also available)
-- `GET /api/v1/dashboard` – Canonical dashboard summary endpoint (`/api/dashboard` compatibility route also available)
+- `GET /api/v1/me` – Canonical authenticated bootstrap endpoint (`/api/me` also available for compatibility)
+- `GET /api/v1/profile` – Canonical authenticated user identity profile (`/api/profile` also available for compatibility)
+- `GET /api/v1/dashboard` – Canonical dashboard summary endpoint (`/api/dashboard` also available for compatibility)
 - `GET /auth/:provider` – Start OAuth flow (Google, Apple)
 - `GET /auth/:provider/callback` – OAuth callback
 
@@ -32,7 +32,7 @@ business logic so you can plug in your own domain features.
 - `DELETE /api/uploads/:key` – Delete a file
 - `GET /api/uploads/types` – List allowed content types
 
-### Features
+## Features
 
 - JSON-only responses
 - OAuth via Ueberauth (Google, Apple)
@@ -42,13 +42,13 @@ business logic so you can plug in your own domain features.
 - **S3 file uploads with presigned URLs** – Direct client-to-S3 uploads
 - Optional API clients for Stripe, Checkr, and Google Maps
 
-### Configuration
+## Configuration
 
 All environment variables are documented in the root `ENVIRONMENT.md` file.
 OAuth redirect behavior can be customized with `AUTH_SUCCESS_REDIRECT`,
 `AUTH_FAILURE_REDIRECT`, and `AUTH_LOGOUT_REDIRECT`.
 
-### Local Development (Conceptual)
+## Local Development (Conceptual)
 
 For a full local dev workflow (Postgres + Valkey), see `docs/LOCAL_DEV.md`.
 
@@ -67,7 +67,7 @@ If you want database support locally, run Postgres and set:
 - `TEST_DB_PASSWORD`
 - `TEST_DB_NAME`
 
-### Adding Your Own Endpoints
+## Adding Your Own Endpoints
 
 Controllers live in `lib/backend_web/controllers`. For authenticated routes,
 attach them to the `:protected_api` pipeline in `router.ex`.
@@ -81,14 +81,14 @@ scope "/api", BackendWeb.API, as: :api do
 end
 ```
 
-### Sessions and Authentication
+## Sessions and Authentication
 
 - Sessions are stored server-side in Valkey/Redis via `Backend.RedisSessionStore`.
 - OAuth providers are optional; if credentials are missing, the provider is
   effectively disabled.
 - Use `GET /api/v1/me` to validate session behavior from a mobile client.
 
-### Testing
+## Testing
 
 ```bash
 cd app

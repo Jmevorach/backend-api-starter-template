@@ -1,4 +1,4 @@
-## Terraform State Backend (Bootstrap)
+# Terraform State Backend (Bootstrap)
 
 This directory bootstraps the **remote Terraform backend** used by the main
 `infra/` stack:
@@ -8,13 +8,13 @@ This directory bootstraps the **remote Terraform backend** used by the main
 
 > The main `infra/` configuration expects these resources to exist.
 
-### Table of Contents
+## Table of Contents
 
 - [Resources](#resources)
 - [One-Time Setup](#one-time-setup)
 - [If You Change Names](#if-you-change-names)
 
-### Resources
+## Resources
 
 - S3 bucket: `backend-infra-tf-state`
   - Versioning enabled
@@ -25,7 +25,7 @@ This directory bootstraps the **remote Terraform backend** used by the main
   - Billing mode: `PAY_PER_REQUEST`
   - PITR enabled
 
-### One-Time Setup
+## One-Time Setup
 
 Run this **once per account/region** to create the backend:
 
@@ -49,7 +49,7 @@ terraform plan
 terraform apply
 ```
 
-### If You Change Names
+## If You Change Names
 
 If you customize bucket/table names, update the backend block in `infra/` to
 match, then re-run `terraform init`.

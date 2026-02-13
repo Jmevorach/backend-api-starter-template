@@ -4,6 +4,13 @@ This test suite validates the backend baseline for open-source mobile apps.
 It focuses on authentication, protected APIs, dashboard/profile behavior,
 uploads, notes, and optional third-party API clients.
 
+## Table of Contents
+
+- [Coverage Focus](#coverage-focus)
+- [Key Directories](#key-directories)
+- [Running Tests](#running-tests)
+- [Notes](#notes)
+
 ## Coverage Focus
 
 - Auth flows and protected route enforcement

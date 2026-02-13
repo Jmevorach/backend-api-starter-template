@@ -21,8 +21,9 @@ This backend is session-based:
 2. Provider callback establishes server session
 3. Browser/client sends session cookie on protected API calls
 
-Protected endpoints are under `/api/v1/*` (preferred) and `/api/*` (compatibility), and require authentication via the
-`:protected_api` pipeline.
+Protected endpoints are available under `/api/v1/*` (preferred) and `/api/*`
+(compatibility). Both require authentication through the `:protected_api`
+pipeline.
 
 ## Bootstrap API Calls
 
@@ -32,7 +33,7 @@ For app startup, call endpoints in this order:
 2. `GET /api/v1/profile` (identity payload for UI header/profile)
 3. `GET /api/v1/dashboard` (home screen summary)
 
-If `GET /api/v1/me` returns `401`, redirect user to login.
+If `GET /api/v1/me` returns `401`, redirect the user to login.
 
 ## Profile and Dashboard Endpoints
 

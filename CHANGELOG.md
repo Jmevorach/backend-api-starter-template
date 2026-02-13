@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file.
 
 The format is based on Keep a Changelog and this project follows Semantic Versioning.
 
+## Table of Contents
+
+- [[Unreleased]](#unreleased)
+
 ## [Unreleased]
 
 ### Added

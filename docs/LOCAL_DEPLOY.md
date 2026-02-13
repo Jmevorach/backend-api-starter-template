@@ -1,10 +1,10 @@
-## Local Deployment (Laptop)
+# Local Deployment (Laptop)
 
 Use this guide to deploy the entire infrastructure from your laptop using a
 single command. The deployment script handles everything: building the container
 image, pushing to ECR, and applying Terraform.
 
-### Table of Contents
+## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Quick Deploy](#quick-deploy)
@@ -14,7 +14,7 @@ image, pushing to ECR, and applying Terraform.
 - [Tear Down](#tear-down)
 - [Troubleshooting](#troubleshooting)
 
-### Prerequisites
+## Prerequisites
 
 - **AWS CLI** configured with credentials (`aws configure`)
 - **Container runtime**: Docker, Finch, or Podman (auto-detected)
@@ -25,7 +25,7 @@ image, pushing to ECR, and applying Terraform.
 > **Note**: The deploy script automatically detects your container runtime.
 > To override, set `CONTAINER_RUNTIME=finch` or `CONTAINER_RUNTIME=podman`.
 
-### Quick Deploy
+## Quick Deploy
 
 ```bash
 # 1. Set required environment variables
@@ -47,7 +47,7 @@ export TF_VAR_route53_zone_name="example.com"
 ./scripts/deploy.sh
 ```
 
-### Environment Variables
+## Environment Variables
 
 #### Required
 
@@ -74,7 +74,7 @@ export TF_VAR_route53_zone_name="example.com"
 | `PLATFORM` | `linux/arm64` | Build platform (arm64 for Graviton). |
 | `CONTAINER_RUNTIME` | auto-detected | Container runtime: `docker`, `finch`, or `podman`. |
 
-### Deployment Options
+## Deployment Options
 
 ```bash
 # Full deployment (build, push, apply)
@@ -93,7 +93,7 @@ export TF_VAR_route53_zone_name="example.com"
 ./scripts/deploy.sh --auto-approve
 ```
 
-### Container Runtime
+## Container Runtime
 
 The deploy script supports **Docker**, **Finch**, and **Podman**. It will
 automatically detect which one you have installed, preferring them in that order.
@@ -117,7 +117,7 @@ CONTAINER_RUNTIME=podman ./scripts/deploy.sh
 | **Finch** | AWS's open-source container tool. Great for macOS without Docker Desktop. |
 | **Podman** | Daemonless container engine. Build and push are done separately. |
 
-### What It Does
+## What It Does
 
 The `deploy.sh` script performs these steps:
 
@@ -129,7 +129,7 @@ The `deploy.sh` script performs these steps:
 6. **Stability wait** – Waits for ECS service to stabilize
 7. **Summary** – Displays endpoints and next steps
 
-### Health Monitoring
+## Health Monitoring
 
 After deployment, check the health of all components:
 
@@ -152,7 +152,7 @@ The health report checks:
 - Application health endpoint (`/healthz`)
 - Recent error logs
 
-### Tear Down
+## Tear Down
 
 ```bash
 # Destroy main infrastructure (preserves state backend)
@@ -168,7 +168,7 @@ The health report checks:
 ./scripts/destroy.sh --force
 ```
 
-### Troubleshooting
+## Troubleshooting
 
 #### ECR Push Fails
 
