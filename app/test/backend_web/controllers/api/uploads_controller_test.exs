@@ -13,7 +13,8 @@ defmodule BackendWeb.API.UploadsControllerTest do
   requiring actual AWS credentials.
   """
 
-  use ExUnit.Case, async: true
+  # async: false because tests manipulate global environment variables
+  use ExUnit.Case, async: false
 
   import Phoenix.ConnTest
 

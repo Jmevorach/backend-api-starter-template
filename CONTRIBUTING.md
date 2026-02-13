@@ -1,6 +1,6 @@
 # Contributing Guide
 
-This guide explains how to extend the backend API accelerator with new API integrations
+This guide explains how to extend the patient-backend baseline with new API integrations
 and how to modify the AWS infrastructure.
 
 ## Table of Contents
@@ -18,7 +18,7 @@ This project aims to be a **batteries-included** starting point for backend deve
 Users should be able to:
 
 1. Clone the repo
-2. Add their API keys
+2. Configure their auth/integration secrets
 3. Write routes
 4. Ship to production
 
@@ -31,8 +31,8 @@ When contributing, keep this philosophy in mind. New integrations should:
 
 ## Adding API Client Modules
 
-The project includes several API client modules as examples (Stripe, Checkr, Google Maps).
-Follow this pattern to add new integrations.
+The project intentionally does not include vendor-specific API client modules by default.
+Follow this pattern to add integrations safely.
 
 ### Step 1: Create the Client Module
 
@@ -307,7 +307,7 @@ make terraform-security
 When adding new integrations:
 
 1. **Never hardcode secrets** - Use environment variables and Secrets Manager
-2. **Validate webhook signatures** - See `Backend.Stripe.verify_webhook_signature/3` for example
+2. **Validate webhook signatures** using constant-time comparison
 3. **Use TLS** - All external API calls should use HTTPS
 4. **Implement rate limiting** - Consider adding rate limiting for new endpoints
 5. **Log carefully** - Don't log sensitive data (API keys, tokens, PII)

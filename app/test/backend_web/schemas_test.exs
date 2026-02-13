@@ -263,7 +263,7 @@ defmodule BackendWeb.SchemasTest do
       schema = ServiceInfo.schema()
 
       assert schema.example["status"] == "ok"
-      assert schema.example["service"] == "backend"
+      assert schema.example["service"] == "patient-backend"
       assert is_map(schema.example["endpoints"])
     end
   end

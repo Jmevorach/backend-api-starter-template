@@ -19,6 +19,8 @@ business logic so you can plug in your own domain features.
 - `GET /` – Service metadata (name, version, key endpoints)
 - `GET /healthz` – Health check for ALB/ECS/GA
 - `GET /api/me` – Example authenticated endpoint
+- `GET /api/patient/profile` – Authenticated patient identity profile
+- `GET /api/patient/dashboard` – Authenticated care summary for app bootstrap
 - `GET /auth/:provider` – Start OAuth flow (Google, Apple)
 - `GET /auth/:provider/callback` – OAuth callback
 
@@ -94,9 +96,8 @@ mix test --cover      # Run with coverage report
 ```
 
 **Test Suite Features:**
-- 650+ tests with 90% code coverage
-- Mocked API tests (Stripe, Checkr, Google Maps) that run without credentials
-- Live integration tests (optional, requires network access)
+- Comprehensive tests for core backend behaviors and protected routes
+- API and controller tests for auth, patient profile/dashboard, uploads, and notes
 - Database tests using Ecto sandbox isolation
 
 **Running Without Database:**

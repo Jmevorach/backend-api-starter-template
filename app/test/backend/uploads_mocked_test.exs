@@ -6,7 +6,8 @@ defmodule Backend.UploadsMockedTest do
   allowing us to test all code paths without making real AWS API calls.
   """
 
-  use ExUnit.Case, async: true
+  # async: false because tests manipulate global environment variables
+  use ExUnit.Case, async: false
 
   import Mox
 

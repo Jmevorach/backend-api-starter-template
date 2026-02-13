@@ -13,7 +13,7 @@
 [![AWS](https://img.shields.io/badge/AWS-ECS%20%7C%20Aurora%20%7C%20ElastiCache-FF9900?logo=amazon-aws)](https://aws.amazon.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-This repository is an **open-source production baseline** for building mobile
+This repository is an **open-source production baseline** for building patient
 app backends. It pairs a **Phoenix JSON API** with **battle-tested AWS
 infrastructure** so teams can ship faster without rebuilding the same platform
 foundations.
@@ -44,7 +44,6 @@ while staying generic enough to fit almost any backend product.
 ### What You Get
 
 - **Phoenix API service** with Ecto, health checks, and optional OAuth
-- **Pre-built API clients** for Stripe, Checkr, and Google Maps (bring your own keys)
 - **Valkey/Redis-backed sessions** for multi-container deployments
 - **Aurora Serverless v2 + RDS Proxy** for PostgreSQL
 - **ECS Fargate (Graviton)** behind **ALB** and **Global Accelerator**
@@ -56,6 +55,7 @@ while staying generic enough to fit almost any backend product.
 - **Pre-built CloudWatch dashboards** for monitoring
 - **Cost monitoring** with AWS Budgets and Anomaly Detection
 - **OpenAPI/Swagger documentation** at `/api/docs`
+- **Patient-focused authenticated endpoints** (`/api/patient/profile`, `/api/patient/dashboard`)
 
 ### Architecture (High Level)
 
@@ -132,7 +132,7 @@ See [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) for detailed deployment instr
 
 - [`ENVIRONMENT.md`](ENVIRONMENT.md) – **Single source** for all variables and secrets
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) – How to add API modules and modify infrastructure
-- [`docs/API_INTEGRATIONS.md`](docs/API_INTEGRATIONS.md) – Stripe, Checkr, Google Maps usage guide
+- [`docs/API_INTEGRATIONS.md`](docs/API_INTEGRATIONS.md) – How to add your own integrations safely
 - [`docs/AUTHENTICATION.md`](docs/AUTHENTICATION.md) – Database/Valkey auth, TLS, IAM setup
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) – Service layout and data flows
 - [`docs/OPERATIONS.md`](docs/OPERATIONS.md) – Deployments, scaling, and day-2 operations
@@ -141,7 +141,7 @@ See [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) for detailed deployment instr
 - [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) – Common issues and fixes
 - [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) – Deploy from a laptop without GitHub Actions
 - [`docs/LOCAL_DEV.md`](docs/LOCAL_DEV.md) – Local dev workflow with Postgres + Valkey
-- [`docs/IMPROVEMENTS.md`](docs/IMPROVEMENTS.md) – Recommended improvements and enhancements
+- [`docs/PATIENT_BACKEND_BLUEPRINT.md`](docs/PATIENT_BACKEND_BLUEPRINT.md) – Suggested patient-domain extensions
 - [`docs/SECURITY_CHECKLIST.md`](docs/SECURITY_CHECKLIST.md) – Pre-deployment security checklist
 
 ### Local Tooling
@@ -187,19 +187,16 @@ Hooks run automatically on commit: Terraform fmt, Python linting, shellcheck, et
 **Getting Started:**
 1. Add your API routes in `app/lib/backend_web/controllers`
 2. Wire them up in `app/lib/backend_web/router.ex`
-3. Add your API keys (Stripe, Checkr, Google Maps, etc.) via environment variables
+3. Model your patient-domain entities (encounters, meds, appointments, messaging)
 4. Deploy to production
 
-**Using Pre-built API Clients:**
+**Using Existing Authenticated Endpoints:**
 ```elixir
-# Stripe payments
-Backend.Stripe.create_customer(%{email: "user@example.com"})
+# Patient profile for app bootstrap
+GET /api/patient/profile
 
-# Background checks
-Backend.Checkr.create_candidate(%{first_name: "John", email: "john@example.com"})
-
-# Geocoding
-Backend.GoogleMaps.geocode("1600 Amphitheatre Parkway, Mountain View, CA")
+# Patient dashboard summary for home screen
+GET /api/patient/dashboard
 ```
 
 **Extending the Project:**

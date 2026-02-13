@@ -57,7 +57,7 @@ defmodule Backend.MixProject do
       # TLS certificate store for ElastiCache SSL
       {:castore, "~> 1.0"},
 
-      # HTTP client for external APIs (Stripe, Checkr, Google Maps)
+      # HTTP client for external APIs (OAuth/userinfo, uploads, custom integrations)
       {:req, "~> 0.5"},
 
       # Telemetry

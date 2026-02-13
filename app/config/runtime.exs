@@ -93,30 +93,6 @@ if config_env() == :prod do
       private_key: apple_private_key
   end
 
-  # Stripe API configuration (optional)
-  stripe_api_key = System.get_env("STRIPE_API_KEY")
-
-  if stripe_api_key do
-    config :backend, :stripe, api_key: stripe_api_key
-  end
-
-  # Checkr API configuration (optional)
-  checkr_api_key = System.get_env("CHECKR_API_KEY")
-  checkr_environment = System.get_env("CHECKR_ENVIRONMENT") || "sandbox"
-
-  if checkr_api_key do
-    config :backend, :checkr,
-      api_key: checkr_api_key,
-      environment: checkr_environment
-  end
-
-  # Google Maps Platform configuration (optional)
-  google_maps_api_key = System.get_env("GOOGLE_MAPS_API_KEY")
-
-  if google_maps_api_key do
-    config :backend, :google_maps, api_key: google_maps_api_key
-  end
-
   # Valkey/Redis configuration with IAM authentication
   valkey_host = System.get_env("VALKEY_HOST")
   valkey_port = String.to_integer(System.get_env("VALKEY_PORT") || "6379")

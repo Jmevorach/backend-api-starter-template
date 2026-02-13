@@ -64,10 +64,6 @@ data "aws_iam_policy_document" "ecs_task_execution_secrets" {
       var.apple_oauth_team_id_secret_arn != "" ? [var.apple_oauth_team_id_secret_arn] : [],
       var.apple_oauth_key_id_secret_arn != "" ? [var.apple_oauth_key_id_secret_arn] : [],
       var.apple_oauth_private_key_secret_arn != "" ? [var.apple_oauth_private_key_secret_arn] : [],
-      # Third-party API keys
-      var.stripe_api_key_secret_arn != "" ? [var.stripe_api_key_secret_arn] : [],
-      var.checkr_api_key_secret_arn != "" ? [var.checkr_api_key_secret_arn] : [],
-      var.google_maps_api_key_secret_arn != "" ? [var.google_maps_api_key_secret_arn] : [],
       # Database/Cache password fallback
       var.db_password_secret_arn != "" ? [var.db_password_secret_arn] : [],
       var.valkey_password_secret_arn != "" ? [var.valkey_password_secret_arn] : []
@@ -120,10 +116,6 @@ data "aws_iam_policy_document" "ecs_task" {
       var.apple_oauth_team_id_secret_arn != "" ? [var.apple_oauth_team_id_secret_arn] : [],
       var.apple_oauth_key_id_secret_arn != "" ? [var.apple_oauth_key_id_secret_arn] : [],
       var.apple_oauth_private_key_secret_arn != "" ? [var.apple_oauth_private_key_secret_arn] : [],
-      # Third-party API keys
-      var.stripe_api_key_secret_arn != "" ? [var.stripe_api_key_secret_arn] : [],
-      var.checkr_api_key_secret_arn != "" ? [var.checkr_api_key_secret_arn] : [],
-      var.google_maps_api_key_secret_arn != "" ? [var.google_maps_api_key_secret_arn] : [],
       # Database/Cache password fallback
       var.db_password_secret_arn != "" ? [var.db_password_secret_arn] : [],
       var.valkey_password_secret_arn != "" ? [var.valkey_password_secret_arn] : []

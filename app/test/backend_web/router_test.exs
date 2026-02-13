@@ -17,7 +17,7 @@ defmodule BackendWeb.RouterTest do
       assert conn.status == 200
       response = json_response(conn, 200)
       assert response["status"] == "ok"
-      assert response["service"] == "backend"
+      assert response["service"] == "patient-backend"
     end
 
     test "GET /healthz returns health status" do
@@ -90,6 +90,15 @@ defmodule BackendWeb.RouterTest do
 
       assert conn.status == 401
     end
+
+    test "GET /api/patient/profile returns 401 without session" do
+      conn =
+        build_conn()
+        |> init_test_session(%{})
+        |> get("/api/patient/profile")
+
+      assert conn.status == 401
+    end
   end
 
   describe "protected API routes with auth" do
@@ -114,6 +123,17 @@ defmodule BackendWeb.RouterTest do
       response = json_response(conn, 200)
       assert response["authenticated"] == true
       assert response["user"]["email"] == "test@example.com"
+    end
+
+    test "GET /api/patient/profile returns patient data", %{user: user} do
+      conn =
+        build_conn()
+        |> init_test_session(%{current_user: user})
+        |> get("/api/patient/profile")
+
+      assert conn.status == 200
+      response = json_response(conn, 200)
+      assert response["data"]["id"] == "google_uid_123"
     end
 
     test "GET /api/notes returns notes list", %{user: user} do

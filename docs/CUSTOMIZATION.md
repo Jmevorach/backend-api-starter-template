@@ -56,41 +56,18 @@ end
 
 ### Third-Party API Integrations
 
-The project includes pre-built client modules for common APIs:
+This baseline intentionally avoids shipping vendor-specific modules.
+Add only the integrations your patient product needs.
 
-- **Stripe** (`Backend.Stripe`) - Payments, subscriptions, customers
-- **Checkr** (`Backend.Checkr`) - Background checks
-- **Google Maps** (`Backend.GoogleMaps`) - Geocoding, places, distance matrix
+Recommended approach:
 
-To use these integrations:
+1. Create a dedicated module in `app/lib/backend/` (one module per provider)
+2. Keep credentials in Secrets Manager and inject via ECS task secrets
+3. Wrap provider failures into stable internal error tuples
+4. Add mocked tests with `Backend.HTTPClientMock`
 
-1. **Get your API key** from the provider's dashboard
-2. **Store in Secrets Manager** (recommended for production):
-   ```bash
-   aws secretsmanager create-secret \
-     --name "myapp/stripe-api-key" \
-     --secret-string "sk_live_..."
-   ```
-3. **Set the Terraform variable** to inject the secret:
-   ```hcl
-   stripe_api_key_secret_arn = "arn:aws:secretsmanager:us-east-1:123456789:secret:myapp/stripe-api-key"
-   ```
-4. **Use the module** in your controllers:
-   ```elixir
-   def create(conn, %{"email" => email}) do
-     case Backend.Stripe.create_customer(%{email: email}) do
-       {:ok, customer} -> json(conn, customer)
-       {:error, reason} -> # handle error
-     end
-   end
-   ```
-
-For local development, set the environment variable directly:
-```bash
-export STRIPE_API_KEY="sk_test_..."
-```
-
-To add your own API integrations, see [CONTRIBUTING.md](../CONTRIBUTING.md#adding-api-client-modules).
+See [API Integrations Guide](./API_INTEGRATIONS.md) and
+[CONTRIBUTING.md](../CONTRIBUTING.md#adding-api-client-modules).
 
 ### TLS/SSL Configuration
 
