@@ -18,7 +18,7 @@ defmodule BackendWeb.Router do
   OAuth redirect dance and session establishment.
 
   ### API (`/api/*`)
-  JSON API endpoints for client applications, including patient profile/dashboard.
+  JSON API endpoints for client applications, including profile/dashboard.
 
   ### Root (`/`)
   JSON metadata for the service (useful for quick sanity checks).
@@ -108,8 +108,8 @@ defmodule BackendWeb.Router do
 
     # Get current user info (returns 401 if not authenticated)
     get("/me", UserController, :me)
-    get("/patient/profile", PatientController, :profile)
-    get("/patient/dashboard", PatientController, :dashboard)
+    get("/profile", ProfileController, :profile)
+    get("/dashboard", ProfileController, :dashboard)
 
     # Notes CRUD API - demonstrates database operations and caching
     resources("/notes", NotesController, except: [:new, :edit])

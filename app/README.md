@@ -1,7 +1,7 @@
 ## Phoenix API Backend
 
 This directory contains a **production-ready Phoenix API service** designed as a
-starting point for patient app backends. It intentionally avoids app-specific
+starting point for mobile app backends. It intentionally avoids app-specific
 business logic so you can plug in your own domain features.
 
 ### Table of Contents
@@ -19,8 +19,8 @@ business logic so you can plug in your own domain features.
 - `GET /` – Service metadata (name, version, key endpoints)
 - `GET /healthz` – Health check for ALB/ECS/GA
 - `GET /api/me` – Example authenticated endpoint
-- `GET /api/patient/profile` – Authenticated patient identity profile
-- `GET /api/patient/dashboard` – Authenticated care summary for app bootstrap
+- `GET /api/profile` – Authenticated user identity profile
+- `GET /api/dashboard` – Authenticated dashboard summary for app bootstrap
 - `GET /auth/:provider` – Start OAuth flow (Google, Apple)
 - `GET /auth/:provider/callback` – OAuth callback
 
@@ -40,6 +40,7 @@ business logic so you can plug in your own domain features.
 - Ecto + PostgreSQL (Aurora friendly)
 - Health checks for database and cache connectivity
 - **S3 file uploads with presigned URLs** – Direct client-to-S3 uploads
+- Optional API clients for Stripe, Checkr, and Google Maps
 
 ### Configuration
 
@@ -97,7 +98,7 @@ mix test --cover      # Run with coverage report
 
 **Test Suite Features:**
 - Comprehensive tests for core backend behaviors and protected routes
-- API and controller tests for auth, patient profile/dashboard, uploads, and notes
+- API and controller tests for auth, profile/dashboard, uploads, and notes
 - Database tests using Ecto sandbox isolation
 
 **Running Without Database:**

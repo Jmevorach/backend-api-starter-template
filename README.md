@@ -1,4 +1,4 @@
-## Patient Backend Baseline – Production AWS + Phoenix
+## Mobile Backend Baseline – Production AWS + Phoenix
 
 [![Elixir CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/elixir-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/elixir-ci.yml)
 [![Terraform CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/terraform-ci.yml)
@@ -14,7 +14,7 @@
 [![AWS](https://img.shields.io/badge/AWS-ECS%20%7C%20Aurora%20%7C%20ElastiCache-FF9900?logo=amazon-aws)](https://aws.amazon.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-This repository is an **open-source production baseline** for building patient
+This repository is an **open-source production baseline** for building mobile
 app backends. It pairs a **Phoenix JSON API** with **battle-tested AWS
 infrastructure** so teams can ship faster without rebuilding the same platform
 foundations.
@@ -57,7 +57,8 @@ while staying generic enough to fit almost any backend product.
 - **Pre-built CloudWatch dashboards** for monitoring
 - **Cost monitoring** with AWS Budgets and Anomaly Detection
 - **OpenAPI/Swagger documentation** at `/api/docs`
-- **Patient-focused authenticated endpoints** (`/api/patient/profile`, `/api/patient/dashboard`)
+- **Optional API clients** for Stripe, Checkr, and Google Maps integrations
+- **Authenticated profile/dashboard endpoints** (`/api/profile`, `/api/dashboard`)
 
 ### Architecture (High Level)
 
@@ -138,8 +139,8 @@ If your team is starting with the frontend first, use this path:
 2. Review auth/session and API bootstrap flow in `docs/FRONTEND_INTEGRATION.md`
 3. Start frontend bootstrap calls with:
    - `GET /api/me`
-   - `GET /api/patient/profile`
-   - `GET /api/patient/dashboard`
+   - `GET /api/profile`
+   - `GET /api/dashboard`
 
 ### Documentation
 
@@ -157,7 +158,7 @@ If your team is starting with the frontend first, use this path:
 - [`docs/FRONTEND_INTEGRATION.md`](docs/FRONTEND_INTEGRATION.md) – React/frontend integration patterns
 - [`docs/API_CONTRACT.md`](docs/API_CONTRACT.md) – Request/response examples for frontend endpoints
 - [`contracts/frontend-api.ts`](contracts/frontend-api.ts) – TypeScript interfaces matching the API contract
-- [`docs/PATIENT_BACKEND_BLUEPRINT.md`](docs/PATIENT_BACKEND_BLUEPRINT.md) – Suggested patient-domain extensions
+- [`docs/APP_BACKEND_BLUEPRINT.md`](docs/APP_BACKEND_BLUEPRINT.md) – Suggested app-domain extensions
 - [`docs/SECURITY_CHECKLIST.md`](docs/SECURITY_CHECKLIST.md) – Pre-deployment security checklist
 - [`docs/README.md`](docs/README.md) – Documentation index and navigation
 
@@ -206,13 +207,13 @@ Hooks run automatically on commit: Terraform fmt, Python linting, shellcheck, et
 **Getting Started:**
 1. Add your API routes in `app/lib/backend_web/controllers`
 2. Wire them up in `app/lib/backend_web/router.ex`
-3. Model your patient-domain entities (encounters, meds, appointments, messaging)
+3. Model your app-domain entities (profiles, tasks, appointments, messaging)
 4. Deploy to production
 
 **Using Existing Authenticated Endpoints:**
 ```bash
-curl -i http://localhost:4000/api/patient/profile
-curl -i http://localhost:4000/api/patient/dashboard
+curl -i http://localhost:4000/api/profile
+curl -i http://localhost:4000/api/dashboard
 ```
 
 **Extending the Project:**

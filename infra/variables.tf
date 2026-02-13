@@ -240,6 +240,30 @@ variable "apple_oauth_private_key_secret_arn" {
 }
 
 # -----------------------------------------------------------------------------
+# Third-Party API Configuration (Optional)
+# -----------------------------------------------------------------------------
+# API keys are stored in Secrets Manager and injected at runtime.
+# Leave empty to disable the corresponding service.
+
+variable "stripe_api_key_secret_arn" {
+  description = "Secrets Manager ARN for Stripe API key. Leave empty to disable Stripe integration."
+  type        = string
+  default     = ""
+}
+
+variable "checkr_api_key_secret_arn" {
+  description = "Secrets Manager ARN for Checkr API key. Leave empty to disable Checkr integration."
+  type        = string
+  default     = ""
+}
+
+variable "google_maps_api_key_secret_arn" {
+  description = "Secrets Manager ARN for Google Maps Platform API key. Leave empty to disable Google Maps integration."
+  type        = string
+  default     = ""
+}
+
+# -----------------------------------------------------------------------------
 # Database/Cache Password Authentication (Optional)
 # -----------------------------------------------------------------------------
 # Password secrets for non-IAM environments or fallback authentication.

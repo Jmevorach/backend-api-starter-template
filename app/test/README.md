@@ -1,15 +1,15 @@
 # Test Suite Documentation
 
-This test suite validates the backend baseline for an open-source patient app.
-It focuses on authentication, protected APIs, patient dashboard/profile behavior,
-uploads, and notes.
+This test suite validates the backend baseline for open-source mobile apps.
+It focuses on authentication, protected APIs, dashboard/profile behavior,
+uploads, notes, and optional third-party API clients.
 
 ## Coverage Focus
 
 - Auth flows and protected route enforcement
-- Patient-oriented endpoints:
-  - `GET /api/patient/profile`
-  - `GET /api/patient/dashboard`
+- Profile/dashboard endpoints:
+  - `GET /api/profile`
+  - `GET /api/dashboard`
 - Notes CRUD/caching behavior
 - Upload presign and object management flows
 - Infra-related runtime/auth helpers (RDS/Valkey IAM auth)
@@ -21,7 +21,7 @@ test/
 ├── backend/                         # Contexts, infra helpers, auth, cache tests
 ├── backend_web/
 │   ├── api/                         # API controller tests
-│   ├── controllers/api/             # Route-level notes/patient tests
+│   ├── controllers/api/             # Route-level notes/profile tests
 │   ├── plugs/                       # Plug behavior tests
 │   └── *.exs                        # Router/auth/health/schema tests
 └── support/                         # ConnCase/DataCase helpers
@@ -38,7 +38,7 @@ mix test --cover
 Run a specific file:
 
 ```bash
-mix test test/backend_web/controllers/api/patient_controller_test.exs
+mix test test/backend_web/controllers/api/profile_controller_test.exs
 ```
 
 ## Notes

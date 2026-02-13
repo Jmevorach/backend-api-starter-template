@@ -40,9 +40,9 @@ Use this first to determine whether the user is authenticated.
 }
 ```
 
-## Patient APIs
+## Profile and Dashboard APIs
 
-### `GET /api/patient/profile`
+### `GET /api/profile`
 
 #### `200 OK`
 
@@ -60,7 +60,7 @@ Use this first to determine whether the user is authenticated.
 }
 ```
 
-### `GET /api/patient/dashboard?recent_limit=5`
+### `GET /api/dashboard?recent_limit=5`
 
 `recent_limit` is optional (`default: 5`, `max: 20`).
 
@@ -69,19 +69,19 @@ Use this first to determine whether the user is authenticated.
 ```json
 {
   "data": {
-    "patient": {
+    "user": {
       "id": "google_uid_123",
       "name": "John Doe",
       "email": "john@example.com"
     },
-    "care_summary": {
+    "summary": {
       "active_notes": 2,
       "archived_notes": 1,
       "recent_notes": [
         {
           "id": "550e8400-e29b-41d4-a716-446655440000",
-          "title": "A1C follow-up",
-          "content": "Schedule lab work in 2 weeks",
+          "title": "Sprint planning follow-up",
+          "content": "Schedule planning session for next week",
           "archived": false,
           "inserted_at": "2026-02-13T17:54:34.599935Z",
           "updated_at": "2026-02-13T17:54:34.599935Z"
@@ -94,7 +94,7 @@ Use this first to determine whether the user is authenticated.
 
 ## Notes APIs
 
-### `GET /api/notes?archived=false&limit=50&offset=0&search=lab`
+### `GET /api/notes?archived=false&limit=50&offset=0&search=release`
 
 All query params are optional.
 
@@ -105,8 +105,8 @@ All query params are optional.
   "data": [
     {
       "id": "550e8400-e29b-41d4-a716-446655440000",
-      "title": "A1C follow-up",
-      "content": "Schedule lab work in 2 weeks",
+      "title": "Sprint planning follow-up",
+      "content": "Schedule planning session for next week",
       "archived": false,
       "inserted_at": "2026-02-13T17:54:34.599935Z",
       "updated_at": "2026-02-13T17:54:34.599935Z"
@@ -127,8 +127,8 @@ All query params are optional.
 
 ```json
 {
-  "title": "Medication reminder",
-  "content": "Take blood pressure medication at 8:00 PM"
+  "title": "Release reminder",
+  "content": "Prepare release notes before 8:00 PM"
 }
 ```
 
@@ -138,8 +138,8 @@ All query params are optional.
 {
   "data": {
     "id": "44de4cde-8d75-4d1d-b1af-31d4a9c7c4c8",
-    "title": "Medication reminder",
-    "content": "Take blood pressure medication at 8:00 PM",
+    "title": "Release reminder",
+    "content": "Prepare release notes before 8:00 PM",
     "archived": false,
     "inserted_at": "2026-02-13T18:00:00.000000Z",
     "updated_at": "2026-02-13T18:00:00.000000Z"
@@ -236,7 +236,7 @@ No response body.
 
 ```json
 {
-  "filename": "lab-results.pdf",
+  "filename": "project-spec.pdf",
   "content_type": "application/pdf"
 }
 ```
@@ -246,9 +246,9 @@ No response body.
 ```json
 {
   "url": "https://your-bucket.s3.amazonaws.com",
-  "key": "users/google_uid_123/uploads/1771005274_64ca3065_lab-results.pdf",
+  "key": "users/google_uid_123/uploads/1771005274_64ca3065_project-spec.pdf",
   "fields": {
-    "key": "users/google_uid_123/uploads/1771005274_64ca3065_lab-results.pdf",
+    "key": "users/google_uid_123/uploads/1771005274_64ca3065_project-spec.pdf",
     "policy": "base64-policy",
     "x-amz-algorithm": "AWS4-HMAC-SHA256",
     "x-amz-credential": "AKIA.../20260213/us-east-1/s3/aws4_request",
@@ -283,8 +283,8 @@ No response body.
 {
   "files": [
     {
-      "key": "users/google_uid_123/uploads/1771005274_64ca3065_lab-results.pdf",
-      "filename": "lab-results.pdf",
+      "key": "users/google_uid_123/uploads/1771005274_64ca3065_project-spec.pdf",
+      "filename": "project-spec.pdf",
       "size": 245123,
       "content_type": "application/pdf",
       "last_modified": "2026-02-13T18:10:00Z"
@@ -301,7 +301,7 @@ No response body.
 ```json
 {
   "url": "https://your-bucket.s3.amazonaws.com/...signed-download-url...",
-  "key": "users/google_uid_123/uploads/1771005274_64ca3065_lab-results.pdf"
+  "key": "users/google_uid_123/uploads/1771005274_64ca3065_project-spec.pdf"
 }
 ```
 

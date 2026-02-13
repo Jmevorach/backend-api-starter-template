@@ -1,9 +1,9 @@
-defmodule BackendWeb.API.PatientController do
+defmodule BackendWeb.API.ProfileController do
   @moduledoc """
-  Patient-focused endpoints for authenticated users.
+  Profile-focused endpoints for authenticated users.
 
-  These endpoints return frontend-ready patient context derived from the
-  authenticated session plus lightweight care data (notes summary).
+  These endpoints return frontend-ready account context derived from the
+  authenticated session plus lightweight notes summary data.
   """
 
   use BackendWeb, :controller
@@ -16,7 +16,7 @@ defmodule BackendWeb.API.PatientController do
   @max_recent_limit 20
 
   @doc """
-  Returns normalized patient profile data for the authenticated user.
+  Returns normalized profile data for the authenticated user.
   """
   def profile(conn, _params) do
     user = get_current_user(conn)
@@ -35,7 +35,7 @@ defmodule BackendWeb.API.PatientController do
   end
 
   @doc """
-  Returns a patient dashboard summary tailored for frontend bootstrapping.
+  Returns a dashboard summary tailored for frontend bootstrapping.
   """
   def dashboard(conn, params) do
     user = get_current_user(conn)
@@ -54,12 +54,12 @@ defmodule BackendWeb.API.PatientController do
 
     json(conn, %{
       data: %{
-        patient: %{
+        user: %{
           id: user_value(user, "provider_uid"),
           name: user_value(user, "name"),
           email: user_value(user, "email")
         },
-        care_summary: %{
+        summary: %{
           active_notes: active_total,
           archived_notes: archived_total,
           recent_notes: Enum.map(recent_notes, &note_json/1)

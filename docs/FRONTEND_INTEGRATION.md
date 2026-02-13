@@ -7,7 +7,7 @@ predictably.
 
 - [Auth and Session Model](#auth-and-session-model)
 - [Bootstrap API Calls](#bootstrap-api-calls)
-- [Patient Endpoints](#patient-endpoints)
+- [Profile and Dashboard Endpoints](#profile-and-dashboard-endpoints)
 - [Notes and Upload Flows](#notes-and-upload-flows)
 - [API Contract Examples](#api-contract-examples)
 - [Error Handling Contract](#error-handling-contract)
@@ -29,16 +29,16 @@ Protected endpoints are under `/api/*` and require authentication via the
 For app startup, call endpoints in this order:
 
 1. `GET /api/me` (is user authenticated?)
-2. `GET /api/patient/profile` (identity payload for UI header/profile)
-3. `GET /api/patient/dashboard` (home screen summary)
+2. `GET /api/profile` (identity payload for UI header/profile)
+3. `GET /api/dashboard` (home screen summary)
 
 If `GET /api/me` returns `401`, redirect user to login.
 
-## Patient Endpoints
+## Profile and Dashboard Endpoints
 
-### `GET /api/patient/profile`
+### `GET /api/profile`
 
-Returns normalized patient identity:
+Returns normalized user identity:
 
 - `id`
 - `email`
@@ -48,14 +48,14 @@ Returns normalized patient identity:
 - `avatar_url`
 - `auth_provider`
 
-### `GET /api/patient/dashboard`
+### `GET /api/dashboard`
 
-Returns patient summary and care-note counts:
+Returns dashboard summary and note counts:
 
-- `patient` (id, name, email)
-- `care_summary.active_notes`
-- `care_summary.archived_notes`
-- `care_summary.recent_notes`
+- `user` (id, name, email)
+- `summary.active_notes`
+- `summary.archived_notes`
+- `summary.recent_notes`
 
 Optional query param:
 

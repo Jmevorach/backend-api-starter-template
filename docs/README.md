@@ -8,7 +8,7 @@ Use this index to find the right guide quickly.
 - `FRONTEND_INTEGRATION.md` - React/frontend integration and bootstrap flows
 - `API_CONTRACT.md` - Request/response examples for core frontend endpoints
 - `../contracts/frontend-api.ts` - TypeScript interfaces mirroring API payloads
-- `PATIENT_BACKEND_BLUEPRINT.md` - Suggested patient-domain roadmap
+- `APP_BACKEND_BLUEPRINT.md` - Suggested app-domain roadmap
 
 ## Deployment and Operations
 

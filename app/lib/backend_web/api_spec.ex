@@ -25,10 +25,10 @@ defmodule BackendWeb.ApiSpec do
   def spec do
     %OpenApi{
       info: %Info{
-        title: "Patient Backend API",
+        title: "Mobile Backend API",
         version: Application.spec(:backend, :vsn) |> to_string(),
         description: """
-        REST API for the open-source patient backend service.
+        REST API for the open-source mobile backend service.
 
         ## Authentication
 

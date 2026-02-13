@@ -1,8 +1,8 @@
 # API Integrations Guide
 
-This backend intentionally ships without opinionated vendor integrations
+This backend intentionally ships with only minimal optional vendor integrations
 (payments, background checks, maps, etc.). The goal is to keep the open-source
-patient backend clean and domain-focused while making integrations easy to add.
+mobile backend clean and domain-focused while making integrations easy to add.
 
 ## Integration Pattern
 
@@ -50,5 +50,5 @@ and `infra/ecs.tf`.
 
 - Store keys in Secrets Manager, never in source code.
 - Validate webhook signatures with constant-time comparison.
-- Avoid logging raw payloads that may contain PHI/PII.
+- Avoid logging raw payloads that may contain sensitive user data.
 - Apply least-privilege IAM when granting secret access.

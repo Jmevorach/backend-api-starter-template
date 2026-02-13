@@ -57,7 +57,7 @@ end
 ### Third-Party API Integrations
 
 This baseline intentionally avoids shipping vendor-specific modules.
-Add only the integrations your patient product needs.
+Add only the integrations your product needs.
 
 Recommended approach:
 

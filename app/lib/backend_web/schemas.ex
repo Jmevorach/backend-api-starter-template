@@ -249,13 +249,13 @@ defmodule BackendWeb.Schemas do
       },
       example: %{
         "status" => "ok",
-        "service" => "patient-backend",
+        "service" => "mobile-backend",
         "version" => "0.1.0",
         "endpoints" => %{
           "health" => "/healthz",
           "me" => "/api/me",
-          "patient_profile" => "/api/patient/profile",
-          "patient_dashboard" => "/api/patient/dashboard",
+          "profile" => "/api/profile",
+          "dashboard" => "/api/dashboard",
           "auth" => "/auth/:provider"
         }
       }

@@ -12,7 +12,7 @@ defmodule BackendWeb.HomeControllerTest do
 
     response = json_response(conn, 200)
     assert response["status"] == "ok"
-    assert response["service"] == "patient-backend"
+    assert response["service"] == "mobile-backend"
     assert Map.has_key?(response, "version")
     assert Map.has_key?(response, "endpoints")
   end

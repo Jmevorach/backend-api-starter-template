@@ -17,7 +17,7 @@ defmodule BackendWeb.RouterTest do
       assert conn.status == 200
       response = json_response(conn, 200)
       assert response["status"] == "ok"
-      assert response["service"] == "patient-backend"
+      assert response["service"] == "mobile-backend"
     end
 
     test "GET /healthz returns health status" do
@@ -91,11 +91,11 @@ defmodule BackendWeb.RouterTest do
       assert conn.status == 401
     end
 
-    test "GET /api/patient/profile returns 401 without session" do
+    test "GET /api/profile returns 401 without session" do
       conn =
         build_conn()
         |> init_test_session(%{})
-        |> get("/api/patient/profile")
+        |> get("/api/profile")
 
       assert conn.status == 401
     end
@@ -125,11 +125,11 @@ defmodule BackendWeb.RouterTest do
       assert response["user"]["email"] == "test@example.com"
     end
 
-    test "GET /api/patient/profile returns patient data", %{user: user} do
+    test "GET /api/profile returns profile data", %{user: user} do
       conn =
         build_conn()
         |> init_test_session(%{current_user: user})
-        |> get("/api/patient/profile")
+        |> get("/api/profile")
 
       assert conn.status == 200
       response = json_response(conn, 200)

@@ -16,8 +16,8 @@ echo "Validating API contract documentation..."
 
 required_endpoints=(
   "GET /api/me"
-  "GET /api/patient/profile"
-  "GET /api/patient/dashboard"
+  "GET /api/profile"
+  "GET /api/dashboard"
   "GET /api/notes"
   "POST /api/notes"
   "PUT /api/notes/:id"
@@ -41,8 +41,8 @@ echo "Checking endpoint coverage in router..."
 
 router_markers=(
   "/me"
-  "/patient/profile"
-  "/patient/dashboard"
+  "/profile"
+  "/dashboard"
   "/notes"
   "/uploads"
 )
@@ -59,8 +59,8 @@ echo "Checking TypeScript contract exports..."
 required_types=(
   "export interface ApiError"
   "export interface MeResponse"
-  "export interface PatientProfileResponse"
-  "export interface PatientDashboardResponse"
+  "export interface ProfileResponse"
+  "export interface DashboardResponse"
   "export interface NotesListResponse"
   "export interface UploadPresignResponse"
 )

@@ -49,6 +49,10 @@ These are environment variables the Phoenix app expects at runtime.
 | `APPLE_TEAM_ID` | No | Apple Developer Team ID. |
 | `APPLE_KEY_ID` | No | Apple OAuth key ID. |
 | `APPLE_PRIVATE_KEY` | No | Apple OAuth private key (P8). |
+| `STRIPE_API_KEY` | No | Stripe API secret key for payment processing. |
+| `CHECKR_API_KEY` | No | Checkr API key for background checks. |
+| `CHECKR_ENVIRONMENT` | No | Checkr environment: `sandbox` (default) or `production`. |
+| `GOOGLE_MAPS_API_KEY` | No | Google Maps Platform API key for geocoding and places. |
 | `UPLOADS_BUCKET` | No | S3 bucket name for file uploads. |
 | `UPLOADS_REGION` | No | AWS region for uploads bucket (defaults to `AWS_REGION`). |
 | `UPLOADS_MAX_SIZE_MB` | No | Maximum file size for uploads in MB (default `50`). |
@@ -97,6 +101,9 @@ Use `terraform.tfvars` or `TF_VAR_*` environment variables.
 | `apple_oauth_team_id_secret_arn` | No | Secrets Manager ARN (Apple team ID). |
 | `apple_oauth_key_id_secret_arn` | No | Secrets Manager ARN (Apple key ID). |
 | `apple_oauth_private_key_secret_arn` | No | Secrets Manager ARN (Apple private key). |
+| `stripe_api_key_secret_arn` | No | Secrets Manager ARN (Stripe API key). |
+| `checkr_api_key_secret_arn` | No | Secrets Manager ARN (Checkr API key). |
+| `google_maps_api_key_secret_arn` | No | Secrets Manager ARN (Google Maps API key). |
 | `db_password_secret_arn` | No | Secrets Manager ARN (database password fallback). |
 | `valkey_password_secret_arn` | No | Secrets Manager ARN (Valkey password fallback). |
 | `require_iam_auth` | No | Disable password fallback in production (default `true`). |

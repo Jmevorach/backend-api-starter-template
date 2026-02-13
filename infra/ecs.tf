@@ -280,6 +280,25 @@ locals {
         valueFrom = var.apple_oauth_private_key_secret_arn
       }
     ] : [],
+    # Third-party API keys
+    var.stripe_api_key_secret_arn != "" ? [
+      {
+        name      = "STRIPE_API_KEY"
+        valueFrom = var.stripe_api_key_secret_arn
+      }
+    ] : [],
+    var.checkr_api_key_secret_arn != "" ? [
+      {
+        name      = "CHECKR_API_KEY"
+        valueFrom = var.checkr_api_key_secret_arn
+      }
+    ] : [],
+    var.google_maps_api_key_secret_arn != "" ? [
+      {
+        name      = "GOOGLE_MAPS_API_KEY"
+        valueFrom = var.google_maps_api_key_secret_arn
+      }
+    ] : [],
     # Database/Cache password fallback (optional)
     var.db_password_secret_arn != "" ? [
       {

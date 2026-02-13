@@ -16,13 +16,13 @@ defmodule BackendWeb.HomeController do
 
     json(conn, %{
       status: "ok",
-      service: "patient-backend",
+      service: "mobile-backend",
       version: version,
       endpoints: %{
         health: "/healthz",
         me: "/api/me",
-        patient_profile: "/api/patient/profile",
-        patient_dashboard: "/api/patient/dashboard",
+        profile: "/api/profile",
+        dashboard: "/api/dashboard",
         auth: "/auth/:provider"
       }
     })

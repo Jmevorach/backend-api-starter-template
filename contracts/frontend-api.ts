@@ -27,7 +27,7 @@ export interface MeResponse {
   authenticated: true;
 }
 
-export interface PatientProfile {
+export interface Profile {
   id: string;
   email?: string;
   name?: string;
@@ -37,8 +37,8 @@ export interface PatientProfile {
   auth_provider?: string;
 }
 
-export interface PatientProfileResponse {
-  data: PatientProfile;
+export interface ProfileResponse {
+  data: Profile;
 }
 
 export interface Note {
@@ -66,21 +66,21 @@ export interface NoteResponse {
   data: Note;
 }
 
-export interface PatientDashboard {
-  patient: {
+export interface Dashboard {
+  user: {
     id: string;
     name?: string;
     email?: string;
   };
-  care_summary: {
+  summary: {
     active_notes: number;
     archived_notes: number;
     recent_notes: Note[];
   };
 }
 
-export interface PatientDashboardResponse {
-  data: PatientDashboard;
+export interface DashboardResponse {
+  data: Dashboard;
 }
 
 export interface UploadPresignRequest {

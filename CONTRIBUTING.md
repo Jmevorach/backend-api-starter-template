@@ -1,6 +1,6 @@
 # Contributing Guide
 
-This guide explains how to extend the patient-backend baseline with new API integrations
+This guide explains how to extend the mobile-backend baseline with new API integrations
 and how to modify the AWS infrastructure.
 
 ## Table of Contents
@@ -32,8 +32,8 @@ When contributing, keep this philosophy in mind. New integrations should:
 
 ## Adding API Client Modules
 
-The project intentionally does not include vendor-specific API client modules by default.
-Follow this pattern to add integrations safely.
+The project includes optional API clients (Stripe, Checkr, Google Maps) and
+supports adding more integrations with the same patterns below.
 
 ### Step 1: Create the Client Module
 
