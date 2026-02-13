@@ -88,6 +88,28 @@ defmodule Backend.Uploads do
     "audio/ogg"
   ]
 
+  @allowed_extensions [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".webp",
+    ".svg",
+    ".pdf",
+    ".doc",
+    ".docx",
+    ".xls",
+    ".xlsx",
+    ".txt",
+    ".csv",
+    ".mp4",
+    ".webm",
+    ".mov",
+    ".mp3",
+    ".wav",
+    ".ogg"
+  ]
+
   @doc """
   Returns the list of allowed content types for uploads.
 
@@ -97,6 +119,11 @@ defmodule Backend.Uploads do
       ["image/jpeg", "image/png", ...]
   """
   def allowed_content_types, do: @allowed_content_types
+
+  @doc """
+  Returns supported file extensions for uploads.
+  """
+  def allowed_extensions, do: @allowed_extensions
 
   @doc """
   Checks if a content type is allowed for uploads.
@@ -142,7 +169,9 @@ defmodule Backend.Uploads do
       # - file: the actual file content (must be last)
   """
   def presigned_upload_url(user_id, filename, content_type) do
-    with :ok <- validate_content_type(content_type),
+    with :ok <- validate_filename(filename),
+         :ok <- validate_content_type(content_type),
+         :ok <- validate_extension(filename),
          {:ok, config} <- get_config() do
       key = generate_key(user_id, filename)
       expiry = config.presigned_url_expiry
@@ -346,6 +375,30 @@ defmodule Backend.Uploads do
       :ok
     else
       {:error, :invalid_content_type}
+    end
+  end
+
+  defp validate_filename(filename) when is_binary(filename) do
+    cond do
+      byte_size(filename) < 1 -> {:error, :invalid_filename}
+      byte_size(filename) > 255 -> {:error, :filename_too_long}
+      String.contains?(filename, ["/", "\\"]) -> {:error, :invalid_filename}
+      true -> :ok
+    end
+  end
+
+  defp validate_filename(_), do: {:error, :invalid_filename}
+
+  defp validate_extension(filename) do
+    ext =
+      filename
+      |> String.downcase()
+      |> Path.extname()
+
+    if ext in @allowed_extensions do
+      :ok
+    else
+      {:error, :invalid_extension}
     end
   end
 

@@ -5,6 +5,7 @@ config :backend,
 
 config :backend, BackendWeb.Endpoint,
   url: [host: "localhost"],
+  max_request_body_bytes: 2_000_000,
   render_errors: [
     formats: [json: BackendWeb.ErrorJSON],
     layout: false

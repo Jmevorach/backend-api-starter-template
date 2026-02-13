@@ -7,7 +7,9 @@
 
 export interface ApiError {
   error: string;
+  code?: string;
   message?: string;
+  request_id?: string | null;
   details?: Record<string, unknown>;
 }
 
@@ -115,4 +117,46 @@ export interface UploadDownloadResponse {
 
 export interface UploadAllowedTypesResponse {
   content_types: string[];
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  description?: string | null;
+  archived: boolean;
+  inserted_at: string;
+  updated_at: string;
+}
+
+export interface ProjectWithTasks extends Project {
+  tasks: Task[];
+}
+
+export interface ProjectResponse {
+  data: Project | ProjectWithTasks;
+}
+
+export interface ProjectsListResponse {
+  data: Project[];
+}
+
+export type TaskStatus = "todo" | "in_progress" | "done";
+
+export interface Task {
+  id: string;
+  project_id: string;
+  title: string;
+  details?: string | null;
+  status: TaskStatus;
+  due_date?: string | null;
+  inserted_at: string;
+  updated_at: string;
+}
+
+export interface TaskResponse {
+  data: Task;
+}
+
+export interface TasksListResponse {
+  data: Task[];
 }

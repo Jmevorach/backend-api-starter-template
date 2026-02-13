@@ -36,6 +36,7 @@ defmodule BackendWeb.API.UserController do
   use Phoenix.Controller, formats: [:json]
 
   import Plug.Conn
+  alias BackendWeb.ErrorResponse
 
   @doc """
   Returns the current user's information.
@@ -79,8 +80,11 @@ defmodule BackendWeb.API.UserController do
       nil ->
         # No user in session - not authenticated
         conn
-        |> put_status(:unauthorized)
-        |> json(%{error: "Authentication required"})
+        |> ErrorResponse.send(
+          :unauthorized,
+          "authentication_required",
+          "Authentication required"
+        )
 
       user ->
         # Return user info with authentication flag

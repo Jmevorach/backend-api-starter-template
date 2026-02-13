@@ -16,8 +16,11 @@ echo "Validating API contract documentation..."
 
 required_endpoints=(
   "GET /api/me"
+  "GET /api/v1/me"
   "GET /api/profile"
+  "GET /api/v1/profile"
   "GET /api/dashboard"
+  "GET /api/v1/dashboard"
   "GET /api/notes"
   "POST /api/notes"
   "PUT /api/notes/:id"
@@ -28,6 +31,10 @@ required_endpoints=(
   "GET /api/uploads"
   "GET /api/uploads/:key/download"
   "DELETE /api/uploads/:key"
+  "POST /api/v1/projects"
+  "GET /api/v1/projects"
+  "POST /api/v1/tasks"
+  "GET /api/v1/tasks"
 )
 
 for endpoint in "${required_endpoints[@]}"; do
@@ -40,10 +47,13 @@ done
 echo "Checking endpoint coverage in router..."
 
 router_markers=(
+  "/api/v1"
   "/me"
   "/profile"
   "/dashboard"
   "/notes"
+  "/projects"
+  "/tasks"
   "/uploads"
 )
 
@@ -63,6 +73,9 @@ required_types=(
   "export interface DashboardResponse"
   "export interface NotesListResponse"
   "export interface UploadPresignResponse"
+  "export interface Project"
+  "export interface Task"
+  "export interface TasksListResponse"
 )
 
 for type_decl in "${required_types[@]}"; do

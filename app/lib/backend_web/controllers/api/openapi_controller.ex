@@ -6,6 +6,8 @@ defmodule BackendWeb.API.OpenApiController do
 
   - `GET /api/openapi` - OpenAPI spec as JSON
   - `GET /api/docs` - SwaggerUI documentation
+  - `GET /api/v1/openapi` - OpenAPI spec as JSON (versioned docs route)
+  - `GET /api/v1/docs` - SwaggerUI documentation (versioned docs route)
   """
 
   use BackendWeb, :controller

@@ -35,6 +35,11 @@ defmodule BackendWeb.ApiSpec do
         Most endpoints require authentication via session cookie.
         Use the OAuth endpoints (`/auth/:provider`) to authenticate.
 
+        ## Versioning
+
+        New clients should use `/api/v1/*` routes.
+        Compatibility routes are also available at `/api/*`.
+
         ## Rate Limiting
 
         API requests are rate-limited. If you exceed the limit,
@@ -46,7 +51,10 @@ defmodule BackendWeb.ApiSpec do
 
         ```json
         {
-          "error": "Error message",
+          "error": "Validation failed",
+          "code": "validation_failed",
+          "message": "Validation failed",
+          "request_id": "F3n9Zz...",
           "details": { ... }
         }
         ```

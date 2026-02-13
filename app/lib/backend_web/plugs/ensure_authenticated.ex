@@ -42,7 +42,7 @@ defmodule BackendWeb.Plugs.EnsureAuthenticated do
   """
 
   import Plug.Conn
-  import Phoenix.Controller
+  alias BackendWeb.ErrorResponse
 
   @doc """
   Initialize the plug with options.
@@ -77,8 +77,11 @@ defmodule BackendWeb.Plugs.EnsureAuthenticated do
       nil ->
         # No user in session - reject the request
         conn
-        |> put_status(:unauthorized)
-        |> json(%{error: "Authentication required"})
+        |> ErrorResponse.send(
+          :unauthorized,
+          "authentication_required",
+          "Authentication required"
+        )
         |> halt()
 
       _user ->

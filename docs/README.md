@@ -14,7 +14,9 @@ Use this index to find the right guide quickly.
 
 - `LOCAL_DEPLOY.md` - Deploy from a local machine
 - `OPERATIONS.md` - Day-2 operations, scaling, backups, rotation
+- `OBSERVABILITY.md` - Logging, request correlation, and API governance signals
 - `TROUBLESHOOTING.md` - Common issues and fixes
+- `SUPPORT_MATRIX.md` - Supported versions and compatibility policy
 
 ## Architecture and Security
 

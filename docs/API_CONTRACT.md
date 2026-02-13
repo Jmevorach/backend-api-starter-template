@@ -6,12 +6,38 @@ endpoints.
 ## Conventions
 
 - Base URL (local): `http://localhost:4000`
+- Versioned base URL (recommended): `http://localhost:4000/api/v1`
 - Protected endpoints require the session cookie.
 - JSON content type is used for API request/response bodies.
+
+## Versioning
+
+- `/api/v1/*` is the canonical contract path for all new clients.
+- `/api/*` remains available for backward compatibility in this starter.
+
+## Standard Error Envelope
+
+Most 4xx/5xx responses include:
+
+```json
+{
+  "error": "Validation failed",
+  "code": "validation_failed",
+  "message": "Validation failed",
+  "request_id": "F3n9Zz...",
+  "details": {
+    "title": [
+      "can't be blank"
+    ]
+  }
+}
+```
 
 ## Auth Bootstrap
 
 ### `GET /api/me`
+
+Also available as `GET /api/v1/me`.
 
 Use this first to determine whether the user is authenticated.
 
@@ -44,6 +70,8 @@ Use this first to determine whether the user is authenticated.
 
 ### `GET /api/profile`
 
+Also available as `GET /api/v1/profile`.
+
 #### `200 OK`
 
 ```json
@@ -61,6 +89,8 @@ Use this first to determine whether the user is authenticated.
 ```
 
 ### `GET /api/dashboard?recent_limit=5`
+
+Also available as `GET /api/v1/dashboard?recent_limit=5`.
 
 `recent_limit` is optional (`default: 5`, `max: 20`).
 
@@ -95,6 +125,8 @@ Use this first to determine whether the user is authenticated.
 ## Notes APIs
 
 ### `GET /api/notes?archived=false&limit=50&offset=0&search=release`
+
+Also available as `GET /api/v1/notes?...`.
 
 All query params are optional.
 
@@ -232,6 +264,8 @@ No response body.
 
 ### `POST /api/uploads/presign`
 
+Also available as `POST /api/v1/uploads/presign`.
+
 #### Request
 
 ```json
@@ -277,6 +311,8 @@ No response body.
 
 ### `GET /api/uploads`
 
+Also available as `GET /api/v1/uploads`.
+
 #### `200 OK`
 
 ```json
@@ -296,6 +332,8 @@ No response body.
 
 ### `GET /api/uploads/:key/download`
 
+Also available as `GET /api/v1/uploads/:key/download`.
+
 #### `200 OK`
 
 ```json
@@ -310,6 +348,93 @@ No response body.
 #### `204 No Content`
 
 No response body.
+
+## Projects and Tasks (Golden Path Module)
+
+### `POST /api/v1/projects`
+
+#### Request
+
+```json
+{
+  "name": "Platform",
+  "description": "Core backend work"
+}
+```
+
+#### `201 Created`
+
+```json
+{
+  "data": {
+    "id": "a8f05310-7fd7-4e5c-bf27-5fc98f29b4d7",
+    "name": "Platform",
+    "description": "Core backend work",
+    "archived": false,
+    "inserted_at": "2026-02-13T18:00:00.000000Z",
+    "updated_at": "2026-02-13T18:00:00.000000Z"
+  }
+}
+```
+
+### `GET /api/v1/projects`
+
+#### `200 OK`
+
+```json
+{
+  "data": [
+    {
+      "id": "a8f05310-7fd7-4e5c-bf27-5fc98f29b4d7",
+      "name": "Platform",
+      "description": "Core backend work",
+      "archived": false
+    }
+  ]
+}
+```
+
+### `POST /api/v1/tasks`
+
+#### Request
+
+```json
+{
+  "project_id": "a8f05310-7fd7-4e5c-bf27-5fc98f29b4d7",
+  "title": "Ship API governance",
+  "status": "todo"
+}
+```
+
+#### `201 Created`
+
+```json
+{
+  "data": {
+    "id": "a4f5f3ba-8139-4589-b4fd-f46a8c61ccf4",
+    "project_id": "a8f05310-7fd7-4e5c-bf27-5fc98f29b4d7",
+    "title": "Ship API governance",
+    "status": "todo"
+  }
+}
+```
+
+### `GET /api/v1/tasks?project_id=:id&status=todo`
+
+#### `200 OK`
+
+```json
+{
+  "data": [
+    {
+      "id": "a4f5f3ba-8139-4589-b4fd-f46a8c61ccf4",
+      "project_id": "a8f05310-7fd7-4e5c-bf27-5fc98f29b4d7",
+      "title": "Ship API governance",
+      "status": "todo"
+    }
+  ]
+}
+```
 
 ### Common Upload Errors
 

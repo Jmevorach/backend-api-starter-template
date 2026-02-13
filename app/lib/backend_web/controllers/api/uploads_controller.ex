@@ -46,6 +46,7 @@ defmodule BackendWeb.API.UploadsController do
   use BackendWeb, :controller
 
   alias Backend.Uploads
+  alias BackendWeb.ErrorResponse
 
   action_fallback(BackendWeb.FallbackController)
 
@@ -87,35 +88,72 @@ defmodule BackendWeb.API.UploadsController do
         |> put_status(:bad_request)
         |> json(%{
           error: "invalid_content_type",
+          code: "invalid_content_type",
           message: "Content type not allowed",
           allowed_types: Uploads.allowed_content_types()
         })
 
+      {:error, :invalid_extension} ->
+        conn
+        |> ErrorResponse.send(
+          :bad_request,
+          "invalid_extension",
+          "File extension not allowed",
+          %{allowed_extensions: Uploads.allowed_extensions()},
+          error: "invalid_extension"
+        )
+
+      {:error, :invalid_filename} ->
+        conn
+        |> ErrorResponse.send(
+          :bad_request,
+          "invalid_filename",
+          "Filename is invalid",
+          nil,
+          error: "invalid_filename"
+        )
+
+      {:error, :filename_too_long} ->
+        conn
+        |> ErrorResponse.send(
+          :bad_request,
+          "filename_too_long",
+          "Filename exceeds maximum length",
+          %{max_length: 255},
+          error: "filename_too_long"
+        )
+
       {:error, :not_configured} ->
         conn
-        |> put_status(:service_unavailable)
-        |> json(%{
-          error: "service_unavailable",
-          message: "File uploads are not configured"
-        })
+        |> ErrorResponse.send(
+          :service_unavailable,
+          "service_unavailable",
+          "File uploads are not configured",
+          nil,
+          error: "service_unavailable"
+        )
 
       {:error, reason} ->
         conn
-        |> put_status(:internal_server_error)
-        |> json(%{
-          error: "upload_error",
-          message: "Failed to generate upload URL: #{inspect(reason)}"
-        })
+        |> ErrorResponse.send(
+          :internal_server_error,
+          "upload_error",
+          "Failed to generate upload URL",
+          %{reason: inspect(reason)},
+          error: "upload_error"
+        )
     end
   end
 
   def presign(conn, _params) do
     conn
-    |> put_status(:bad_request)
-    |> json(%{
-      error: "invalid_request",
-      message: "Missing required parameters: filename, content_type"
-    })
+    |> ErrorResponse.send(
+      :bad_request,
+      "invalid_request",
+      "Missing required parameters: filename, content_type",
+      nil,
+      error: "invalid_request"
+    )
   end
 
   @doc """
@@ -156,27 +194,29 @@ defmodule BackendWeb.API.UploadsController do
 
         {:error, :not_configured} ->
           conn
-          |> put_status(:service_unavailable)
-          |> json(%{
-            error: "service_unavailable",
-            message: "File uploads are not configured"
-          })
+          |> ErrorResponse.send(
+            :service_unavailable,
+            "service_unavailable",
+            "File uploads are not configured",
+            nil,
+            error: "service_unavailable"
+          )
 
         {:error, reason} ->
           conn
-          |> put_status(:internal_server_error)
-          |> json(%{
-            error: "download_error",
-            message: "Failed to generate download URL: #{inspect(reason)}"
-          })
+          |> ErrorResponse.send(
+            :internal_server_error,
+            "download_error",
+            "Failed to generate download URL",
+            %{reason: inspect(reason)},
+            error: "download_error"
+          )
       end
     else
       conn
-      |> put_status(:forbidden)
-      |> json(%{
-        error: "forbidden",
-        message: "You don't have access to this file"
-      })
+      |> ErrorResponse.send(:forbidden, "forbidden", "You don't have access to this file", nil,
+        error: "forbidden"
+      )
     end
   end
 
@@ -222,19 +262,23 @@ defmodule BackendWeb.API.UploadsController do
 
       {:error, :not_configured} ->
         conn
-        |> put_status(:service_unavailable)
-        |> json(%{
-          error: "service_unavailable",
-          message: "File uploads are not configured"
-        })
+        |> ErrorResponse.send(
+          :service_unavailable,
+          "service_unavailable",
+          "File uploads are not configured",
+          nil,
+          error: "service_unavailable"
+        )
 
       {:error, reason} ->
         conn
-        |> put_status(:internal_server_error)
-        |> json(%{
-          error: "list_error",
-          message: "Failed to list files: #{inspect(reason)}"
-        })
+        |> ErrorResponse.send(
+          :internal_server_error,
+          "list_error",
+          "Failed to list files",
+          %{reason: inspect(reason)},
+          error: "list_error"
+        )
     end
   end
 
@@ -273,35 +317,35 @@ defmodule BackendWeb.API.UploadsController do
 
         {:error, :not_found} ->
           conn
-          |> put_status(:not_found)
-          |> json(%{
-            error: "not_found",
-            message: "File not found"
-          })
+          |> ErrorResponse.send(:not_found, "not_found", "File not found", nil,
+            error: "not_found"
+          )
 
         {:error, :not_configured} ->
           conn
-          |> put_status(:service_unavailable)
-          |> json(%{
-            error: "service_unavailable",
-            message: "File uploads are not configured"
-          })
+          |> ErrorResponse.send(
+            :service_unavailable,
+            "service_unavailable",
+            "File uploads are not configured",
+            nil,
+            error: "service_unavailable"
+          )
 
         {:error, reason} ->
           conn
-          |> put_status(:internal_server_error)
-          |> json(%{
-            error: "metadata_error",
-            message: "Failed to get file metadata: #{inspect(reason)}"
-          })
+          |> ErrorResponse.send(
+            :internal_server_error,
+            "metadata_error",
+            "Failed to get file metadata",
+            %{reason: inspect(reason)},
+            error: "metadata_error"
+          )
       end
     else
       conn
-      |> put_status(:forbidden)
-      |> json(%{
-        error: "forbidden",
-        message: "You don't have access to this file"
-      })
+      |> ErrorResponse.send(:forbidden, "forbidden", "You don't have access to this file", nil,
+        error: "forbidden"
+      )
     end
   end
 
@@ -333,27 +377,29 @@ defmodule BackendWeb.API.UploadsController do
 
         {:error, :not_configured} ->
           conn
-          |> put_status(:service_unavailable)
-          |> json(%{
-            error: "service_unavailable",
-            message: "File uploads are not configured"
-          })
+          |> ErrorResponse.send(
+            :service_unavailable,
+            "service_unavailable",
+            "File uploads are not configured",
+            nil,
+            error: "service_unavailable"
+          )
 
         {:error, reason} ->
           conn
-          |> put_status(:internal_server_error)
-          |> json(%{
-            error: "delete_error",
-            message: "Failed to delete file: #{inspect(reason)}"
-          })
+          |> ErrorResponse.send(
+            :internal_server_error,
+            "delete_error",
+            "Failed to delete file",
+            %{reason: inspect(reason)},
+            error: "delete_error"
+          )
       end
     else
       conn
-      |> put_status(:forbidden)
-      |> json(%{
-        error: "forbidden",
-        message: "You don't have access to this file"
-      })
+      |> ErrorResponse.send(:forbidden, "forbidden", "You don't have access to this file", nil,
+        error: "forbidden"
+      )
     end
   end
 

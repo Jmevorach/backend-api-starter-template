@@ -425,12 +425,26 @@ Update these files together:
 Run these before opening a PR:
 
 ```bash
+make verify
 make contract-validate
 make contract-typecheck
 ```
 
 CI enforces the same checks through `Frontend Contract CI`. If these fail, treat
 it as contract drift and update docs/types before merging.
+
+### OpenAPI governance
+
+OpenAPI is treated as a first-class contract artifact.
+
+Run locally before PR:
+
+```bash
+make openapi-lint
+make openapi-breakcheck
+```
+
+`API Governance CI` enforces the same policy and flags potentially breaking contract changes.
 
 ## Pull Request Guidelines
 
@@ -439,8 +453,7 @@ it as contract drift and update docs/types before merging.
 3. **Update documentation** - Update relevant docs and ENVIRONMENT.md
 4. **Run CI checks locally** first:
    ```bash
-   make app-format app-credo app-test
-   make contract-validate contract-typecheck
+   make verify
    make terraform-security
    ```
 5. **Write clear commit messages** - Explain what and why

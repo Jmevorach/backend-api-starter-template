@@ -45,6 +45,7 @@ defmodule BackendWeb.API.NotesController do
 
   alias Backend.Notes
   alias Backend.Notes.Note
+  alias BackendWeb.ErrorResponse
 
   action_fallback(BackendWeb.FallbackController)
 
@@ -129,8 +130,7 @@ defmodule BackendWeb.API.NotesController do
     case Notes.get_note(id, user_id) do
       nil ->
         conn
-        |> put_status(:not_found)
-        |> json(%{error: "Note not found"})
+        |> ErrorResponse.send(:not_found, "note_not_found", "Note not found")
 
       note ->
         json(conn, %{data: note_json(note)})
@@ -172,8 +172,12 @@ defmodule BackendWeb.API.NotesController do
 
       {:error, changeset} ->
         conn
-        |> put_status(:unprocessable_entity)
-        |> json(%{error: "Validation failed", details: translate_errors(changeset)})
+        |> ErrorResponse.send(
+          :unprocessable_entity,
+          "validation_failed",
+          "Validation failed",
+          translate_errors(changeset)
+        )
     end
   end
 
@@ -208,8 +212,7 @@ defmodule BackendWeb.API.NotesController do
     case Notes.get_note(id, user_id) do
       nil ->
         conn
-        |> put_status(:not_found)
-        |> json(%{error: "Note not found"})
+        |> ErrorResponse.send(:not_found, "note_not_found", "Note not found")
 
       note ->
         case Notes.update_note(note, params) do
@@ -218,8 +221,12 @@ defmodule BackendWeb.API.NotesController do
 
           {:error, changeset} ->
             conn
-            |> put_status(:unprocessable_entity)
-            |> json(%{error: "Validation failed", details: translate_errors(changeset)})
+            |> ErrorResponse.send(
+              :unprocessable_entity,
+              "validation_failed",
+              "Validation failed",
+              translate_errors(changeset)
+            )
         end
     end
   end
@@ -241,8 +248,7 @@ defmodule BackendWeb.API.NotesController do
     case Notes.get_note(id, user_id) do
       nil ->
         conn
-        |> put_status(:not_found)
-        |> json(%{error: "Note not found"})
+        |> ErrorResponse.send(:not_found, "note_not_found", "Note not found")
 
       note ->
         {:ok, _deleted} = Notes.delete_note(note)
@@ -269,8 +275,7 @@ defmodule BackendWeb.API.NotesController do
     case Notes.get_note(id, user_id) do
       nil ->
         conn
-        |> put_status(:not_found)
-        |> json(%{error: "Note not found"})
+        |> ErrorResponse.send(:not_found, "note_not_found", "Note not found")
 
       note ->
         {:ok, archived_note} = Notes.archive_note(note)
@@ -297,8 +302,7 @@ defmodule BackendWeb.API.NotesController do
     case Notes.get_note(id, user_id) do
       nil ->
         conn
-        |> put_status(:not_found)
-        |> json(%{error: "Note not found"})
+        |> ErrorResponse.send(:not_found, "note_not_found", "Note not found")
 
       note ->
         {:ok, unarchived_note} = Notes.unarchive_note(note)

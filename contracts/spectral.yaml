@@ -1,0 +1,13 @@
+extends: ["spectral:oas"]
+
+rules:
+  operation-operationId-unique: true
+  operation-tags: warn
+  operation-description: off
+  oas3-api-servers:
+    description: OpenAPI should declare at least one server.
+    given: "$"
+    severity: warn
+    then:
+      field: servers
+      function: truthy

@@ -57,6 +57,7 @@ These are environment variables the Phoenix app expects at runtime.
 | `UPLOADS_REGION` | No | AWS region for uploads bucket (defaults to `AWS_REGION`). |
 | `UPLOADS_MAX_SIZE_MB` | No | Maximum file size for uploads in MB (default `50`). |
 | `UPLOADS_PRESIGNED_URL_EXPIRY` | No | Presigned URL expiration in seconds (default `3600`). |
+| `MAX_REQUEST_BODY_BYTES` | No | Global max request body size in bytes (default `2000000`). |
 
 ### Test/CI Runtime (Phoenix)
 

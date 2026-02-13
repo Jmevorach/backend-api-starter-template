@@ -5,6 +5,8 @@
 [![Python CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/python-lambda-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/python-lambda-ci.yml)
 [![ShellCheck](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/shellcheck.yml)
 [![Frontend Contract CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/frontend-contract-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/frontend-contract-ci.yml)
+[![API Governance CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/api-governance-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/api-governance-ci.yml)
+[![Security Scans](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/security-scans.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/security-scans.yml)
 [![Version Check](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/version-check.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/version-check.yml)
 
 [![Elixir](https://img.shields.io/badge/Elixir-1.19.5+-4B275F?logo=elixir)](https://elixir-lang.org/)
@@ -59,6 +61,8 @@ while staying generic enough to fit almost any backend product.
 - **OpenAPI/Swagger documentation** at `/api/docs`
 - **Optional API clients** for Stripe, Checkr, and Google Maps integrations
 - **Authenticated profile/dashboard endpoints** (`/api/profile`, `/api/dashboard`)
+- **Versioned API namespace** (`/api/v1/*`) with compatibility routes at `/api/*`
+- **Golden path domain module** with `projects` and `tasks` APIs
 
 ### Architecture (High Level)
 
@@ -158,9 +162,13 @@ If your team is starting with the frontend first, use this path:
 - [`docs/FRONTEND_INTEGRATION.md`](docs/FRONTEND_INTEGRATION.md) – React/frontend integration patterns
 - [`docs/API_CONTRACT.md`](docs/API_CONTRACT.md) – Request/response examples for frontend endpoints
 - [`contracts/frontend-api.ts`](contracts/frontend-api.ts) – TypeScript interfaces matching the API contract
+- [`contracts/openapi.json`](contracts/openapi.json) – Generated OpenAPI contract used for governance checks
 - [`docs/APP_BACKEND_BLUEPRINT.md`](docs/APP_BACKEND_BLUEPRINT.md) – Suggested app-domain extensions
 - [`docs/SECURITY_CHECKLIST.md`](docs/SECURITY_CHECKLIST.md) – Pre-deployment security checklist
+- [`docs/OBSERVABILITY.md`](docs/OBSERVABILITY.md) – Runtime visibility and request correlation
+- [`docs/SUPPORT_MATRIX.md`](docs/SUPPORT_MATRIX.md) – Supported versions and CI baselines
 - [`docs/README.md`](docs/README.md) – Documentation index and navigation
+- [`CHANGELOG.md`](CHANGELOG.md) – Release notes and breaking-change history
 
 ### Local Tooling
 
@@ -178,6 +186,8 @@ This repo provides scripts and tools for local development and deployment:
 - `make terraform-security` – Run security scans (Checkov, KICS)
 - `make contract-validate` – Validate API contract docs against routes/type exports
 - `make contract-typecheck` – Type-check frontend contract interfaces
+- `make openapi-lint` – Export + lint OpenAPI contract
+- `make verify` – Run default quality gate before opening PRs
 
 **Deployment:**
 - `make deploy` – Full deployment (build + push + terraform)
@@ -207,7 +217,7 @@ Hooks run automatically on commit: Terraform fmt, Python linting, shellcheck, et
 **Getting Started:**
 1. Add your API routes in `app/lib/backend_web/controllers`
 2. Wire them up in `app/lib/backend_web/router.ex`
-3. Model your app-domain entities (profiles, tasks, appointments, messaging)
+3. Model your app-domain entities (profiles, projects/tasks, appointments, messaging)
 4. Deploy to production
 
 **Using Existing Authenticated Endpoints:**

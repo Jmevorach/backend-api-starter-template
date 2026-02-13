@@ -21,22 +21,22 @@ This backend is session-based:
 2. Provider callback establishes server session
 3. Browser/client sends session cookie on protected API calls
 
-Protected endpoints are under `/api/*` and require authentication via the
+Protected endpoints are under `/api/v1/*` (preferred) and `/api/*` (compatibility), and require authentication via the
 `:protected_api` pipeline.
 
 ## Bootstrap API Calls
 
 For app startup, call endpoints in this order:
 
-1. `GET /api/me` (is user authenticated?)
-2. `GET /api/profile` (identity payload for UI header/profile)
-3. `GET /api/dashboard` (home screen summary)
+1. `GET /api/v1/me` (is user authenticated?)
+2. `GET /api/v1/profile` (identity payload for UI header/profile)
+3. `GET /api/v1/dashboard` (home screen summary)
 
 If `GET /api/me` returns `401`, redirect user to login.
 
 ## Profile and Dashboard Endpoints
 
-### `GET /api/profile`
+### `GET /api/v1/profile`
 
 Returns normalized user identity:
 
@@ -48,7 +48,7 @@ Returns normalized user identity:
 - `avatar_url`
 - `auth_provider`
 
-### `GET /api/dashboard`
+### `GET /api/v1/dashboard`
 
 Returns dashboard summary and note counts:
 
@@ -65,23 +65,23 @@ Optional query param:
 
 ### Notes
 
-- `GET /api/notes`
-- `POST /api/notes`
-- `PUT /api/notes/:id`
-- `DELETE /api/notes/:id`
-- `POST /api/notes/:id/archive`
-- `POST /api/notes/:id/unarchive`
+- `GET /api/v1/notes`
+- `POST /api/v1/notes`
+- `PUT /api/v1/notes/:id`
+- `DELETE /api/v1/notes/:id`
+- `POST /api/v1/notes/:id/archive`
+- `POST /api/v1/notes/:id/unarchive`
 
 ### Uploads
 
-1. Request presigned upload: `POST /api/uploads/presign`
+1. Request presigned upload: `POST /api/v1/uploads/presign`
 2. Upload file directly to S3 using returned URL/form fields
 3. Save returned key in your app metadata
 4. Use:
-   - `GET /api/uploads`
-   - `GET /api/uploads/:key`
-   - `GET /api/uploads/:key/download`
-   - `DELETE /api/uploads/:key`
+   - `GET /api/v1/uploads`
+   - `GET /api/v1/uploads/:key`
+   - `GET /api/v1/uploads/:key/download`
+   - `DELETE /api/v1/uploads/:key`
 
 ## API Contract Examples
 
@@ -95,6 +95,9 @@ Typical API error format:
 ```json
 {
   "error": "Error message",
+  "code": "machine_readable_code",
+  "message": "Human-readable detail",
+  "request_id": "F3n9Zz...",
   "details": {}
 }
 ```
@@ -105,6 +108,7 @@ Common statuses:
 - `403` forbidden
 - `404` not found
 - `422` validation error
+- `429` rate limit exceeded
 - `500` internal error
 - `503` service unavailable
 

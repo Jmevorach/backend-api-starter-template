@@ -61,6 +61,8 @@ defmodule BackendWeb.Router do
   """
   pipeline :api do
     plug(:accepts, ["json"])
+    plug(BackendWeb.Plugs.RequestLogger)
+    plug(BackendWeb.Plugs.RateLimiter, limit: 180, window_seconds: 60)
   end
 
   @doc """
@@ -69,6 +71,8 @@ defmodule BackendWeb.Router do
   """
   pipeline :protected_api do
     plug(:accepts, ["json"])
+    plug(BackendWeb.Plugs.RequestLogger)
+    plug(BackendWeb.Plugs.RateLimiter, limit: 120, window_seconds: 60)
     plug(BackendWeb.Plugs.EnsureAuthenticated)
   end
 
@@ -115,6 +119,8 @@ defmodule BackendWeb.Router do
     resources("/notes", NotesController, except: [:new, :edit])
     post("/notes/:id/archive", NotesController, :archive)
     post("/notes/:id/unarchive", NotesController, :unarchive)
+    resources("/projects", ProjectsController, except: [:new, :edit])
+    resources("/tasks", TasksController, except: [:new, :edit])
 
     # File uploads API - S3 presigned URL management
     # GET  /api/uploads              - List user's files
@@ -123,6 +129,27 @@ defmodule BackendWeb.Router do
     # GET  /api/uploads/:key         - Get file metadata
     # GET  /api/uploads/:key/download - Get presigned download URL
     # DELETE /api/uploads/:key       - Delete a file
+    get("/uploads", UploadsController, :index)
+    post("/uploads/presign", UploadsController, :presign)
+    get("/uploads/types", UploadsController, :allowed_types)
+    get("/uploads/:key", UploadsController, :show)
+    get("/uploads/:key/download", UploadsController, :download)
+    delete("/uploads/:key", UploadsController, :delete)
+  end
+
+  scope "/api/v1", BackendWeb.API, as: :api_v1 do
+    pipe_through(:protected_api)
+
+    get("/me", UserController, :me)
+    get("/profile", ProfileController, :profile)
+    get("/dashboard", ProfileController, :dashboard)
+
+    resources("/notes", NotesController, except: [:new, :edit])
+    post("/notes/:id/archive", NotesController, :archive)
+    post("/notes/:id/unarchive", NotesController, :unarchive)
+    resources("/projects", ProjectsController, except: [:new, :edit])
+    resources("/tasks", TasksController, except: [:new, :edit])
+
     get("/uploads", UploadsController, :index)
     post("/uploads/presign", UploadsController, :presign)
     get("/uploads/types", UploadsController, :allowed_types)
@@ -169,6 +196,13 @@ defmodule BackendWeb.Router do
     get("/openapi", OpenApiController, :spec)
 
     # SwaggerUI documentation
+    get("/docs", OpenApiController, :docs)
+  end
+
+  scope "/api/v1", BackendWeb.API, as: :api_v1 do
+    pipe_through(:api)
+
+    get("/openapi", OpenApiController, :spec)
     get("/docs", OpenApiController, :docs)
   end
 end

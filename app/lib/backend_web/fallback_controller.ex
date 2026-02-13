@@ -10,6 +10,7 @@ defmodule BackendWeb.FallbackController do
   """
 
   use BackendWeb, :controller
+  alias BackendWeb.ErrorResponse
 
   @doc """
   Handles error tuples returned by controller actions.
@@ -23,29 +24,27 @@ defmodule BackendWeb.FallbackController do
   """
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
-    |> put_status(:unprocessable_entity)
-    |> json(%{
-      error: "Validation failed",
-      details: translate_errors(changeset)
-    })
+    |> ErrorResponse.send(
+      :unprocessable_entity,
+      "validation_failed",
+      "Validation failed",
+      translate_errors(changeset)
+    )
   end
 
   def call(conn, {:error, :not_found}) do
     conn
-    |> put_status(:not_found)
-    |> json(%{error: "Resource not found"})
+    |> ErrorResponse.send(:not_found, "not_found", "Resource not found")
   end
 
   def call(conn, {:error, :unauthorized}) do
     conn
-    |> put_status(:unauthorized)
-    |> json(%{error: "Authentication required"})
+    |> ErrorResponse.send(:unauthorized, "authentication_required", "Authentication required")
   end
 
   def call(conn, {:error, :forbidden}) do
     conn
-    |> put_status(:forbidden)
-    |> json(%{error: "Permission denied"})
+    |> ErrorResponse.send(:forbidden, "forbidden", "Permission denied")
   end
 
   defp translate_errors(changeset) do

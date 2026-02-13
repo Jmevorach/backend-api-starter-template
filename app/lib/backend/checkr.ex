@@ -54,15 +54,13 @@ defmodule Backend.Checkr do
       :crypto.mac(:hmac, :sha256, webhook_secret, payload)
       |> Base.encode16(case: :lower)
 
-    cond do
-      not secure_compare(computed, signature) ->
-        {:error, :invalid_signature}
-
-      true ->
-        case Jason.decode(payload) do
-          {:ok, event} -> {:ok, event}
-          {:error, _} -> {:error, :invalid_payload}
-        end
+    if secure_compare(computed, signature) do
+      case Jason.decode(payload) do
+        {:ok, event} -> {:ok, event}
+        {:error, _} -> {:error, :invalid_payload}
+      end
+    else
+      {:error, :invalid_signature}
     end
   end
 

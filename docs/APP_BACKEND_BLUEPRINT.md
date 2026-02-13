@@ -12,7 +12,8 @@ Already included:
 - Profile/dashboard endpoints:
   - `GET /api/profile`
   - `GET /api/dashboard`
-- Care-note CRUD (`/api/notes`)
+- Notes CRUD (`/api/notes` and `/api/v1/notes`)
+- Example project/task domain (`/api/v1/projects`, `/api/v1/tasks`)
 - S3 uploads with presigned URLs
 - Production AWS deployment stack (ECS, ALB, Aurora, Valkey, IAM auth)
 

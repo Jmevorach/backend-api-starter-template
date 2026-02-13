@@ -20,9 +20,11 @@ defmodule BackendWeb.HomeController do
       version: version,
       endpoints: %{
         health: "/healthz",
-        me: "/api/me",
-        profile: "/api/profile",
-        dashboard: "/api/dashboard",
+        me: "/api/v1/me",
+        profile: "/api/v1/profile",
+        dashboard: "/api/v1/dashboard",
+        projects: "/api/v1/projects",
+        tasks: "/api/v1/tasks",
         auth: "/auth/:provider"
       }
     })

@@ -11,6 +11,9 @@ if config_env() == :prod do
 
   port = String.to_integer(System.get_env("PORT") || "443")
 
+  max_request_body_bytes =
+    String.to_integer(System.get_env("MAX_REQUEST_BODY_BYTES") || "2000000")
+
   db_host =
     System.get_env("DB_HOST") ||
       raise "environment variable DB_HOST is missing."
@@ -36,6 +39,7 @@ if config_env() == :prod do
   config :backend, BackendWeb.Endpoint,
     server: true,
     url: [host: System.get_env("PHX_HOST") || "example.com", port: 443, scheme: "https"],
+    max_request_body_bytes: max_request_body_bytes,
     http: false,
     https: [
       ip: {0, 0, 0, 0},

@@ -1,0 +1,50 @@
+name: API Governance CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/lib/backend_web/**"
+      - "contracts/**"
+      - "scripts/export-openapi.sh"
+      - "scripts/check-openapi-breaking.sh"
+      - ".github/workflows/api-governance-ci.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/lib/backend_web/**"
+      - "contracts/**"
+      - "scripts/export-openapi.sh"
+      - "scripts/check-openapi-breaking.sh"
+      - ".github/workflows/api-governance-ci.yml"
+
+jobs:
+  openapi-governance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.19.5"
+          otp-version: "28"
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Export latest OpenAPI
+        run: ./scripts/export-openapi.sh
+
+      - name: Lint OpenAPI with Spectral
+        run: npm exec --yes --package @stoplight/spectral-cli -- spectral lint contracts/openapi.json --ruleset contracts/spectral.yaml
+
+      - name: Check for breaking changes
+        if: github.event_name == 'pull_request'
+        run: ./scripts/check-openapi-breaking.sh

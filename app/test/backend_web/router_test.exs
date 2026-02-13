@@ -99,6 +99,15 @@ defmodule BackendWeb.RouterTest do
 
       assert conn.status == 401
     end
+
+    test "GET /api/v1/profile returns 401 without session" do
+      conn =
+        build_conn()
+        |> init_test_session(%{})
+        |> get("/api/v1/profile")
+
+      assert conn.status == 401
+    end
   end
 
   describe "protected API routes with auth" do
@@ -130,6 +139,17 @@ defmodule BackendWeb.RouterTest do
         build_conn()
         |> init_test_session(%{current_user: user})
         |> get("/api/profile")
+
+      assert conn.status == 200
+      response = json_response(conn, 200)
+      assert response["data"]["id"] == "google_uid_123"
+    end
+
+    test "GET /api/v1/profile returns profile data", %{user: user} do
+      conn =
+        build_conn()
+        |> init_test_session(%{current_user: user})
+        |> get("/api/v1/profile")
 
       assert conn.status == 200
       response = json_response(conn, 200)

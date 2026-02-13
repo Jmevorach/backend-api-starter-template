@@ -11,6 +11,7 @@ uploads, notes, and optional third-party API clients.
   - `GET /api/profile`
   - `GET /api/dashboard`
 - Notes CRUD/caching behavior
+- Example module APIs (`/api/v1/projects`, `/api/v1/tasks`)
 - Upload presign and object management flows
 - Infra-related runtime/auth helpers (RDS/Valkey IAM auth)
 

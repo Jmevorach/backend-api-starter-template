@@ -35,11 +35,17 @@ defmodule BackendWeb.Schemas do
       type: :object,
       properties: %{
         error: %Schema{type: :string, description: "Error message"},
+        code: %Schema{type: :string, description: "Stable machine-readable error code"},
+        message: %Schema{type: :string, description: "Human-readable message"},
+        request_id: %Schema{type: :string, nullable: true, description: "Request correlation ID"},
         details: %Schema{type: :object, description: "Additional error details"}
       },
       required: [:error],
       example: %{
         "error" => "Validation failed",
+        "code" => "validation_failed",
+        "message" => "Validation failed",
+        "request_id" => "F3n9Zz...",
         "details" => %{"title" => ["can't be blank"]}
       }
     })

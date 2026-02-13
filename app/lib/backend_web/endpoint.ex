@@ -66,9 +66,13 @@ defmodule BackendWeb.Endpoint do
 
   # Parse request bodies based on content-type
   # Supports: application/x-www-form-urlencoded, multipart/form-data, application/json
+  parser_length =
+    Application.compile_env(:backend, __MODULE__, [])[:max_request_body_bytes] || 2_000_000
+
   plug(Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
+    length: parser_length,
     json_decoder: Phoenix.json_library()
   )
 

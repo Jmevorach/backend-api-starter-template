@@ -41,7 +41,10 @@ defmodule BackendWeb.API.ProfileControllerTest do
   describe "GET /api/dashboard" do
     test "returns dashboard with note summary and recent notes", %{conn: conn, user_id: user_id} do
       {:ok, _note1} =
-        Notes.create_note(%{"title" => "Sprint follow-up", "content" => "Schedule planning"}, user_id)
+        Notes.create_note(
+          %{"title" => "Sprint follow-up", "content" => "Schedule planning"},
+          user_id
+        )
 
       {:ok, _note2} =
         Notes.create_note(%{"title" => "Blood pressure", "content" => "Daily logs"}, user_id)

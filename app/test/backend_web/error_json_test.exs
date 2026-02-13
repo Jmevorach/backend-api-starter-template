@@ -13,13 +13,17 @@ defmodule BackendWeb.ErrorJSONTest do
     test "renders 404 error" do
       result = ErrorJSON.render("404.json", %{})
 
-      assert result == %{error: "Not Found"}
+      assert result == %{error: "Not Found", code: "not_found", message: "Not Found"}
     end
 
     test "renders 500 error" do
       result = ErrorJSON.render("500.json", %{})
 
-      assert result == %{error: "Internal Server Error"}
+      assert result == %{
+               error: "Internal Server Error",
+               code: "internal_server_error",
+               message: "Internal Server Error"
+             }
     end
 
     test "renders custom error from assigns" do
