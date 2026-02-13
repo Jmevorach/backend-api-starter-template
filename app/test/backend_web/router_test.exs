@@ -270,7 +270,9 @@ defmodule BackendWeb.RouterTest do
       assert response["data"]["title"] == "Test Note"
     end
 
-    test "GET /api/v1/notes and /api/v1/uploads/types are reachable when authenticated", %{user: user} do
+    test "GET /api/v1/notes and /api/v1/uploads/types are reachable when authenticated", %{
+      user: user
+    } do
       notes_conn =
         build_conn()
         |> init_test_session(%{current_user: user})

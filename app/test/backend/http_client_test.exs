@@ -138,11 +138,20 @@ defmodule Backend.HTTPClientTest do
         |> Plug.Conn.send_resp(200, ~s({"ok":true}))
       end
 
-      assert {:ok, %{status: 200}} = Backend.HTTPClient.Impl.get("http://example.test/get", plug: plug)
-      assert {:ok, %{status: 200}} = Backend.HTTPClient.Impl.post("http://example.test/post", plug: plug)
-      assert {:ok, %{status: 200}} = Backend.HTTPClient.Impl.put("http://example.test/put", plug: plug)
-      assert {:ok, %{status: 200}} = Backend.HTTPClient.Impl.delete("http://example.test/delete", plug: plug)
-      assert {:ok, %{status: 200}} = Backend.HTTPClient.Impl.head("http://example.test/head", plug: plug)
+      assert {:ok, %{status: 200}} =
+               Backend.HTTPClient.Impl.get("http://example.test/get", plug: plug)
+
+      assert {:ok, %{status: 200}} =
+               Backend.HTTPClient.Impl.post("http://example.test/post", plug: plug)
+
+      assert {:ok, %{status: 200}} =
+               Backend.HTTPClient.Impl.put("http://example.test/put", plug: plug)
+
+      assert {:ok, %{status: 200}} =
+               Backend.HTTPClient.Impl.delete("http://example.test/delete", plug: plug)
+
+      assert {:ok, %{status: 200}} =
+               Backend.HTTPClient.Impl.head("http://example.test/head", plug: plug)
     end
   end
 end

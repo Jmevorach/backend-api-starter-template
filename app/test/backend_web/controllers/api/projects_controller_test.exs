@@ -64,7 +64,10 @@ defmodule BackendWeb.API.ProjectsControllerTest do
     assert Enum.any?(body["data"]["tasks"], &(&1["title"] == "Task in project"))
   end
 
-  test "returns 404 when showing unknown or unauthorized project", %{conn: conn, other_conn: other_conn} do
+  test "returns 404 when showing unknown or unauthorized project", %{
+    conn: conn,
+    other_conn: other_conn
+  } do
     create_conn = post(conn, ~p"/api/v1/projects", @valid_attrs)
     project_id = json_response(create_conn, 201)["data"]["id"]
 
@@ -85,7 +88,8 @@ defmodule BackendWeb.API.ProjectsControllerTest do
         "archived" => true
       })
 
-    assert %{"data" => %{"name" => "Platform v2", "archived" => true}} = json_response(update_conn, 200)
+    assert %{"data" => %{"name" => "Platform v2", "archived" => true}} =
+             json_response(update_conn, 200)
 
     invalid_conn = put(conn, ~p"/api/v1/projects/#{project_id}", %{"name" => ""})
     assert %{"code" => "validation_failed"} = json_response(invalid_conn, 422)

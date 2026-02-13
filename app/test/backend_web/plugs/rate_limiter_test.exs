@@ -41,7 +41,9 @@ defmodule BackendWeb.Plugs.RateLimiterTest do
     entries = :ets.tab2list(:backend_rate_limiter)
 
     assert Enum.any?(entries, fn
-             {{"", _}, _} -> false
+             {{"", _}, _} ->
+               false
+
              {{identity, _bucket}, _count} when is_binary(identity) ->
                String.contains?(identity, "rate_user_123")
 

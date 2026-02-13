@@ -12,7 +12,9 @@ defmodule Backend.CheckrMockedTest do
     Application.put_env(:backend, :checkr, api_key: "ck_test_123", environment: "sandbox")
 
     on_exit(fn ->
-      if original, do: Application.put_env(:backend, :checkr, original), else: Application.delete_env(:backend, :checkr)
+      if original,
+        do: Application.put_env(:backend, :checkr, original),
+        else: Application.delete_env(:backend, :checkr)
     end)
 
     :ok

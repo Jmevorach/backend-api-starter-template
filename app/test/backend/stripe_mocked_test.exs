@@ -12,7 +12,9 @@ defmodule Backend.StripeMockedTest do
     Application.put_env(:backend, :stripe, api_key: "sk_test_123")
 
     on_exit(fn ->
-      if original, do: Application.put_env(:backend, :stripe, original), else: Application.delete_env(:backend, :stripe)
+      if original,
+        do: Application.put_env(:backend, :stripe, original),
+        else: Application.delete_env(:backend, :stripe)
     end)
 
     :ok

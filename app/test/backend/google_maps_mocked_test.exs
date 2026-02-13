@@ -24,7 +24,9 @@ defmodule Backend.GoogleMapsMockedTest do
     expect(Backend.HTTPClientMock, :get, 4, fn url, opts ->
       assert url =~ "geocode"
       assert Keyword.has_key?(opts, :params)
-      {:ok, %{status: 200, body: %{"status" => "OK", "results" => [%{"formatted_address" => "X"}]}}}
+
+      {:ok,
+       %{status: 200, body: %{"status" => "OK", "results" => [%{"formatted_address" => "X"}]}}}
     end)
 
     assert {:ok, _} = GoogleMaps.geocode("1600 Amphitheatre Pkwy")
