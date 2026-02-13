@@ -1,0 +1,82 @@
+# =============================================================================
+# Trivy Ignore File - Infrastructure Security Exceptions
+# =============================================================================
+# This file documents security findings that are intentionally accepted.
+# Each exception includes a justification for security review purposes.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# AVD-AWS-0053: Load balancer is exposed publicly
+# -----------------------------------------------------------------------------
+# JUSTIFICATION: This is a public-facing web application. The ALB must be
+# internet-accessible to serve users. Access is controlled via:
+# - Security groups limiting inbound to HTTPS (443) only
+# - Global Accelerator providing DDoS protection
+# - WAF can be added for additional protection if needed
+AVD-AWS-0053
+
+# -----------------------------------------------------------------------------
+# AVD-AWS-0164: Subnet associates public IP address
+# -----------------------------------------------------------------------------
+# JUSTIFICATION: Public subnets are required for the internet-facing ALB.
+# Only the ALB resides in public subnets. Application containers (ECS tasks)
+# and databases are in private subnets without public IPs.
+AVD-AWS-0164
+
+# -----------------------------------------------------------------------------
+# AVD-AWS-0104: Security group rule allows unrestricted egress
+# -----------------------------------------------------------------------------
+# JUSTIFICATION: ECS tasks require outbound HTTPS (443) to 0.0.0.0/0 to reach:
+# - AWS APIs via public endpoints (ECR, Secrets Manager, CloudWatch, RDS IAM)
+# - External services if needed by the application
+# The tasks are in private subnets and egress goes through NAT Gateway.
+# Egress is limited to port 443 only (HTTPS), not all ports.
+AVD-AWS-0104
+
+# -----------------------------------------------------------------------------
+# AVD-AWS-0066: Lambda function does not have tracing enabled
+# -----------------------------------------------------------------------------
+# JUSTIFICATION: Secret rotation Lambda functions are simple, short-lived
+# operations that run infrequently (every 90 days). X-Ray tracing adds
+# overhead and cost without significant operational benefit for these
+# specific functions. CloudWatch Logs provide sufficient observability.
+AVD-AWS-0066
+
+# -----------------------------------------------------------------------------
+# AVD-AWS-0089: S3 bucket does not have logging enabled
+# -----------------------------------------------------------------------------
+# JUSTIFICATION: This IS the centralized logs bucket. Enabling access logging
+# on the logs bucket itself would create either a circular dependency or
+# require an additional bucket just for meta-logs. The bucket has:
+# - Versioning enabled for audit trail
+# - CloudTrail captures all S3 API calls to this bucket
+# - KMS encryption for data at rest
+AVD-AWS-0089
+
+# -----------------------------------------------------------------------------
+# AVD-AWS-0162: CloudTrail does not have CloudWatch Logs configured
+# -----------------------------------------------------------------------------
+# JUSTIFICATION: CloudTrail logs are stored durably in S3 with:
+# - KMS encryption
+# - Log file validation enabled
+# - Multi-region coverage
+# CloudWatch Logs integration adds cost without significant benefit since
+# S3 provides durable storage and logs can be queried with Athena if needed.
+AVD-AWS-0162
+
+# -----------------------------------------------------------------------------
+# AVD-AWS-0057: IAM policy uses wildcarded actions/resources
+# -----------------------------------------------------------------------------
+# JUSTIFICATION: The GitHub Actions IAM policy uses wildcards for:
+# 1. Read-only Describe* actions - Required for Terraform plan to discover
+#    existing resources. These are safe as they only read metadata.
+# 2. ecs:UpdateService - Required for deployments. Could be scoped to specific
+#    clusters/services but would require knowing resource ARNs at policy
+#    creation time, which creates a chicken-and-egg problem.
+# 3. logs:CreateLogStream - Scoped to specific log group ARN, wildcard only
+#    applies to log stream names within that group.
+#
+# The policy follows least-privilege for write operations (scoped to specific
+# resources where possible) and uses wildcards only for read operations or
+# where resource ARNs are not known at policy creation time.
+AVD-AWS-0057

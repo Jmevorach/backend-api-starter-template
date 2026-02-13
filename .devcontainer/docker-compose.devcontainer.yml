@@ -1,0 +1,17 @@
+services:
+  devcontainer:
+    image: hexpm/elixir:1.19.5-erlang-28.0-debian-bookworm-20241016
+    volumes:
+      - ..:/workspace:cached
+      - elixir-deps:/workspace/app/deps
+      - elixir-build:/workspace/app/_build
+    command: sleep infinity
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+
+volumes:
+  elixir-deps:
+  elixir-build:

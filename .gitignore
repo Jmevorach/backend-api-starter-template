@@ -1,0 +1,50 @@
+# Elixir build artifacts
+app/_build/
+app/deps/
+app/*.ez
+app/.fetch
+
+# Elixir release files
+app/rel/
+app/.elixir_ls/
+
+# Elixir test coverage output
+app/cover/
+
+# Environment files
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Terraform files
+infra/.terraform/
+infra/.terraform.lock.hcl
+infra/*.tfstate
+infra/*.tfstate.*
+infra/.terraform.tfstate.lock.info
+infra/terraform.tfvars
+infra/*.tfvars
+infra/tfplan
+
+# State backend
+state-backend/.terraform/
+state-backend/.terraform.lock.hcl
+state-backend/*.tfstate
+state-backend/*.tfstate.*
+state-backend/.terraform.tfstate.lock.info
+state-backend/terraform.tfvars
+state-backend/*.tfvars
+
+# Logs
+*.log
+

@@ -1,0 +1,25 @@
+# =============================================================================
+# KICS Configuration - State Backend
+# =============================================================================
+# This file documents security queries that are intentionally excluded.
+# Run: kics scan -p . --config kics.yaml
+# =============================================================================
+
+# Queries to exclude with documented justifications
+exclude-queries:
+  # ---------------------------------------------------------------------------
+  # KMS Key Policy Requirements
+  # ---------------------------------------------------------------------------
+  
+  # KMS Key With Vulnerable Policy
+  # Root account access is the standard AWS pattern for KMS key policies.
+  # Without this, the key becomes unmanageable if all IAM policies are removed.
+  # See: https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html
+  - 7ebc9038-0bde-479a-acc4-6ed7b6758899
+  
+  # IAM Policy Grants Full Permissions
+  # In KMS key policies, "kms:*" on "Resource": "*" is required because:
+  # 1. The "*" refers to the key itself (self-referential), not all resources
+  # 2. The principal is restricted to the account root only
+  # 3. This is AWS's documented default key policy pattern
+  - 575a2155-6af1-4026-b1af-d5bc8fe2a904

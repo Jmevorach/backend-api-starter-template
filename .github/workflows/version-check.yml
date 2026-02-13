@@ -1,0 +1,267 @@
+name: Version Check
+
+# Runs weekly to check for outdated tool versions
+on:
+  schedule:
+    - cron: "0 9 * * 1" # Every Monday at 9am UTC
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ELIXIR_VERSION: "1.19.5"
+  OTP_VERSION: "27"
+
+jobs:
+  check-elixir-packages:
+    name: Check Elixir Packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+          otp-version: ${{ env.OTP_VERSION }}
+
+      - name: Cache deps
+        uses: actions/cache@v5
+        with:
+          path: app/deps
+          key: deps-${{ runner.os }}-${{ hashFiles('app/mix.lock') }}
+          restore-keys: deps-${{ runner.os }}-
+
+      - name: Install dependencies
+        working-directory: app
+        run: mix deps.get
+
+      - name: Check outdated packages
+        id: hex_outdated
+        working-directory: app
+        run: |
+          echo "## Elixir Package Updates" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Run hex.outdated and capture output
+          OUTPUT=$(mix hex.outdated 2>&1) || true
+          echo "$OUTPUT"
+
+          # Check if there are any outdated packages
+          if echo "$OUTPUT" | grep -q "All dependencies are up to date"; then
+            echo "outdated=false" >> $GITHUB_OUTPUT
+            echo "✅ All Elixir packages are up to date" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "outdated=true" >> $GITHUB_OUTPUT
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Save for later job
+          echo "$OUTPUT" > /tmp/hex_outdated.txt
+
+      - name: Upload outdated report
+        uses: actions/upload-artifact@v6
+        with:
+          name: hex-outdated-report
+          path: /tmp/hex_outdated.txt
+          retention-days: 1
+
+    outputs:
+      outdated: ${{ steps.hex_outdated.outputs.outdated }}
+
+  check-versions:
+    name: Check Tool Versions
+    runs-on: ubuntu-latest
+    needs: check-elixir-packages
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Download hex outdated report
+        uses: actions/download-artifact@v7
+        with:
+          name: hex-outdated-report
+          path: /tmp
+
+      - name: Check Elixir version
+        id: elixir
+        run: |
+          CURRENT=$(grep -oP 'ELIXIR_VERSION: "\K[^"]+' .github/workflows/elixir-ci.yml || echo "unknown")
+          LATEST=$(curl -s https://api.github.com/repos/elixir-lang/elixir/releases/latest | jq -r .tag_name | sed 's/v//')
+          echo "current=$CURRENT" >> $GITHUB_OUTPUT
+          echo "latest=$LATEST" >> $GITHUB_OUTPUT
+          echo "Elixir: current=$CURRENT, latest=$LATEST"
+
+      - name: Check Terraform version
+        id: terraform
+        run: |
+          CURRENT=$(grep -oP 'TERRAFORM_VERSION: "\K[^"]+' .github/workflows/terraform-ci.yml || echo "unknown")
+          LATEST=$(curl -s https://api.github.com/repos/hashicorp/terraform/releases/latest | jq -r .tag_name | sed 's/v//')
+          echo "current=$CURRENT" >> $GITHUB_OUTPUT
+          echo "latest=$LATEST" >> $GITHUB_OUTPUT
+          echo "Terraform: current=$CURRENT, latest=$LATEST"
+
+      - name: Check Python version
+        id: python
+        run: |
+          CURRENT=$(grep -oP 'PYTHON_VERSION: "\K[^"]+' .github/workflows/python-lambda-ci.yml || echo "unknown")
+          # Get latest stable Python version from GitHub releases (exclude pre-releases)
+          LATEST=$(curl -s https://api.github.com/repos/python/cpython/tags | jq -r '.[].name' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sed 's/v//' | sort -V | tail -1 | grep -oP '^\d+\.\d+' || echo "3.13")
+          echo "current=$CURRENT" >> $GITHUB_OUTPUT
+          echo "latest=$LATEST" >> $GITHUB_OUTPUT
+          echo "Python: current=$CURRENT, latest=$LATEST"
+
+      - name: Check KICS version
+        id: kics
+        run: |
+          CURRENT=$(grep -oP 'kics-github-action@v\K[0-9.]+' .github/workflows/terraform-ci.yml | head -1 || echo "unknown")
+          LATEST=$(curl -s https://api.github.com/repos/Checkmarx/kics-github-action/releases/latest | jq -r .tag_name | sed 's/v//')
+          echo "current=$CURRENT" >> $GITHUB_OUTPUT
+          echo "latest=$LATEST" >> $GITHUB_OUTPUT
+          echo "KICS: current=$CURRENT, latest=$LATEST"
+
+      - name: Check PostgreSQL version
+        id: postgres
+        run: |
+          CURRENT=$(grep -oP 'postgres:\K\d+' .github/workflows/elixir-ci.yml | head -1 || echo "unknown")
+          # Get latest PostgreSQL major version from Docker Hub tags
+          LATEST=$(curl -s "https://registry.hub.docker.com/v2/repositories/library/postgres/tags?page_size=100" | jq -r '.results[].name' | grep -E '^[0-9]+$' | sort -rn | head -1 || echo "17")
+          echo "current=$CURRENT" >> $GITHUB_OUTPUT
+          echo "latest=$LATEST" >> $GITHUB_OUTPUT
+          echo "PostgreSQL: current=$CURRENT, latest=$LATEST"
+
+      - name: Generate version report
+        run: |
+          echo "## Version Check Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Tool | Current | Latest | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|---------|--------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          # Elixir
+          if [[ "${{ steps.elixir.outputs.current }}" == "${{ steps.elixir.outputs.latest }}"* ]]; then
+            echo "| Elixir | ${{ steps.elixir.outputs.current }} | ${{ steps.elixir.outputs.latest }} | ✅ |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Elixir | ${{ steps.elixir.outputs.current }} | ${{ steps.elixir.outputs.latest }} | ⚠️ Update available |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Terraform
+          if [[ "${{ steps.terraform.outputs.current }}" == "${{ steps.terraform.outputs.latest }}"* ]]; then
+            echo "| Terraform | ${{ steps.terraform.outputs.current }} | ${{ steps.terraform.outputs.latest }} | ✅ |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Terraform | ${{ steps.terraform.outputs.current }} | ${{ steps.terraform.outputs.latest }} | ⚠️ Update available |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Python
+          if [[ "${{ steps.python.outputs.current }}" == "${{ steps.python.outputs.latest }}"* ]]; then
+            echo "| Python | ${{ steps.python.outputs.current }} | ${{ steps.python.outputs.latest }} | ✅ |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Python | ${{ steps.python.outputs.current }} | ${{ steps.python.outputs.latest }} | ⚠️ Update available |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # KICS
+          if [[ "${{ steps.kics.outputs.current }}" == "${{ steps.kics.outputs.latest }}" ]]; then
+            echo "| KICS | ${{ steps.kics.outputs.current }} | ${{ steps.kics.outputs.latest }} | ✅ |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| KICS | ${{ steps.kics.outputs.current }} | ${{ steps.kics.outputs.latest }} | ⚠️ Update available |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # PostgreSQL
+          if [[ "${{ steps.postgres.outputs.current }}" == "${{ steps.postgres.outputs.latest }}" ]]; then
+            echo "| PostgreSQL | ${{ steps.postgres.outputs.current }} | ${{ steps.postgres.outputs.latest }} | ✅ |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| PostgreSQL | ${{ steps.postgres.outputs.current }} | ${{ steps.postgres.outputs.latest }} | ⚠️ Update available |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Add Elixir package section
+          echo "## Elixir Packages" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ needs.check-elixir-packages.outputs.outdated }}" == "true" ]]; then
+            echo "⚠️ Some packages have updates available. See the Elixir Packages job for details." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ All Elixir packages are up to date" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "_Run manually: Actions → Version Check → Run workflow_" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create issue if updates available
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+
+            const elixirOutdated = '${{ steps.elixir.outputs.current }}' !== '${{ steps.elixir.outputs.latest }}';
+            const terraformOutdated = !('${{ steps.terraform.outputs.latest }}'.startsWith('${{ steps.terraform.outputs.current }}'));
+            const pythonOutdated = '${{ steps.python.outputs.current }}' !== '${{ steps.python.outputs.latest }}';
+            const kicsOutdated = '${{ steps.kics.outputs.current }}' !== '${{ steps.kics.outputs.latest }}';
+            const hexOutdated = '${{ needs.check-elixir-packages.outputs.outdated }}' === 'true';
+
+            // Read hex outdated report
+            let hexReport = '';
+            try {
+              hexReport = fs.readFileSync('/tmp/hex_outdated.txt', 'utf8');
+            } catch (e) {
+              hexReport = 'Unable to read hex outdated report';
+            }
+
+            if (elixirOutdated || terraformOutdated || pythonOutdated || kicsOutdated || hexOutdated) {
+              const title = '🔄 Version updates available';
+              const hexSection = hexOutdated ? `
+
+            ### Elixir Package Updates
+            \`\`\`
+            ${hexReport}
+            \`\`\`
+
+            Run \`cd app && mix deps.update --all\` to update all packages, or update selectively.
+            ` : '';
+
+              const body = `## Tool Version Updates
+
+            | Tool | Current | Latest |
+            |------|---------|--------|
+            | Elixir | ${{ steps.elixir.outputs.current }} | ${{ steps.elixir.outputs.latest }} |
+            | Terraform | ${{ steps.terraform.outputs.current }} | ${{ steps.terraform.outputs.latest }} |
+            | Python | ${{ steps.python.outputs.current }} | ${{ steps.python.outputs.latest }} |
+            | KICS | ${{ steps.kics.outputs.current }} | ${{ steps.kics.outputs.latest }} |
+            | PostgreSQL | ${{ steps.postgres.outputs.current }} | ${{ steps.postgres.outputs.latest }} |
+            ${hexSection}
+            ### Files to update
+            - \`.github/workflows/elixir-ci.yml\` - Elixir/OTP versions
+            - \`.github/workflows/terraform-ci.yml\` - Terraform version, KICS version
+            - \`.github/workflows/python-lambda-ci.yml\` - Python version
+            - \`.devcontainer/devcontainer.json\` - Terraform, Python versions
+            - \`app/mix.exs\` - Elixir package versions
+            - \`README.md\` - Badge versions
+
+            _This issue was automatically created by the version-check workflow._`;
+
+              // Check if issue already exists
+              const issues = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: 'version-update'
+              });
+
+              if (issues.data.length === 0) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: title,
+                  body: body,
+                  labels: ['version-update', 'maintenance']
+                });
+                console.log('Created version update issue');
+              } else {
+                console.log('Version update issue already exists');
+              }
+            }

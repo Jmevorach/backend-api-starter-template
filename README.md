@@ -1,0 +1,212 @@
+## Backend Baseline – Production AWS + Phoenix
+
+[![Elixir CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/elixir-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/elixir-ci.yml)
+[![Terraform CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/terraform-ci.yml)
+[![Python CI](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/python-lambda-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/python-lambda-ci.yml)
+[![ShellCheck](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/shellcheck.yml)
+[![Version Check](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/version-check.yml/badge.svg)](https://github.com/Jmevorach/backend-api-accelerator/actions/workflows/version-check.yml)
+
+[![Elixir](https://img.shields.io/badge/Elixir-1.19.5+-4B275F?logo=elixir)](https://elixir-lang.org/)
+[![Phoenix](https://img.shields.io/badge/Phoenix-1.7+-FD4F00?logo=phoenix-framework)](https://www.phoenixframework.org/)
+[![Terraform](https://img.shields.io/badge/Terraform-1.14+-7B42BC?logo=terraform)](https://www.terraform.io/)
+[![Python](https://img.shields.io/badge/Python-3.14+-3776AB?logo=python)](https://www.python.org/)
+[![AWS](https://img.shields.io/badge/AWS-ECS%20%7C%20Aurora%20%7C%20ElastiCache-FF9900?logo=amazon-aws)](https://aws.amazon.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+This repository is an **open-source production baseline** for building mobile
+app backends. It pairs a **Phoenix JSON API** with **battle-tested AWS
+infrastructure** so teams can ship faster without rebuilding the same platform
+foundations.
+
+### Table of Contents
+
+- [Why This Exists](#why-this-exists)
+- [What You Get](#what-you-get)
+- [Architecture (High Level)](#architecture-high-level)
+- [Repository Layout](#repository-layout)
+- [Quick Start](#quick-start)
+- [Documentation](#documentation)
+- [Local Tooling](#local-tooling)
+- [Customize It](#customize-it)
+
+### Why This Exists
+
+Most teams repeatedly implement the same building blocks:
+
+- A secure, scalable API service
+- Database, cache, and network plumbing
+- Logging, backups, and secret rotation
+- Deployment discipline
+
+This repo bundles those pieces into a cohesive, production-ready starting point
+while staying generic enough to fit almost any backend product.
+
+### What You Get
+
+- **Phoenix API service** with Ecto, health checks, and optional OAuth
+- **Pre-built API clients** for Stripe, Checkr, and Google Maps (bring your own keys)
+- **Valkey/Redis-backed sessions** for multi-container deployments
+- **Aurora Serverless v2 + RDS Proxy** for PostgreSQL
+- **ECS Fargate (Graviton)** behind **ALB** and **Global Accelerator**
+- **Automatic TLS** for database and cache connections in production
+- **IAM authentication** for RDS and ElastiCache (with password fallback option)
+- **Secrets Manager + KMS** with automated rotation (Lambdas in `infra/lambdas`)
+- **Centralized logging & auditing** (CloudWatch, CloudTrail, VPC Flow Logs)
+- **AWS Backup** with long-term retention policies
+- **Pre-built CloudWatch dashboards** for monitoring
+- **Cost monitoring** with AWS Budgets and Anomaly Detection
+- **OpenAPI/Swagger documentation** at `/api/docs`
+
+### Architecture (High Level)
+
+```
+Clients
+  |
+  v
+Global Accelerator
+  |
+  v
+ALB (HTTPS)
+  |
+  v
+ECS Fargate (Phoenix API)
+  |                 |
+  |                 +--> Valkey/Redis (sessions)
+  |
+  +--> RDS Proxy --> Aurora Serverless v2 (PostgreSQL)
+```
+
+### Repository Layout
+
+- `app/` – Phoenix API service (JSON-only)
+- `infra/` – Terraform infrastructure for AWS
+- `infra/lambdas/` – Python rotation Lambdas (separate files)
+- `state-backend/` – Terraform for S3 + DynamoDB remote state
+- `compose.yaml` – Local Postgres + Valkey for development
+- `scripts/` – Local helper scripts (deploy/dev)
+- `loadtests/` – k6 load testing scripts
+- `Makefile` – Common local commands
+- `ENVIRONMENT.md` – Centralized environment variable reference
+- `docs/` – Deep-dive documentation for architecture, operations, security
+
+### Quick Start
+
+1. **Configure AWS credentials and environment**
+   ```bash
+   aws configure  # or set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+   export TF_VAR_github_owner="your-github-username"
+   export TF_VAR_github_repo="backend-api-accelerator"
+
+   # Option A: Auto-create HTTPS certificate (recommended)
+   export TF_VAR_domain_name="api.example.com"
+   export TF_VAR_route53_zone_name="example.com"
+
+   # Option B: Use existing ACM certificate
+   # export TF_VAR_alb_acm_certificate_arn="arn:aws:acm:..."
+   ```
+
+2. **Deploy everything with one command**
+   ```bash
+   ./scripts/deploy.sh --init-state
+   ```
+   This will:
+   - Bootstrap the Terraform state backend (S3 + DynamoDB)
+   - Build and push the container image to ECR
+   - Create and validate ACM certificate (if using auto-creation)
+   - Deploy all infrastructure via Terraform
+   - Wait for the service to stabilize
+
+3. **Verify the deployment**
+   ```bash
+   ./scripts/deployment-health-report.sh
+   ```
+
+4. **Tear down when done**
+   ```bash
+   ./scripts/destroy.sh
+   ```
+
+See [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) for detailed deployment instructions.
+
+### Documentation
+
+- [`ENVIRONMENT.md`](ENVIRONMENT.md) – **Single source** for all variables and secrets
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) – How to add API modules and modify infrastructure
+- [`docs/API_INTEGRATIONS.md`](docs/API_INTEGRATIONS.md) – Stripe, Checkr, Google Maps usage guide
+- [`docs/AUTHENTICATION.md`](docs/AUTHENTICATION.md) – Database/Valkey auth, TLS, IAM setup
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) – Service layout and data flows
+- [`docs/OPERATIONS.md`](docs/OPERATIONS.md) – Deployments, scaling, and day-2 operations
+- [`docs/CUSTOMIZATION.md`](docs/CUSTOMIZATION.md) – How to tailor this repo to your app
+- [`docs/SECURITY.md`](docs/SECURITY.md) – Security model and best practices
+- [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) – Common issues and fixes
+- [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) – Deploy from a laptop without GitHub Actions
+- [`docs/LOCAL_DEV.md`](docs/LOCAL_DEV.md) – Local dev workflow with Postgres + Valkey
+- [`docs/IMPROVEMENTS.md`](docs/IMPROVEMENTS.md) – Recommended improvements and enhancements
+- [`docs/SECURITY_CHECKLIST.md`](docs/SECURITY_CHECKLIST.md) – Pre-deployment security checklist
+
+### Local Tooling
+
+This repo provides scripts and tools for local development and deployment:
+
+**Development:**
+- `make dev-up` – Start local Postgres + Valkey
+- `make dev-down` – Stop local services
+- `make dev-reset` – Reset local database
+
+**Quality Checks:**
+- `make app-format` – Check Elixir formatting
+- `make app-credo` – Run Credo linter
+- `make app-test` – Run tests
+- `make terraform-security` – Run security scans (Checkov, KICS)
+
+**Deployment:**
+- `make deploy` – Full deployment (build + push + terraform)
+- `make deploy-plan` – Preview changes without applying
+- `make health-report` – Check deployment health status
+- `make destroy` – Tear down infrastructure
+
+**Script Options:**
+```bash
+./scripts/deploy.sh --help              # See all deploy options
+./scripts/deploy.sh --skip-build        # Redeploy without rebuilding image
+./scripts/deploy.sh --plan-only         # Preview Terraform changes
+./scripts/deployment-health-report.sh --json  # JSON output for automation
+./scripts/destroy.sh --include-ecr      # Also delete ECR images
+```
+
+**Pre-commit Hooks:**
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+Hooks run automatically on commit: Terraform fmt, Python linting, shellcheck, etc.
+
+### Customize It
+
+**Getting Started:**
+1. Add your API routes in `app/lib/backend_web/controllers`
+2. Wire them up in `app/lib/backend_web/router.ex`
+3. Add your API keys (Stripe, Checkr, Google Maps, etc.) via environment variables
+4. Deploy to production
+
+**Using Pre-built API Clients:**
+```elixir
+# Stripe payments
+Backend.Stripe.create_customer(%{email: "user@example.com"})
+
+# Background checks
+Backend.Checkr.create_candidate(%{first_name: "John", email: "john@example.com"})
+
+# Geocoding
+Backend.GoogleMaps.geocode("1600 Amphitheatre Parkway, Mountain View, CA")
+```
+
+**Extending the Project:**
+- Add new API client modules – see [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- Modify AWS infrastructure – see [`CONTRIBUTING.md`](CONTRIBUTING.md#modifying-aws-infrastructure)
+- Customize authentication, sessions, scaling – see [`docs/CUSTOMIZATION.md`](docs/CUSTOMIZATION.md)
+
+If you are new to infrastructure or Phoenix, start with
+[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and
+[`docs/OPERATIONS.md`](docs/OPERATIONS.md).

@@ -1,0 +1,23 @@
+# =============================================================================
+# Trivy Security Scanner Configuration
+# =============================================================================
+# This file configures Trivy for infrastructure-as-code scanning.
+# Exceptions are documented with justifications for security review.
+#
+# Run locally: trivy config infra/ --config infra/.trivy.yaml
+# =============================================================================
+
+severity:
+  - HIGH
+  - CRITICAL
+
+# Misconfiguration scanning settings
+misconfiguration:
+  # Skip specific checks with documented justifications
+  ignorefile: .trivyignore
+
+# Exit code configuration
+exit-code: 1
+
+# Output format
+format: table

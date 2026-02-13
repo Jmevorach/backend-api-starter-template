@@ -1,0 +1,1 @@
+"""Database password rotation Lambda."""

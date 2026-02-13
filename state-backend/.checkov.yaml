@@ -1,0 +1,31 @@
+# =============================================================================
+# Checkov Configuration - State Backend
+# =============================================================================
+# This file documents security checks that are intentionally skipped and why.
+# Run: checkov -d . --config-file .checkov.yaml
+# =============================================================================
+
+framework:
+  - terraform
+
+# Checks to skip with documented justifications
+skip-check:
+  # -----------------------------------------------------------------------------
+  # KMS Key Policy Requirements
+  # -----------------------------------------------------------------------------
+  
+  # CKV_AWS_109, CKV_AWS_111, CKV_AWS_356 for KMS: KMS key policies must use
+  # "Resource": "*" because the policy is attached to the key itself.
+  # In a KMS key policy, "*" is self-referential to the key - not all resources.
+  # This is AWS's required pattern for KMS key policies.
+  # See: https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html
+  - CKV_AWS_109
+  - CKV_AWS_111
+  - CKV_AWS_356
+
+# Output format
+output:
+  - cli
+
+# Soft fail in CI (don't block pipeline, just report)
+soft-fail: true

@@ -1,0 +1,74 @@
+# =============================================================================
+# Terraform Variables Example
+# =============================================================================
+# Copy this file to terraform.tfvars and fill in your values:
+#   cp terraform.tfvars.example terraform.tfvars
+#
+# Alternatively, set these as environment variables with TF_VAR_ prefix:
+#   export TF_VAR_github_owner="your-org"
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Required Variables
+# -----------------------------------------------------------------------------
+
+# GitHub OIDC configuration (for CI/CD)
+github_owner = "your-github-username"
+github_repo  = "backend-api-accelerator"
+
+# Container image URI (set by deploy script, or specify manually)
+# container_image = "123456789012.dkr.ecr.us-east-1.amazonaws.com/backend-service:latest"
+
+# -----------------------------------------------------------------------------
+# HTTPS Certificate (choose ONE option)
+# -----------------------------------------------------------------------------
+
+# OPTION 1: Auto-create certificate (RECOMMENDED)
+# Provide your domain and Route 53 zone name, and Terraform will create and
+# validate the certificate automatically. Also creates DNS records.
+domain_name       = "api.example.com"
+route53_zone_name = "example.com"
+
+# OPTION 2: Bring your own certificate
+# If you already have an ACM certificate, provide its ARN instead.
+# alb_acm_certificate_arn = "arn:aws:acm:us-east-1:123456789012:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+# -----------------------------------------------------------------------------
+# Optional: Project Settings
+# -----------------------------------------------------------------------------
+
+# project_name = "phoenix-backend"
+# environment  = "prod"
+# aws_region   = "us-east-1"
+
+# -----------------------------------------------------------------------------
+# Optional: ECS Configuration
+# -----------------------------------------------------------------------------
+
+# service_desired_count      = 2
+# ecs_min_capacity           = 1
+# ecs_max_capacity           = 4
+# ecs_cpu_target_utilization = 60
+# ecs_cpu_architecture       = "ARM64"  # ARM64 (Graviton) or X86_64
+
+# -----------------------------------------------------------------------------
+# Optional: Database Configuration
+# -----------------------------------------------------------------------------
+
+# aurora_min_capacity = 0.5  # Minimum ACUs (0.5 = 1GB RAM)
+# aurora_max_capacity = 4    # Maximum ACUs
+
+# -----------------------------------------------------------------------------
+# Optional: OAuth (leave commented out to disable)
+# -----------------------------------------------------------------------------
+
+# Google OAuth
+# google_oauth_client_id_secret_arn     = "arn:aws:secretsmanager:us-east-1:123456789012:secret:google-oauth-client-id"
+# google_oauth_client_secret_secret_arn = "arn:aws:secretsmanager:us-east-1:123456789012:secret:google-oauth-client-secret"
+
+# Apple OAuth (Sign in with Apple)
+# apple_oauth_client_id_secret_arn      = "arn:aws:secretsmanager:us-east-1:123456789012:secret:apple-oauth-client-id"
+# apple_oauth_client_secret_secret_arn  = "arn:aws:secretsmanager:us-east-1:123456789012:secret:apple-oauth-client-secret"
+# apple_oauth_team_id_secret_arn        = "arn:aws:secretsmanager:us-east-1:123456789012:secret:apple-oauth-team-id"
+# apple_oauth_key_id_secret_arn         = "arn:aws:secretsmanager:us-east-1:123456789012:secret:apple-oauth-key-id"
+# apple_oauth_private_key_secret_arn    = "arn:aws:secretsmanager:us-east-1:123456789012:secret:apple-oauth-private-key"
