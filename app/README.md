@@ -18,9 +18,9 @@ business logic so you can plug in your own domain features.
 
 - `GET /` – Service metadata (name, version, key endpoints)
 - `GET /healthz` – Health check for ALB/ECS/GA
-- `GET /api/me` – Example authenticated endpoint
-- `GET /api/profile` – Authenticated user identity profile
-- `GET /api/dashboard` – Authenticated dashboard summary for app bootstrap
+- `GET /api/v1/me` – Canonical authenticated bootstrap endpoint (`/api/me` compatibility route also available)
+- `GET /api/v1/profile` – Canonical authenticated user identity profile (`/api/profile` compatibility route also available)
+- `GET /api/v1/dashboard` – Canonical dashboard summary endpoint (`/api/dashboard` compatibility route also available)
 - `GET /auth/:provider` – Start OAuth flow (Google, Apple)
 - `GET /auth/:provider/callback` – OAuth callback
 
@@ -86,7 +86,7 @@ end
 - Sessions are stored server-side in Valkey/Redis via `Backend.RedisSessionStore`.
 - OAuth providers are optional; if credentials are missing, the provider is
   effectively disabled.
-- Use `GET /api/me` to validate session behavior from a mobile client.
+- Use `GET /api/v1/me` to validate session behavior from a mobile client.
 
 ### Testing
 

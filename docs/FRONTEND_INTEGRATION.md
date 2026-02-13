@@ -32,7 +32,7 @@ For app startup, call endpoints in this order:
 2. `GET /api/v1/profile` (identity payload for UI header/profile)
 3. `GET /api/v1/dashboard` (home screen summary)
 
-If `GET /api/me` returns `401`, redirect user to login.
+If `GET /api/v1/me` returns `401`, redirect user to login.
 
 ## Profile and Dashboard Endpoints
 

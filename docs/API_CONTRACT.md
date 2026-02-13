@@ -35,9 +35,9 @@ Most 4xx/5xx responses include:
 
 ## Auth Bootstrap
 
-### `GET /api/me`
+### `GET /api/v1/me`
 
-Also available as `GET /api/v1/me`.
+Also available as `GET /api/me`.
 
 Use this first to determine whether the user is authenticated.
 

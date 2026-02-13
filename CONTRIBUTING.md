@@ -86,6 +86,10 @@ defmodule Backend.YourApi do
   end
 
   # Private HTTP helpers
+  defp http_client do
+    Application.get_env(:backend, :http_client, Backend.HTTPClient.Impl)
+  end
+
   defp request(method, path, body \\ nil) do
     url = @base_url <> path
 
@@ -97,7 +101,7 @@ defmodule Backend.YourApi do
     request_opts = [headers: headers]
     request_opts = if body, do: Keyword.put(request_opts, :json, body), else: request_opts
 
-    case apply(Req, method, [url, request_opts]) do
+    case apply(http_client(), method, [url, request_opts]) do
       {:ok, %{status: status, body: body}} when status in 200..299 ->
         {:ok, body}
 
@@ -322,7 +326,7 @@ When adding new integrations:
 # Elixir tests
 cd app && mix test
 
-# With coverage (90%+ target)
+# With coverage (minimum gate is enforced in CI; keep it trending upward)
 cd app && mix test --cover
 
 # Specific test file
@@ -455,6 +459,7 @@ make openapi-breakcheck-test
 4. **Run CI checks locally** first:
    ```bash
    make verify
+   make openapi-breakcheck-test
    make terraform-security
    ```
 5. **Write clear commit messages** - Explain what and why

@@ -40,6 +40,6 @@ If your roadmap includes external system interoperability:
 
 ## Frontend Integration Tips
 
-- Use `/api/profile` and `/api/dashboard` for initial app bootstrap.
-- Keep session refresh simple: call `/api/me` on app start.
+- Use `/api/v1/profile` and `/api/v1/dashboard` for initial app bootstrap.
+- Keep session refresh simple: call `/api/v1/me` on app start.
 - Gate feature flags per user in a dedicated endpoint (`/api/features`).

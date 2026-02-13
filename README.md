@@ -142,9 +142,11 @@ If your team is starting with the frontend first, use this path:
 1. Run backend locally with `docs/LOCAL_DEV.md`
 2. Review auth/session and API bootstrap flow in `docs/FRONTEND_INTEGRATION.md`
 3. Start frontend bootstrap calls with:
-   - `GET /api/me`
-   - `GET /api/profile`
-   - `GET /api/dashboard`
+   - `GET /api/v1/me`
+   - `GET /api/v1/profile`
+   - `GET /api/v1/dashboard`
+
+The `/api/*` equivalents remain available for compatibility.
 
 ### Documentation
 
@@ -183,10 +185,12 @@ This repo provides scripts and tools for local development and deployment:
 - `make app-format` – Check Elixir formatting
 - `make app-credo` – Run Credo linter
 - `make app-test` – Run tests
+- `cd app && mix test --cover` – Run tests with coverage output
 - `make terraform-security` – Run security scans (Checkov, KICS)
 - `make contract-validate` – Validate API contract docs against routes/type exports
 - `make contract-typecheck` – Type-check frontend contract interfaces
 - `make openapi-lint` – Export + lint OpenAPI contract
+- `make openapi-breakcheck-test` – Validate OpenAPI break-check fixture harness
 - `make verify` – Run default quality gate before opening PRs
 
 **Deployment:**

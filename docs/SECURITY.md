@@ -38,9 +38,9 @@ it for your production needs.
 
 ### CI Security Scans
 
-- **Bandit** scans Lambda Python code for security issues.
-- **Ruff** runs with an aggressive rule set (`select = ALL`).
-- **Mypy** runs in strict mode for type correctness.
+- **Semgrep** scans source for common security anti-patterns.
+- **CodeQL** performs semantic security analysis on supported languages.
+- **Bandit**, **Ruff**, and **Mypy** validate Python Lambda security and quality.
 
 ### Hardening Suggestions
 
@@ -53,7 +53,7 @@ it for your production needs.
 
 - It does not enforce organizational compliance standards
 - It does not implement multi-tenant access control
-- It does not include app-level rate limiting by default
+- It does not include distributed, tenant-aware rate limiting policies by default
 
 Treat this baseline as a secure foundation, then tighten further based on your
 risk model and compliance requirements.

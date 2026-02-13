@@ -106,7 +106,7 @@ Use this checklist before deploying to production or during security reviews.
 curl -k https://your-domain.com/healthz
 
 # Should return 401 (not 500)
-curl -k https://your-domain.com/api/me
+curl -k https://your-domain.com/api/v1/me
 
 # Should return service info
 curl -k https://your-domain.com/

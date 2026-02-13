@@ -9,3 +9,10 @@ This folder contains TypeScript interfaces for frontend consumption.
 
 Use these types directly in your React app, or copy them into your frontend
 repo as a starting point.
+
+## Contract Maintenance
+
+- Regenerate OpenAPI contract: `./scripts/export-openapi.sh`
+- Lint OpenAPI contract: `make openapi-lint`
+- Validate docs/routes/type drift: `make contract-validate`
+- Type-check frontend interfaces: `make contract-typecheck`

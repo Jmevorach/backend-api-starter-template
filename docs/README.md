@@ -29,3 +29,11 @@ Use this index to find the right guide quickly.
 
 - `CUSTOMIZATION.md` - How to adapt the baseline to your product
 - `API_INTEGRATIONS.md` - Safe pattern for adding third-party integrations
+
+## Documentation Quality
+
+Before merging docs-affecting changes, run:
+
+- `make contract-validate`
+- `make contract-typecheck`
+- `make openapi-lint`
