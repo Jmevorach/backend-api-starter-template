@@ -87,6 +87,11 @@ k6 run --env BASE_URL=http://localhost:4000 spike.js
 - **Duration**: 10 minutes (gradually increasing)
 - **Threshold**: Monitor degradation
 
+### benchmark.js
+- **Purpose**: Scheduled container performance benchmark for trend tracking
+- **Mode**: Constant arrival rate against lightweight container endpoints
+- **Output**: k6 summary JSON transformed into publishable report + badge payload
+
 ### spike.js
 - **Purpose**: Test sudden traffic spikes
 - **VUs**: Spike to 100

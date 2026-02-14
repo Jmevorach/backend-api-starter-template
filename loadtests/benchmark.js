@@ -34,19 +34,27 @@ export const options = {
 };
 
 export default function () {
-  const rootRes = http.get(`${BASE_URL}/`);
+  const rootRes = http.get(`${BASE_URL}/`, {
+    responseCallback: http.expectedStatuses(200),
+  });
   check(rootRes, {
     "root: status 200": (r) => r.status === 200,
   });
 
-  const openapiRes = http.get(`${BASE_URL}/api/v1/openapi`);
+  const openapiRes = http.get(`${BASE_URL}/api/v1/openapi`, {
+    responseCallback: http.expectedStatuses(200),
+  });
   check(openapiRes, {
     "openapi: status 200": (r) => r.status === 200,
   });
 
-  const healthRes = http.get(`${BASE_URL}/healthz`);
-  check(healthRes, {
-    "healthz: status 200 or 503": (r) => r.status === 200 || r.status === 503,
+  // Unauthenticated protected endpoint to validate auth-gate path.
+  // 401 is expected and should not be counted as a request failure.
+  const meRes = http.get(`${BASE_URL}/api/v1/me`, {
+    responseCallback: http.expectedStatuses(401),
+  });
+  check(meRes, {
+    "me: status 401 when unauthenticated": (r) => r.status === 401,
   });
 
   sleep(0.2);
