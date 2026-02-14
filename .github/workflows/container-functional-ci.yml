@@ -1,0 +1,30 @@
+name: Container Functional CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "scripts/test-container-functional.sh"
+      - ".github/workflows/container-functional-ci.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "scripts/test-container-functional.sh"
+      - ".github/workflows/container-functional-ci.yml"
+
+jobs:
+  container-functional-smoke:
+    name: Build + Container Smoke Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Build production container image
+        run: docker build -t backend-api-functional:ci app
+
+      - name: Run container functional smoke tests
+        run: ./scripts/test-container-functional.sh backend-api-functional:ci

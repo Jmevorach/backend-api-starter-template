@@ -10,6 +10,7 @@ defmodule Backend.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
+      releases: releases(),
       test_coverage: [tool: ExCoveralls],
       dialyzer: [
         plt_file: {:no_warn, "priv/plts/dialyzer.plt"},
@@ -98,6 +99,14 @@ defmodule Backend.MixProject do
         "compile --warnings-as-errors",
         "credo --strict",
         "test --cover"
+      ]
+    ]
+  end
+
+  defp releases do
+    [
+      backend: [
+        validate_compile_env: false
       ]
     ]
   end
