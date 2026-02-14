@@ -12,6 +12,7 @@ why each component exists, and how data flows through the system.
 - [Request Flow](#request-flow)
 - [Session Storage](#session-storage)
 - [Database Layer](#database-layer)
+- [Global Availability Patterns](#global-availability-patterns)
 - [Secrets and Rotation](#secrets-and-rotation)
 - [Observability](#observability)
 - [Backups](#backups)
@@ -21,6 +22,7 @@ why each component exists, and how data flows through the system.
 ## Goals
 
 - Provide a secure, scalable backend baseline
+- Support globally distributed traffic with clear evolution paths
 - Separate app concerns from infrastructure concerns
 - Keep the baseline generic for many product types
 - Use managed AWS services where possible
@@ -89,6 +91,18 @@ multi-instance session persistence is not available.
 - **RDS Proxy** smooths connection spikes and rotation changes.
 - **Aurora Serverless v2** scales with workload demand.
 
+## Global Availability Patterns
+
+- **Baseline:** single-region deployment with strong operational controls.
+- **Global ingress:** use Global Accelerator to improve cross-region network
+  behavior and health-based failover.
+- **Disaster recovery:** add an active/passive secondary region with tested
+  runbooks and restore validation.
+- **Advanced:** move to active/active only when domain consistency and data
+  strategy are explicitly designed for multi-region writes.
+
+For rollout guidance and tradeoffs, see `docs/GLOBAL_AVAILABILITY.md`.
+
 ## Secrets and Rotation
 
 Secrets live in AWS Secrets Manager:
@@ -116,7 +130,7 @@ rotation so tasks pick up new values.
 
 - ECS auto scaling based on CPU
 - Aurora Serverless v2 scales by ACUs
-- Global Accelerator is optional but recommended for mobile latency
+- Global Accelerator is optional but recommended for global client latency
 
 ## Where to Customize
 

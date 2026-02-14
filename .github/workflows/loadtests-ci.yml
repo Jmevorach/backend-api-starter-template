@@ -18,6 +18,7 @@ env:
   MIX_ENV: test
   ELIXIR_VERSION: "1.19.5"
   OTP_VERSION: "28"
+  APP_BASE_URL: http://localhost:4002
 
 jobs:
   k6-smoke:
@@ -88,10 +89,18 @@ jobs:
 
       - name: Wait for app readiness
         run: |
-          for i in $(seq 1 60); do
-            if curl -sf http://localhost:4000/healthz >/dev/null; then
+          APP_PID="$(cat /tmp/phoenix-loadtest.pid)"
+          for i in $(seq 1 180); do
+            if curl -sf "${APP_BASE_URL}/healthz" >/dev/null; then
               exit 0
             fi
+
+            if ! kill -0 "${APP_PID}" 2>/dev/null; then
+              echo "Phoenix app process exited before becoming ready."
+              cat /tmp/phoenix-loadtest.log || true
+              exit 1
+            fi
+
             sleep 1
           done
           echo "Phoenix app did not become ready in time."
@@ -104,7 +113,7 @@ jobs:
       - name: Run k6 smoke test
         run: |
           k6 run \
-            --env BASE_URL=http://localhost:4000 \
+            --env BASE_URL=${APP_BASE_URL} \
             --env DURATION=30s \
             loadtests/smoke.js
 

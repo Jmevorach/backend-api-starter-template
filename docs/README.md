@@ -14,7 +14,7 @@ Use this index to find the right guide quickly.
 
 - `LOCAL_DEV.md` - Run the API locally for day-to-day development
 - `FRONTEND_INTEGRATION.md` - React/frontend integration and bootstrap flows
-- `API_CONTRACT.md` - Request/response examples for core frontend endpoints
+- `API_CONTRACT.md` - Request/response examples for core client-facing endpoints
 - `../contracts/frontend-api.ts` - TypeScript interfaces mirroring API payloads
 - `APP_BACKEND_BLUEPRINT.md` - Suggested app-domain roadmap
 
@@ -22,6 +22,7 @@ Use this index to find the right guide quickly.
 
 - `LOCAL_DEPLOY.md` - Deploy from a local machine
 - `OPERATIONS.md` - Day-2 operations, scaling, backups, rotation
+- `GLOBAL_AVAILABILITY.md` - Multi-region patterns and failover strategies
 - `OBSERVABILITY.md` - Logging, request correlation, and API governance signals
 - `TROUBLESHOOTING.md` - Common issues and fixes
 - `SUPPORT_MATRIX.md` - Supported versions and compatibility policy

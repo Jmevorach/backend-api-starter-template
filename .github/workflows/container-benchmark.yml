@@ -5,12 +5,9 @@ on:
     - cron: "0 4 * * *"
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   benchmark:
-    name: Benchmark Container + Publish Report
+    name: Benchmark Container + Upload Artifact
     runs-on: ubuntu-latest
 
     steps:
@@ -64,14 +61,6 @@ jobs:
           python3 scripts/generate-benchmark-report.py \
             --input benchmark-summary.json \
             --output-dir benchmark-site/benchmarks
-
-      - name: Publish benchmark report to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: benchmark-site
-          keep_files: true
 
       - name: Upload benchmark artifacts
         uses: actions/upload-artifact@v4

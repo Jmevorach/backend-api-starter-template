@@ -1,4 +1,4 @@
-# Mobile Backend Baseline – Production AWS + Phoenix
+# Backend API Starter Kit – Production AWS + Phoenix
 
 [![Elixir CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/elixir-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/elixir-ci.yml)
 [![Terraform CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/terraform-ci.yml)
@@ -10,7 +10,6 @@
 [![Version Check](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/version-check.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/version-check.yml)
 [![Container Functional CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-functional-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-functional-ci.yml)
 [![Container Benchmark](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-benchmark.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-benchmark.yml)
-[![Latest Container p95](https://img.shields.io/endpoint?url=https://jmevorach.github.io/backend-api-starter-template/benchmarks/latest-shields.json)](https://jmevorach.github.io/backend-api-starter-template/benchmarks/latest.html)
 
 [![Elixir](https://img.shields.io/badge/Elixir-1.19.5+-4B275F?logo=elixir)](https://elixir-lang.org/)
 [![Phoenix](https://img.shields.io/badge/Phoenix-1.7+-FD4F00?logo=phoenix-framework)](https://www.phoenixframework.org/)
@@ -19,8 +18,8 @@
 [![AWS](https://img.shields.io/badge/AWS-ECS%20%7C%20Aurora%20%7C%20ElastiCache-FF9900?logo=amazon-aws)](https://aws.amazon.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-This repository is an **open-source production baseline** for mobile app
-backends. It pairs a **Phoenix JSON API** with **battle-tested AWS
+This repository is an **open-source production baseline** for backend APIs. It
+pairs a **Phoenix JSON API** with **battle-tested AWS
 infrastructure** so teams can ship faster without rebuilding core platform
 foundations.
 
@@ -29,9 +28,10 @@ foundations.
 - [Why This Exists](#why-this-exists)
 - [What You Get](#what-you-get)
 - [Architecture (High Level)](#architecture-high-level)
+- [Global Availability Strategy](#global-availability-strategy)
 - [Repository Layout](#repository-layout)
 - [Quick Start](#quick-start)
-- [Frontend Quickstart (React)](#frontend-quickstart-react)
+- [Client Integration Quickstart](#client-integration-quickstart)
 - [Documentation](#documentation)
 - [Local Tooling](#local-tooling)
 - [Customize It](#customize-it)
@@ -86,6 +86,21 @@ ECS Fargate (Phoenix API)
   +--> RDS Proxy --> Aurora Serverless v2 (PostgreSQL)
 ```
 
+## Global Availability Strategy
+
+This starter supports a clear global rollout path:
+
+- **Single region first:** Start with one region using ALB + ECS + Aurora.
+- **Global edge routing:** Add Global Accelerator for better cross-region client
+  latency and fast failover behavior.
+- **Multi-region active/passive:** Run a warm secondary region for DR and route
+  failover with health checks.
+- **Multi-region active/active (advanced):** Deploy app + data strategy per
+  region when your consistency model and workload require it.
+
+See [`docs/GLOBAL_AVAILABILITY.md`](docs/GLOBAL_AVAILABILITY.md) for topology
+patterns and tradeoffs.
+
 ## Repository Layout
 
 - `app/` – Phoenix API service (JSON-only)
@@ -138,13 +153,14 @@ ECS Fargate (Phoenix API)
 
 See [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) for detailed deployment instructions.
 
-## Frontend Quickstart (React)
+## Client Integration Quickstart
 
-If your team is starting with the frontend first, use this path:
+If your team is starting with a frontend/client integration first, use this
+path:
 
 1. Run backend locally with `docs/LOCAL_DEV.md`
 2. Review auth/session and API bootstrap flow in `docs/FRONTEND_INTEGRATION.md`
-3. Start frontend bootstrap calls with:
+3. Start client bootstrap calls with:
    - `GET /api/v1/me`
    - `GET /api/v1/profile`
    - `GET /api/v1/dashboard`
@@ -158,6 +174,7 @@ The `/api/*` equivalents remain available for compatibility.
 - [`docs/API_INTEGRATIONS.md`](docs/API_INTEGRATIONS.md) – How to add your own integrations safely
 - [`docs/AUTHENTICATION.md`](docs/AUTHENTICATION.md) – Database/Valkey auth, TLS, IAM setup
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) – Service layout and data flows
+- [`docs/GLOBAL_AVAILABILITY.md`](docs/GLOBAL_AVAILABILITY.md) – Multi-region patterns, failover, and global routing guidance
 - [`docs/OPERATIONS.md`](docs/OPERATIONS.md) – Deployments, scaling, and day-2 operations
 - [`docs/CUSTOMIZATION.md`](docs/CUSTOMIZATION.md) – How to tailor this repo to your app
 - [`docs/SECURITY.md`](docs/SECURITY.md) – Security model and best practices
@@ -224,7 +241,7 @@ Hooks run automatically on commit (Terraform fmt, Python linting, shellcheck, et
 **Getting Started:**
 1. Add your API routes in `app/lib/backend_web/controllers`
 2. Wire them up in `app/lib/backend_web/router.ex`
-3. Model your app-domain entities (profiles, projects/tasks, appointments, messaging)
+3. Model your app-domain entities (users, projects/tasks, orders, content, etc.)
 4. Deploy to production
 
 **Using Existing Authenticated Endpoints:**
