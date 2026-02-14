@@ -51,3 +51,16 @@ If your roadmap includes external system interoperability:
 - Use `/api/v1/profile` and `/api/v1/dashboard` for initial app bootstrap.
 - Keep session refresh simple: call `/api/v1/me` on app start.
 - Gate feature flags per user in a dedicated endpoint (`/api/features`).
+
+## Enterprise API Baseline Included
+
+This starter now includes baseline enterprise APIs under `/api/v1`:
+
+- SSO + SCIM: `/auth/sso/*`, `/scim/v2/*`
+- RBAC/Policy: `/roles`, `/policy/evaluate`
+- Audit logs: `/audit/events`
+- Webhooks: `/webhooks/endpoints`, `/webhooks/deliveries`
+- Notifications: `/notifications/send`, `/notifications/templates`
+- Tenant controls: `/tenants`, `/entitlements`, `/features`
+- Async and compliance: `/jobs`, `/compliance/export`, `/compliance/delete`
+- Cross-domain search: `/search`

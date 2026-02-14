@@ -160,3 +160,64 @@ export interface TaskResponse {
 export interface TasksListResponse {
   data: Task[];
 }
+
+export interface Tenant {
+  id: string;
+  name: string;
+  slug: string;
+  inserted_at: string;
+  updated_at: string;
+}
+
+export interface Role {
+  id: string;
+  tenant_id: string;
+  name: string;
+  permissions: string[];
+}
+
+export interface FeatureFlag {
+  id: string;
+  tenant_id: string;
+  key: string;
+  description?: string | null;
+  enabled: boolean;
+  rollout: number;
+}
+
+export interface AuditEvent {
+  id: string;
+  tenant_id: string;
+  actor_id: string;
+  action: string;
+  resource_type: string;
+  resource_id?: string | null;
+  request_id?: string | null;
+  metadata: Record<string, unknown>;
+  inserted_at: string;
+}
+
+export interface WebhookEndpoint {
+  id: string;
+  tenant_id: string;
+  url: string;
+  events: string[];
+  active: boolean;
+}
+
+export interface NotificationMessage {
+  id: string;
+  tenant_id: string;
+  channel: string;
+  to: string;
+  subject?: string | null;
+  status: string;
+  inserted_at: string;
+}
+
+export interface EnterpriseSearchResult {
+  type: "note" | "project" | "task";
+  id: string;
+  label: string;
+  detail?: string | null;
+}

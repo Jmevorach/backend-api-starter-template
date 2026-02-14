@@ -13,6 +13,7 @@ endpoints.
 - [Notes APIs](#notes-apis)
 - [Upload APIs](#upload-apis)
 - [Projects and Tasks (Golden Path Module)](#projects-and-tasks-golden-path-module)
+- [Enterprise APIs](#enterprise-apis)
 
 ## Conventions
 
@@ -466,3 +467,24 @@ No response body.
   "message": "File uploads are not configured"
 }
 ```
+
+## Enterprise APIs
+
+All enterprise endpoints are available under `/api/v1` (and mirrored under
+`/api` compatibility routes where applicable). Baseline endpoints:
+
+- SSO: `GET /api/v1/auth/sso/providers`, `POST /api/v1/auth/sso/callback`
+- SCIM: `GET|POST /api/v1/scim/v2/Users`, `PATCH /api/v1/scim/v2/Users/:id`
+- SCIM: `GET|POST /api/v1/scim/v2/Groups`, `PATCH /api/v1/scim/v2/Groups/:id`
+- RBAC/Policy: `GET|POST /api/v1/roles`, `POST /api/v1/policy/evaluate`
+- Audit: `GET /api/v1/audit/events`, `GET /api/v1/audit/events/:id`
+- Webhooks: `POST /api/v1/webhooks/endpoints`, `GET /api/v1/webhooks/deliveries`
+- Replay: `POST /api/v1/webhooks/deliveries/:id/replay`
+- Notifications: `POST /api/v1/notifications/send`,
+  `POST /api/v1/notifications/templates`
+- Feature flags: `GET|POST /api/v1/features`
+- Tenants and entitlements: `POST /api/v1/tenants`, `GET /api/v1/tenants/:id`,
+  `GET /api/v1/entitlements`
+- Jobs and compliance: `POST /api/v1/jobs`, `GET /api/v1/jobs/:id`,
+  `POST /api/v1/compliance/export`, `POST /api/v1/compliance/delete`
+- Search: `GET /api/v1/search?q=term`

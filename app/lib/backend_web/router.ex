@@ -121,6 +121,42 @@ defmodule BackendWeb.Router do
     post("/notes/:id/unarchive", NotesController, :unarchive)
     resources("/projects", ProjectsController, except: [:new, :edit])
     resources("/tasks", TasksController, except: [:new, :edit])
+    get("/auth/sso/providers", EnterpriseController, :sso_providers)
+
+    get("/scim/v2/Users", EnterpriseController, :scim_list_users)
+    post("/scim/v2/Users", EnterpriseController, :scim_create_user)
+    patch("/scim/v2/Users/:id", EnterpriseController, :scim_patch_user)
+    get("/scim/v2/Groups", EnterpriseController, :scim_list_groups)
+    post("/scim/v2/Groups", EnterpriseController, :scim_create_group)
+    patch("/scim/v2/Groups/:id", EnterpriseController, :scim_patch_group)
+
+    get("/roles", EnterpriseController, :roles_index)
+    post("/roles", EnterpriseController, :roles_create)
+    post("/policy/evaluate", EnterpriseController, :policy_evaluate)
+    get("/audit/events", EnterpriseController, :audit_index)
+    get("/audit/events/:id", EnterpriseController, :audit_show)
+
+    post("/webhooks/endpoints", EnterpriseController, :webhooks_create_endpoint)
+    get("/webhooks/deliveries", EnterpriseController, :webhooks_list_deliveries)
+    post("/webhooks/deliveries/:id/replay", EnterpriseController, :webhooks_replay_delivery)
+
+    post("/notifications/send", EnterpriseController, :notifications_send)
+    post("/notifications/templates", EnterpriseController, :notifications_create_template)
+
+    get("/features", EnterpriseController, :feature_flags_index)
+    post("/features", EnterpriseController, :feature_flags_create)
+
+    post("/tenants", EnterpriseController, :tenants_create)
+    get("/tenants/:id", EnterpriseController, :tenants_show)
+    get("/entitlements", EnterpriseController, :entitlements_index)
+
+    post("/jobs", EnterpriseController, :jobs_create)
+    get("/jobs/:id", EnterpriseController, :jobs_show)
+
+    post("/compliance/export", EnterpriseController, :compliance_export)
+    post("/compliance/delete", EnterpriseController, :compliance_delete)
+
+    get("/search", EnterpriseController, :search)
 
     # File uploads API - S3 presigned URL management
     # GET  /api/uploads              - List user's files
@@ -149,6 +185,42 @@ defmodule BackendWeb.Router do
     post("/notes/:id/unarchive", NotesController, :unarchive)
     resources("/projects", ProjectsController, except: [:new, :edit])
     resources("/tasks", TasksController, except: [:new, :edit])
+    get("/auth/sso/providers", EnterpriseController, :sso_providers)
+
+    get("/scim/v2/Users", EnterpriseController, :scim_list_users)
+    post("/scim/v2/Users", EnterpriseController, :scim_create_user)
+    patch("/scim/v2/Users/:id", EnterpriseController, :scim_patch_user)
+    get("/scim/v2/Groups", EnterpriseController, :scim_list_groups)
+    post("/scim/v2/Groups", EnterpriseController, :scim_create_group)
+    patch("/scim/v2/Groups/:id", EnterpriseController, :scim_patch_group)
+
+    get("/roles", EnterpriseController, :roles_index)
+    post("/roles", EnterpriseController, :roles_create)
+    post("/policy/evaluate", EnterpriseController, :policy_evaluate)
+    get("/audit/events", EnterpriseController, :audit_index)
+    get("/audit/events/:id", EnterpriseController, :audit_show)
+
+    post("/webhooks/endpoints", EnterpriseController, :webhooks_create_endpoint)
+    get("/webhooks/deliveries", EnterpriseController, :webhooks_list_deliveries)
+    post("/webhooks/deliveries/:id/replay", EnterpriseController, :webhooks_replay_delivery)
+
+    post("/notifications/send", EnterpriseController, :notifications_send)
+    post("/notifications/templates", EnterpriseController, :notifications_create_template)
+
+    get("/features", EnterpriseController, :feature_flags_index)
+    post("/features", EnterpriseController, :feature_flags_create)
+
+    post("/tenants", EnterpriseController, :tenants_create)
+    get("/tenants/:id", EnterpriseController, :tenants_show)
+    get("/entitlements", EnterpriseController, :entitlements_index)
+
+    post("/jobs", EnterpriseController, :jobs_create)
+    get("/jobs/:id", EnterpriseController, :jobs_show)
+
+    post("/compliance/export", EnterpriseController, :compliance_export)
+    post("/compliance/delete", EnterpriseController, :compliance_delete)
+
+    get("/search", EnterpriseController, :search)
 
     get("/uploads", UploadsController, :index)
     post("/uploads/presign", UploadsController, :presign)
@@ -197,6 +269,7 @@ defmodule BackendWeb.Router do
 
     # SwaggerUI documentation
     get("/docs", OpenApiController, :docs)
+    post("/auth/sso/callback", EnterpriseController, :sso_callback)
   end
 
   scope "/api/v1", BackendWeb.API, as: :api_v1 do
@@ -204,5 +277,6 @@ defmodule BackendWeb.Router do
 
     get("/openapi", OpenApiController, :spec)
     get("/docs", OpenApiController, :docs)
+    post("/auth/sso/callback", EnterpriseController, :sso_callback)
   end
 end
