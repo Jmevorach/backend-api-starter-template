@@ -10,6 +10,7 @@
 [![Version Check](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/version-check.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/version-check.yml)
 [![Container Functional CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-functional-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-functional-ci.yml)
 [![Container Benchmark](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-benchmark.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-benchmark.yml)
+[![Start In 30 Minutes CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/start-in-30-min-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/start-in-30-min-ci.yml)
 
 [![Elixir](https://img.shields.io/badge/Elixir-1.19.5+-4B275F?logo=elixir)](https://elixir-lang.org/)
 [![Phoenix](https://img.shields.io/badge/Phoenix-1.7+-FD4F00?logo=phoenix-framework)](https://www.phoenixframework.org/)
@@ -31,6 +32,7 @@ foundations.
 - [Architecture (High Level)](#architecture-high-level)
 - [Global Availability Strategy](#global-availability-strategy)
 - [Repository Layout](#repository-layout)
+- [Start In 30 Minutes](#start-in-30-minutes)
 - [Quick Start](#quick-start)
 - [Client Integration Quickstart](#client-integration-quickstart)
 - [Documentation](#documentation)
@@ -126,6 +128,11 @@ patterns and tradeoffs.
 - `ENVIRONMENT.md` – Centralized environment variable reference
 - `docs/` – Deep-dive documentation for architecture, operations, security
 
+## Start In 30 Minutes
+
+If you want the fastest path from clone to running API, follow
+[`docs/START_IN_30_MIN.md`](docs/START_IN_30_MIN.md).
+
 ## Quick Start
 
 1. **Configure AWS credentials and environment**
@@ -193,14 +200,16 @@ The `/api/*` equivalents remain available for compatibility.
 - [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) – Common issues and fixes
 - [`docs/LOCAL_DEPLOY.md`](docs/LOCAL_DEPLOY.md) – Deploy from a laptop without GitHub Actions
 - [`docs/LOCAL_DEV.md`](docs/LOCAL_DEV.md) – Local dev workflow with Postgres + Valkey
+- [`docs/START_IN_30_MIN.md`](docs/START_IN_30_MIN.md) – Opinionated 30-minute path for first local run and first deploy
 - [`docs/FRONTEND_INTEGRATION.md`](docs/FRONTEND_INTEGRATION.md) – React/frontend integration patterns
-- [`docs/API_CONTRACT.md`](docs/API_CONTRACT.md) – Request/response examples for frontend endpoints
+- [`docs/API_CONTRACT.md`](docs/API_CONTRACT.md) – Request/response examples for client-facing endpoints
 - [`contracts/frontend-api.ts`](contracts/frontend-api.ts) – TypeScript interfaces matching the API contract
 - [`contracts/openapi.json`](contracts/openapi.json) – Generated OpenAPI contract used for governance checks
 - [`docs/APP_BACKEND_BLUEPRINT.md`](docs/APP_BACKEND_BLUEPRINT.md) – Suggested app-domain extensions
 - [`docs/SECURITY_CHECKLIST.md`](docs/SECURITY_CHECKLIST.md) – Pre-deployment security checklist
 - [`docs/OBSERVABILITY.md`](docs/OBSERVABILITY.md) – Runtime visibility and request correlation
 - [`docs/SUPPORT_MATRIX.md`](docs/SUPPORT_MATRIX.md) – Supported versions and CI baselines
+- [`docs/adr/README.md`](docs/adr/README.md) – Architecture Decision Record (ADR) index and workflow
 - [`docs/README.md`](docs/README.md) – Documentation index and navigation
 - [`CHANGELOG.md`](CHANGELOG.md) – Release notes and breaking-change history
 
@@ -220,7 +229,7 @@ This repo provides scripts and commands for local development and deployment:
 - `cd app && mix test --cover` – Run tests with coverage output
 - `make terraform-security` – Run security scans (Checkov, KICS)
 - `make contract-validate` – Validate API contract docs against routes/type exports
-- `make contract-typecheck` – Type-check frontend contract interfaces
+- `make contract-typecheck` – Type-check client contract interfaces
 - `make openapi-lint` – Export + lint OpenAPI contract
 - `make openapi-breakcheck-test` – Validate OpenAPI break-check fixture harness
 - `make verify` – Run default quality gate before opening PRs

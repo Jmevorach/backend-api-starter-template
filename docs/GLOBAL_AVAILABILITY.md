@@ -6,6 +6,7 @@ globally available backend API.
 ## Table of Contents
 
 - [Goals](#goals)
+- [Reference Topologies](#reference-topologies)
 - [Topology Progression](#topology-progression)
 - [Data Layer Strategy](#data-layer-strategy)
 - [Traffic Management](#traffic-management)
@@ -17,6 +18,46 @@ globally available backend API.
 - Keep API latency predictable for users in multiple geographies.
 - Reduce regional blast radius and improve recovery posture.
 - Maintain contract and auth behavior consistently across regions.
+
+## Reference Topologies
+
+### Single Region (Baseline)
+
+```mermaid
+flowchart TB
+  C[Global Clients] --> GA[Global Accelerator]
+  GA --> ALB1[ALB - Region A]
+  ALB1 --> ECS1[ECS Fargate API - Region A]
+  ECS1 --> RDS1[(Aurora + RDS Proxy - Region A)]
+  ECS1 --> VK1[(Valkey - Region A)]
+```
+
+### Multi-Region Active/Passive
+
+```mermaid
+flowchart TB
+  C[Global Clients] --> GA[Global Accelerator]
+  GA --> ALB1[ALB - Region A Primary]
+  GA -. failover .-> ALB2[ALB - Region B Secondary]
+  ALB1 --> ECS1[ECS API - Region A]
+  ALB2 --> ECS2[ECS API - Region B Warm]
+  ECS1 --> RDS1[(Primary Data - Region A)]
+  ECS2 --> RDS2[(Replica or Restored Data - Region B)]
+```
+
+### Multi-Region Active/Active (Advanced)
+
+```mermaid
+flowchart TB
+  C[Global Clients] --> GA[Global Accelerator]
+  GA --> ALB1[ALB - Region A]
+  GA --> ALB2[ALB - Region B]
+  ALB1 --> ECS1[ECS API - Region A]
+  ALB2 --> ECS2[ECS API - Region B]
+  ECS1 --> D1[(Regional Data A)]
+  ECS2 --> D2[(Regional Data B)]
+  D1 <-. replicated domains .-> D2
+```
 
 ## Topology Progression
 

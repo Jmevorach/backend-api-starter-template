@@ -7,6 +7,7 @@ Use this index to find the right guide quickly.
 - [Start Here](#start-here)
 - [Deployment and Operations](#deployment-and-operations)
 - [Architecture and Security](#architecture-and-security)
+- [Decision Records](#decision-records)
 - [Extensibility](#extensibility)
 - [Documentation Quality](#documentation-quality)
 - [Suggested Reading Paths](#suggested-reading-paths)
@@ -14,6 +15,7 @@ Use this index to find the right guide quickly.
 ## Start Here
 
 - `LOCAL_DEV.md` - Run the API locally for day-to-day development
+- `START_IN_30_MIN.md` - Fastest path from clone to first success
 - `FRONTEND_INTEGRATION.md` - React/frontend integration and bootstrap flows
 - `API_CONTRACT.md` - Request/response examples for core client-facing endpoints
 - `../contracts/frontend-api.ts` - TypeScript interfaces mirroring API payloads
@@ -34,6 +36,11 @@ Use this index to find the right guide quickly.
 - `AUTHENTICATION.md` - DB/Valkey IAM and auth modes
 - `SECURITY.md` - Security posture and hardening suggestions
 - `SECURITY_CHECKLIST.md` - Pre-deployment security checks
+
+## Decision Records
+
+- `adr/README.md` - ADR workflow and decision index
+- `adr/0000-template.md` - ADR template
 
 ## Extensibility
 
@@ -56,3 +63,5 @@ Before merging documentation changes, run:
   `CUSTOMIZATION.md`
 - **Security reviewer:** `SECURITY.md` -> `SECURITY_CHECKLIST.md` ->
   `AUTHENTICATION.md`
+- **First-time adopter:** `START_IN_30_MIN.md` -> `LOCAL_DEV.md` ->
+  `APP_BACKEND_BLUEPRINT.md`

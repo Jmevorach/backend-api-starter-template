@@ -11,6 +11,7 @@ integrations and how to modify the AWS infrastructure.
 - [Security Considerations](#security-considerations)
 - [Testing](#testing)
 - [API Contract Drift Policy](#api-contract-drift-policy)
+- [Architecture Decisions](#architecture-decisions)
 - [Pull Request Guidelines](#pull-request-guidelines)
 
 ## Philosophy
@@ -450,6 +451,16 @@ make openapi-breakcheck-test
 ```
 
 `API Governance CI` enforces the same policy and flags potentially breaking contract changes.
+
+## Architecture Decisions
+
+If a PR changes system shape (for example, data consistency model, auth strategy,
+or global rollout topology), add or update an ADR in `docs/adr/`.
+
+Use:
+
+- `docs/adr/README.md` for process and status values
+- `docs/adr/0000-template.md` for new decision records
 
 ## Pull Request Guidelines
 

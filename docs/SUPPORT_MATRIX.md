@@ -31,3 +31,4 @@
 - `Load Tests CI` executes k6 smoke checks against a live app in CI.
 - `Container Benchmark` runs on schedule and uploads benchmark artifacts.
 - `API Governance CI` + contract checks keep global client integrations stable.
+- `Start In 30 Minutes CI` validates the quickstart runtime and contract flow.
