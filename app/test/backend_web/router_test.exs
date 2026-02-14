@@ -181,6 +181,40 @@ defmodule BackendWeb.RouterTest do
       assert get(conn, "/api/v1/uploads/#{key}/download").status == 401
       assert delete(conn, "/api/v1/uploads/#{key}").status == 401
     end
+
+    test "v1 enterprise routes return 401 without session" do
+      conn = build_conn() |> init_test_session(%{})
+
+      assert get(conn, "/api/v1/auth/sso/providers").status == 401
+      assert post(conn, "/api/v1/scim/v2/Users", %{}).status == 401
+      assert patch(conn, "/api/v1/scim/v2/Users/#{Ecto.UUID.generate()}", %{}).status == 401
+      assert get(conn, "/api/v1/scim/v2/Groups").status == 401
+      assert post(conn, "/api/v1/scim/v2/Groups", %{}).status == 401
+      assert patch(conn, "/api/v1/scim/v2/Groups/#{Ecto.UUID.generate()}", %{}).status == 401
+      assert get(conn, "/api/v1/roles").status == 401
+      assert post(conn, "/api/v1/roles", %{}).status == 401
+      assert post(conn, "/api/v1/policy/evaluate", %{}).status == 401
+      assert get(conn, "/api/v1/audit/events").status == 401
+      assert get(conn, "/api/v1/audit/events/#{Ecto.UUID.generate()}").status == 401
+      assert post(conn, "/api/v1/webhooks/endpoints", %{}).status == 401
+      assert get(conn, "/api/v1/webhooks/deliveries").status == 401
+
+      assert post(conn, "/api/v1/webhooks/deliveries/#{Ecto.UUID.generate()}/replay", %{}).status ==
+               401
+
+      assert post(conn, "/api/v1/notifications/send", %{}).status == 401
+      assert post(conn, "/api/v1/notifications/templates", %{}).status == 401
+      assert get(conn, "/api/v1/features").status == 401
+      assert post(conn, "/api/v1/features", %{}).status == 401
+      assert post(conn, "/api/v1/tenants", %{}).status == 401
+      assert get(conn, "/api/v1/tenants/#{Ecto.UUID.generate()}").status == 401
+      assert get(conn, "/api/v1/entitlements").status == 401
+      assert post(conn, "/api/v1/jobs", %{}).status == 401
+      assert get(conn, "/api/v1/jobs/#{Ecto.UUID.generate()}").status == 401
+      assert post(conn, "/api/v1/compliance/export", %{}).status == 401
+      assert post(conn, "/api/v1/compliance/delete", %{}).status == 401
+      assert get(conn, "/api/v1/search?q=test").status == 401
+    end
   end
 
   describe "protected API routes with auth" do
