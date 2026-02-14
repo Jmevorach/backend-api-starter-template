@@ -295,6 +295,7 @@ defmodule Backend.Enterprise do
   # ---------------------------------------------------------------------------
 
   defmodule Tenant do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -316,6 +317,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule Entitlement do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -337,6 +339,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule SsoConnection do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -358,6 +361,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule ScimUser do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -380,6 +384,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule ScimGroup do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -400,6 +405,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule Role do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -420,6 +426,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule UserRole do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -440,6 +447,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule AuditEvent do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -471,6 +479,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule WebhookEndpoint do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -493,6 +502,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule WebhookDelivery do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -522,6 +532,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule NotificationTemplate do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -544,6 +555,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule NotificationMessage do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -567,6 +579,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule FeatureFlag do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -590,6 +603,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule Job do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 
@@ -611,6 +625,7 @@ defmodule Backend.Enterprise do
   end
 
   defmodule ComplianceRequest do
+    @moduledoc false
     use Ecto.Schema
     import Ecto.Changeset
 

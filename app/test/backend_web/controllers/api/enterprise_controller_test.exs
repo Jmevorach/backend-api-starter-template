@@ -66,7 +66,7 @@ defmodule BackendWeb.API.EnterpriseControllerTest do
 
     user_list = get(conn, "/api/v1/scim/v2/Users?tenant_id=#{tenant_id}")
     assert user_list.status == 200
-    assert length(json_response(user_list, 200)["data"]) >= 1
+    assert json_response(user_list, 200)["data"] != []
 
     missing_user_patch =
       patch(conn, "/api/v1/scim/v2/Users/#{Ecto.UUID.generate()}", %{"tenant_id" => tenant_id})
@@ -94,7 +94,7 @@ defmodule BackendWeb.API.EnterpriseControllerTest do
 
     group_list = get(conn, "/api/v1/scim/v2/Groups?tenant_id=#{tenant_id}")
     assert group_list.status == 200
-    assert length(json_response(group_list, 200)["data"]) >= 1
+    assert json_response(group_list, 200)["data"] != []
 
     missing_group_patch =
       patch(conn, "/api/v1/scim/v2/Groups/#{Ecto.UUID.generate()}", %{"tenant_id" => tenant_id})
@@ -116,7 +116,7 @@ defmodule BackendWeb.API.EnterpriseControllerTest do
 
     roles = get(conn, "/api/v1/roles?tenant_id=#{tenant_id}")
     assert roles.status == 200
-    assert length(json_response(roles, 200)["data"]) >= 1
+    assert json_response(roles, 200)["data"] != []
 
     allow_eval =
       post(conn, "/api/v1/policy/evaluate", %{
@@ -150,7 +150,7 @@ defmodule BackendWeb.API.EnterpriseControllerTest do
 
     list = get(conn, "/api/v1/audit/events?tenant_id=#{tenant_id}&limit=5")
     assert list.status == 200
-    assert length(json_response(list, 200)["data"]) >= 1
+    assert json_response(list, 200)["data"] != []
 
     show = get(conn, "/api/v1/audit/events/#{event.id}?tenant_id=#{tenant_id}")
     assert show.status == 200
@@ -240,7 +240,7 @@ defmodule BackendWeb.API.EnterpriseControllerTest do
 
     flag_list = get(conn, "/api/v1/features?tenant_id=#{tenant_id}")
     assert flag_list.status == 200
-    assert length(json_response(flag_list, 200)["data"]) >= 1
+    assert json_response(flag_list, 200)["data"] != []
   end
 
   test "tenant show, entitlements list, jobs and compliance", %{conn: conn, tenant_id: tenant_id} do
@@ -263,7 +263,7 @@ defmodule BackendWeb.API.EnterpriseControllerTest do
 
     entitlements = get(conn, "/api/v1/entitlements?tenant_id=#{tenant_id}")
     assert entitlements.status == 200
-    assert length(json_response(entitlements, 200)["data"]) >= 1
+    assert json_response(entitlements, 200)["data"] != []
 
     job_create =
       post(conn, "/api/v1/jobs", %{
