@@ -50,16 +50,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-      valkey:
-        image: valkey/valkey:7
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "valkey-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -78,6 +68,26 @@ jobs:
       - name: Install dependencies
         working-directory: app
         run: mix deps.get
+
+      - name: Start Valkey with development password
+        run: |
+          docker run -d \
+            --name start30-valkey \
+            -p 6379:6379 \
+            valkey/valkey:7-alpine \
+            valkey-server --requirepass devpassword
+
+      - name: Wait for Valkey readiness
+        run: |
+          for i in $(seq 1 60); do
+            if docker exec start30-valkey valkey-cli -a devpassword ping | grep -q PONG; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Valkey did not become ready in time."
+          docker logs start30-valkey || true
+          exit 1
 
       - name: 0-10 minutes - local runtime
         env:
@@ -159,6 +169,10 @@ jobs:
           if [ -f /tmp/phoenix-start-30.pid ]; then
             kill "$(cat /tmp/phoenix-start-30.pid)" || true
           fi
+
+      - name: Stop Valkey container
+        if: always()
+        run: docker rm -f start30-valkey || true
 
       - name: Print app logs on failure
         if: failure()
