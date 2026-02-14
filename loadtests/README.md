@@ -109,7 +109,21 @@ Focus on:
 
 ## CI Integration
 
-Add to GitHub Actions:
+This repository includes two CI uses for load testing:
+
+- **Load Tests CI** (`.github/workflows/loadtests-ci.yml`) runs a short k6 smoke
+  test against a live Phoenix app for PR/push validation.
+- **Container Benchmark** (`.github/workflows/container-benchmark.yml`) runs on
+  a schedule and publishes benchmark reports to GitHub Pages.
+
+Benchmark report links:
+
+- Latest HTML report:
+  `https://jmevorach.github.io/backend-api-starter-template/benchmarks/latest.html`
+- Latest badge payload JSON:
+  `https://jmevorach.github.io/backend-api-starter-template/benchmarks/latest-shields.json`
+
+Example GitHub Actions k6 step:
 
 ```yaml
 - name: Run Load Tests

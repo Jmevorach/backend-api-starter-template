@@ -9,6 +9,8 @@
 [![Security Scans](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/security-scans.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/security-scans.yml)
 [![Version Check](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/version-check.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/version-check.yml)
 [![Container Functional CI](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-functional-ci.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-functional-ci.yml)
+[![Container Benchmark](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-benchmark.yml/badge.svg)](https://github.com/Jmevorach/backend-api-starter-template/actions/workflows/container-benchmark.yml)
+[![Latest Container p95](https://img.shields.io/endpoint?url=https://jmevorach.github.io/backend-api-starter-template/benchmarks/latest-shields.json)](https://jmevorach.github.io/backend-api-starter-template/benchmarks/latest.html)
 
 [![Elixir](https://img.shields.io/badge/Elixir-1.19.5+-4B275F?logo=elixir)](https://elixir-lang.org/)
 [![Phoenix](https://img.shields.io/badge/Phoenix-1.7+-FD4F00?logo=phoenix-framework)](https://www.phoenixframework.org/)

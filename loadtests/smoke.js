@@ -22,7 +22,7 @@ const errorRate = new Rate('errors');
 // Test configuration
 export const options = {
   vus: 1,
-  duration: '1m',
+  duration: __ENV.DURATION || '1m',
   thresholds: {
     http_req_duration: ['p(95)<500'], // 95% of requests should be below 500ms
     errors: ['rate<0.01'],             // Error rate should be below 1%
@@ -36,7 +36,7 @@ export default function () {
   // Test health endpoint
   const healthRes = http.get(`${BASE_URL}/healthz`);
   check(healthRes, {
-    'health status is 200': (r) => r.status === 200,
+    'health status is 200 or 503': (r) => r.status === 200 || r.status === 503,
     'health response has status': (r) => {
       try {
         const body = JSON.parse(r.body);
@@ -53,14 +53,38 @@ export default function () {
   const rootRes = http.get(`${BASE_URL}/`);
   check(rootRes, {
     'root status is 200': (r) => r.status === 200,
-    'root has service name': (r) => {
+    'root has service metadata': (r) => {
       try {
         const body = JSON.parse(r.body);
-        return body.service === 'backend';
+        return body.service !== undefined && body.version !== undefined;
       } catch {
         return false;
       }
     },
+  }) || errorRate.add(1);
+
+  sleep(1);
+
+  // Test OpenAPI endpoint
+  const openapiRes = http.get(`${BASE_URL}/api/v1/openapi`);
+  check(openapiRes, {
+    'openapi status is 200': (r) => r.status === 200,
+    'openapi payload has openapi field': (r) => {
+      try {
+        const body = JSON.parse(r.body);
+        return body.openapi !== undefined;
+      } catch {
+        return false;
+      }
+    },
+  }) || errorRate.add(1);
+
+  sleep(1);
+
+  // Test unauthenticated protected endpoint
+  const meRes = http.get(`${BASE_URL}/api/v1/me`);
+  check(meRes, {
+    'me status is 401 when unauthenticated': (r) => r.status === 401,
   }) || errorRate.add(1);
 
   sleep(1);

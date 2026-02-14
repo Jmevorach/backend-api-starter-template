@@ -1,0 +1,88 @@
+name: Container Benchmark
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  benchmark:
+    name: Benchmark Container + Publish Report
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Build production container image
+        run: docker build -t backend-api-benchmark:ci app
+
+      - name: Start container
+        run: |
+          docker run -d \
+            --name backend-benchmark \
+            -p 8443:443 \
+            -e SECRET_KEY_BASE="benchmark_container_secret_key_base_abcdefghijklmnopqrstuvwxyz0123456789" \
+            -e PHX_HOST="localhost" \
+            -e DB_HOST="127.0.0.1" \
+            -e DB_NAME="backend_test" \
+            -e DB_USERNAME="postgres" \
+            -e DB_IAM_AUTH="false" \
+            -e REQUIRE_IAM_AUTH="false" \
+            backend-api-benchmark:ci
+
+      - name: Wait for app readiness
+        run: |
+          for i in $(seq 1 60); do
+            if curl -skf https://localhost:8443/ >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Container did not become ready in time."
+          docker logs backend-benchmark || true
+          exit 1
+
+      - name: Setup k6
+        uses: grafana/setup-k6-action@v1
+
+      - name: Run benchmark
+        run: |
+          k6 run \
+            --summary-export=benchmark-summary.json \
+            --env BASE_URL=https://localhost:8443 \
+            --env DURATION=2m \
+            --env RATE=25 \
+            loadtests/benchmark.js
+
+      - name: Generate benchmark report files
+        run: |
+          mkdir -p benchmark-site/benchmarks
+          python3 scripts/generate-benchmark-report.py \
+            --input benchmark-summary.json \
+            --output-dir benchmark-site/benchmarks
+
+      - name: Publish benchmark report to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: benchmark-site
+          keep_files: true
+
+      - name: Upload benchmark artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: container-benchmark-report
+          path: |
+            benchmark-summary.json
+            benchmark-site/benchmarks/latest.json
+            benchmark-site/benchmarks/latest.html
+            benchmark-site/benchmarks/latest-shields.json
+
+      - name: Cleanup
+        if: always()
+        run: docker rm -f backend-benchmark || true

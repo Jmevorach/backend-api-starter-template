@@ -28,3 +28,5 @@
 - `API Governance CI` enforces OpenAPI lint + PR diff checks.
 - `Security Scans` runs Semgrep + CodeQL.
 - `Container Functional CI` validates shipped container behavior via smoke tests.
+- `Load Tests CI` executes k6 smoke checks against a live app in CI.
+- `Container Benchmark` runs on schedule and publishes benchmark reports.
