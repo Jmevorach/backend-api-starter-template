@@ -13,7 +13,7 @@ product while keeping the production baseline intact.
 - [Third-Party API Integrations](#third-party-api-integrations)
 - [TLS/SSL Configuration](#tlsssl-configuration)
 - [Infrastructure Adjustments](#infrastructure-adjustments)
-- [Mobile-Specific Extensions](#mobile-specific-extensions)
+- [Product-Specific Extensions](#product-specific-extensions)
 - [Keep It Maintainable](#keep-it-maintainable)
 
 ## Rename the Service
@@ -185,7 +185,7 @@ For example, to add SQS:
 
 For detailed infrastructure modification guidance, see [CONTRIBUTING.md](../CONTRIBUTING.md#modifying-aws-infrastructure).
 
-## Mobile-Specific Extensions
+## Product-Specific Extensions
 
 Typical additions:
 
