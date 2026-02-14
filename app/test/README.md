@@ -1,6 +1,6 @@
 # Test Suite Documentation
 
-This test suite validates the backend baseline for open-source mobile apps.
+This test suite validates the backend baseline for API-driven products.
 It focuses on authentication, protected APIs, dashboard/profile behavior,
 uploads, notes, and optional third-party API clients.
 

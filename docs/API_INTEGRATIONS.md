@@ -2,7 +2,7 @@
 
 This backend intentionally ships with minimal optional vendor integrations
 (payments, background checks, maps, etc.). The goal is to keep the open-source
-mobile backend clean and domain-focused while making integrations easy to add.
+backend baseline clean and domain-focused while making integrations easy to add.
 
 ## Table of Contents
 

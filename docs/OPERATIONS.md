@@ -13,6 +13,7 @@ This document covers deployment, scaling, upgrades, and day-2 operations.
 - [Secrets Rotation](#secrets-rotation)
 - [Backups](#backups)
 - [Logs and Monitoring](#logs-and-monitoring)
+- [Service-Level Objectives](#service-level-objectives)
 - [Disaster Recovery](#disaster-recovery)
 - [Operational Checklists](#operational-checklists)
 
@@ -156,6 +157,20 @@ aws logs tail /ecs/your-cluster --follow
 # View Lambda rotation logs
 aws logs tail /aws/lambda/db-password-rotation --follow
 ```
+
+## Service-Level Objectives
+
+Define and monitor these baseline SLOs per environment:
+
+- **Availability:** monthly API uptime target (for example, 99.9%)
+- **Latency:** p95 request duration target per critical endpoint
+- **Reliability:** error-rate threshold for 5xx responses
+
+Pair each SLO with:
+
+- An alert threshold
+- A dashboard panel
+- An owner and response runbook
 
 ## Disaster Recovery
 

@@ -1,6 +1,6 @@
 # Contributing Guide
 
-This guide explains how to extend the mobile backend baseline with new API
+This guide explains how to extend the backend API starter baseline with new API
 integrations and how to modify the AWS infrastructure.
 
 ## Table of Contents
@@ -408,13 +408,13 @@ See `test/README.md` for comprehensive testing documentation.
 
 ## API Contract Drift Policy
 
-When a PR changes any API behavior used by frontend clients, keep the contract
+When a PR changes any API behavior used by client applications, keep the contract
 artifacts in sync in the same PR.
 
 Update these files together:
 
 1. `docs/API_CONTRACT.md` (request/response examples and status codes)
-2. `contracts/frontend-api.ts` (TypeScript interfaces consumed by frontend)
+2. `contracts/frontend-api.ts` (TypeScript interfaces consumed by API clients)
 3. `docs/FRONTEND_INTEGRATION.md` (flow or usage guidance when needed)
 
 ### What counts as a contract change

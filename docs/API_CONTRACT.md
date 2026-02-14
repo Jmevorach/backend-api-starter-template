@@ -1,6 +1,6 @@
 # API Contract Reference
 
-This document provides request/response examples for the core frontend-facing
+This document provides request/response examples for the core client-facing
 endpoints.
 
 ## Table of Contents

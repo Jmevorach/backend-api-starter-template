@@ -9,6 +9,7 @@ Use this index to find the right guide quickly.
 - [Architecture and Security](#architecture-and-security)
 - [Extensibility](#extensibility)
 - [Documentation Quality](#documentation-quality)
+- [Suggested Reading Paths](#suggested-reading-paths)
 
 ## Start Here
 
@@ -46,3 +47,12 @@ Before merging documentation changes, run:
 - `make contract-validate`
 - `make contract-typecheck`
 - `make openapi-lint`
+
+## Suggested Reading Paths
+
+- **New platform owner:** `ARCHITECTURE.md` -> `GLOBAL_AVAILABILITY.md` ->
+  `OPERATIONS.md`
+- **API contributor:** `API_CONTRACT.md` -> `CONTRIBUTING.md` ->
+  `CUSTOMIZATION.md`
+- **Security reviewer:** `SECURITY.md` -> `SECURITY_CHECKLIST.md` ->
+  `AUTHENTICATION.md`

@@ -26,6 +26,7 @@ foundations.
 ## Table of Contents
 
 - [Why This Exists](#why-this-exists)
+- [Starter Kit Principles](#starter-kit-principles)
 - [What You Get](#what-you-get)
 - [Architecture (High Level)](#architecture-high-level)
 - [Global Availability Strategy](#global-availability-strategy)
@@ -47,6 +48,17 @@ Most teams repeatedly implement the same building blocks:
 
 This repo bundles those pieces into a cohesive, production-ready starting point
 while staying generic enough to fit almost any backend product.
+
+## Starter Kit Principles
+
+- **API-first contracts:** OpenAPI + docs + TypeScript contracts stay in sync via
+  CI.
+- **Production defaults:** secure-by-default infrastructure, observability, and
+  tested deployment workflows.
+- **Global-ready architecture:** clear progression from single-region to
+  multi-region operation.
+- **Composable modules:** extend domain APIs without rewriting shared platform
+  layers.
 
 ## What You Get
 

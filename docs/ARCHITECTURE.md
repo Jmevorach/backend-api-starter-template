@@ -26,6 +26,7 @@ why each component exists, and how data flows through the system.
 - Separate app concerns from infrastructure concerns
 - Keep the baseline generic for many product types
 - Use managed AWS services where possible
+- Preserve simple developer workflows while scaling operational complexity
 
 ## Non-Goals
 

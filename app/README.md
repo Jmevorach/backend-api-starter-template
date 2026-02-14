@@ -1,7 +1,7 @@
 # Phoenix API Backend
 
 This directory contains a **production-ready Phoenix API service** designed as a
-starting point for mobile app backends. It intentionally avoids app-specific
+starting point for backend APIs. It intentionally avoids app-specific
 business logic so you can plug in your own domain features.
 
 ## Table of Contents
@@ -86,7 +86,7 @@ end
 - Sessions are stored server-side in Valkey/Redis via `Backend.RedisSessionStore`.
 - OAuth providers are optional; if credentials are missing, the provider is
   effectively disabled.
-- Use `GET /api/v1/me` to validate session behavior from a mobile client.
+- Use `GET /api/v1/me` to validate session behavior from a client app.
 
 ## Testing
 
