@@ -9,6 +9,7 @@ This document covers deployment, scaling, upgrades, and day-2 operations.
 - [Deploy the Stack](#deploy-the-stack)
 - [Updates and Rollbacks](#updates-and-rollbacks)
 - [Scaling](#scaling)
+- [Global Rollouts and Multi-Region Ops](#global-rollouts-and-multi-region-ops)
 - [Secrets Rotation](#secrets-rotation)
 - [Backups](#backups)
 - [Logs and Monitoring](#logs-and-monitoring)
@@ -95,6 +96,22 @@ Aurora Serverless v2 scales automatically by ACUs. Adjust min/max ACUs in `varia
 
 - `aurora_min_capacity` - Minimum ACUs
 - `aurora_max_capacity` - Maximum ACUs
+
+## Global Rollouts and Multi-Region Ops
+
+When you need global availability, roll out incrementally:
+
+1. Deploy a stable single-region baseline with clear SLOs.
+2. Add Global Accelerator to improve client routing and failover behavior.
+3. Stand up a secondary region (active/passive), then validate failover.
+4. Promote to active/active only for domains with explicit consistency design.
+
+Recommended operating controls:
+
+- Maintain region-scoped health checks and dashboards.
+- Keep deploys per region independently reversible.
+- Track `request_id` and region metadata in logs for incident triage.
+- Run quarterly failover drills and document outcomes.
 
 ## Secrets Rotation
 

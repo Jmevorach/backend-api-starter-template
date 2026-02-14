@@ -1,7 +1,7 @@
 # App Backend Blueprint
 
 This document outlines practical next steps for evolving this repository into a
-production-grade backend for an open-source mobile application.
+production-grade backend for any API-driven product.
 
 ## Table of Contents
 
@@ -9,7 +9,7 @@ production-grade backend for an open-source mobile application.
 - [Suggested Extension Approach](#suggested-extension-approach)
 - [Security Direction](#security-direction)
 - [Integration Suggestions](#integration-suggestions)
-- [Frontend Integration Tips](#frontend-integration-tips)
+- [Client Integration Tips](#client-integration-tips)
 
 ## Current Baseline
 
@@ -46,7 +46,7 @@ If your roadmap includes external system interoperability:
 - Validate and version integration contracts with tests.
 - Add adapter modules for each external provider.
 
-## Frontend Integration Tips
+## Client Integration Tips
 
 - Use `/api/v1/profile` and `/api/v1/dashboard` for initial app bootstrap.
 - Keep session refresh simple: call `/api/v1/me` on app start.
