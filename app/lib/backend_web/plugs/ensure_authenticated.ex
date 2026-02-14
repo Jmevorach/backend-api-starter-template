@@ -73,6 +73,8 @@ defmodule BackendWeb.Plugs.EnsureAuthenticated do
   - Halted `conn` with 401 response if not authenticated
   """
   def call(conn, _opts) do
+    conn = maybe_fetch_session(conn)
+
     case get_session(conn, :current_user) do
       nil ->
         # No user in session - reject the request
@@ -88,5 +90,15 @@ defmodule BackendWeb.Plugs.EnsureAuthenticated do
         # User is authenticated - continue to controller
         conn
     end
+  end
+
+  defp maybe_fetch_session(conn) do
+    case conn.private[:plug_session_fetch] do
+      :done -> conn
+      _ -> fetch_session(conn)
+    end
+  rescue
+    ArgumentError ->
+      conn
   end
 end
