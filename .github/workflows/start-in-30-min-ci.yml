@@ -148,8 +148,16 @@ jobs:
             exit 1
           fi
 
+      - name: Stop local app before validation phase
+        run: |
+          if [ -f /tmp/phoenix-start-30.pid ]; then
+            kill "$(cat /tmp/phoenix-start-30.pid)" || true
+            rm -f /tmp/phoenix-start-30.pid
+          fi
+
       - name: 10-20 minutes - quality and contract checks
         env:
+          MIX_ENV: test
           TEST_DB_HOST: localhost
           TEST_DB_USERNAME: postgres
           TEST_DB_PASSWORD: postgres
